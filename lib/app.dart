@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
-class App extends StatelessWidget {
+import 'view/screens/auth.dart';
+import 'view/widgets/anon_widgets.dart';
+
+class App extends AnonStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Anon-app',
-      home: Scaffold(
-        appBar: AppBar(title: Text("Anon")),
-      ),
+      home: AuthScreen(),
     );
   }
 }
