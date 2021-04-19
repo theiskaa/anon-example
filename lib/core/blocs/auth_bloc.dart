@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:anon/core/model/user.dart';
 import 'package:anon/core/services/auth_service.dart';
+import 'package:anon/core/system/logger.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -41,6 +42,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             loading: false,
           );
         }
+        Log.d("U-ID: ${event.user.id}");
         yield authState;
         break;
 
