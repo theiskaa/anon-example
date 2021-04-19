@@ -70,6 +70,15 @@ class _AppState extends AnonState<App> {
               (route) => false,
             );
             break;
+          // case AuthEvents.signInStart:
+          // case AuthEvents.logoutStart:
+          //   _navigator.pushAndRemoveUntil(
+          //     MaterialPageRoute(
+          //       builder: (context) => Loading(),
+          //     ),
+          //     (route) => false,
+          //   );
+          //   break;
           default:
             _navigator.pushAndRemoveUntil(
               MaterialPageRoute(

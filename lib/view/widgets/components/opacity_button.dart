@@ -58,7 +58,7 @@ class OpacityButton extends StatefulWidget {
     this.onTap,
     this.enableOnLongPress = false,
     this.onLongPress,
-    this.alwaysIncludeSemantics,
+    this.alwaysIncludeSemantics = false,
   }) : super(key: key);
 
   @override
@@ -112,12 +112,9 @@ class _OpacityButtonState extends State<OpacityButton> {
 
   // The body of [OpacityButton].
   Opacity _buttonBody() => Opacity(
-        opacity: _opacityValue,
-        child: widget.child,
-        alwaysIncludeSemantics: (widget.alwaysIncludeSemantics != null)
-            ? widget.alwaysIncludeSemantics
-            : false,
-      );
+      opacity: _opacityValue,
+      child: widget.child,
+      alwaysIncludeSemantics: widget.alwaysIncludeSemantics);
 
   // Get right opacity value by listening value of [_isTapped].
   double get _opacityValue => _isTapped ? widget.opacityValue : 1;

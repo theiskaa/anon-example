@@ -27,7 +27,7 @@ class AuthEvent {
     this.user = userModel;
   }
 
-  AuthEvent.unauthenticated(UserModel userModel) {
+  AuthEvent.unauthenticated() {
     this.type = AuthEvents.unauthenticated;
   }
 
