@@ -12,6 +12,18 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # For authentication.
+  firebase_auth: ^1.1.0
+
+  # To manage firebase.
+  firebase_core: ^1.0.3
+
+  # Manage user data.
+  cloud_firestore: ^1.0.5
+
+  # For state managment.
+  flutter_bloc: ^7.0.0
+
   # Console logger for clear prints.
   logger: ^1.0.0
 
