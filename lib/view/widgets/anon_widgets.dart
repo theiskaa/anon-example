@@ -1,7 +1,7 @@
 import 'package:anon/core/system/anon.dart';
 import 'package:flutter/widgets.dart';
 
-/// Custom [StatelessWidget] implemented [Anon] singleton.
+/// Custom [StatelessWidget] implemented [Anon] singleton
 abstract class AnonStatelessWidget extends StatelessWidget {
   AnonStatelessWidget({Key key}) : super(key: key);
   final Anon anon = Anon();
