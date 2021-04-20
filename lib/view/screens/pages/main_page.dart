@@ -1,4 +1,4 @@
-import 'package:anon/core/blocs/auth_bloc.dart';
+import 'package:anon/core/blocs/auth/auth_bloc.dart';
 import 'package:anon/view/widgets/anon_widgets.dart';
 import 'package:anon/view/widgets/components/appbar_with_logo.dart';
 import 'package:anon/view/widgets/components/opacity_button.dart';

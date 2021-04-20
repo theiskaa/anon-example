@@ -1,4 +1,4 @@
-import 'package:anon/core/blocs/auth_bloc.dart';
+import 'package:anon/core/blocs/auth/auth_bloc.dart';
 import 'package:anon/core/model/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
