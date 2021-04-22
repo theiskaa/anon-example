@@ -1,6 +1,7 @@
-import 'package:anon/view/widgets/components/opacity_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import 'package:anon/view/widgets/components/opacity_button.dart';
 
 void main() {
   Widget opacityButton;

@@ -10,7 +10,10 @@ part 'userservice_state.dart';
 
 class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
   final UserService userService;
-  UserserviceBloc({this.userService}) : super(UserServiceState.defaultState());
+
+  UserserviceBloc({
+    this.userService,
+  }) : super(UserServiceState.defaultState());
 
   @override
   Stream<UserServiceState> mapEventToState(
@@ -18,44 +21,83 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
   ) async* {
     switch (event.type) {
       case UserServiceEvents.createPostStart:
-        UserServiceState serviceState;
-
-        yield state.copyWith(
-          event: event.type,
-          loading: true,
-        );
-
-        try {
-          final res = await userService.createPost(postModel: event.postModel);
-          if (res) {
-            final posts = List<PostModel>.from(state.postModelList);
-
-            posts.add(state.postModel.copyWith(
-              id: event.postModel.id,
-              content: event.postModel.content,
-            ));
-
-            serviceState = state.copyWith(
-              event: UserServiceEvents.createPostSuccess,
-              loading: false,
-              postModelList: posts,
-            );
-          } else {
-            serviceState = state.copyWith(
-              event: UserServiceEvents.createPostError,
-              loading: false,
-            );
-          }
-        } catch (e) {
-          serviceState = state.copyWith(
-            event: UserServiceEvents.createPostError,
-            loading: false,
-          );
-        }
-        yield serviceState;
-
+        yield* mapToCreatePostStart(event);
+        break;
+      case UserServiceEvents.getAllStart:
+        yield* mapToGetAllStart(event);
         break;
       default:
     }
+  }
+
+  Stream<UserServiceState> mapToCreatePostStart(dynamic event) async* {
+    UserServiceState serviceState;
+
+    yield state.copyWith(
+      event: event.type,
+      loading: true,
+    );
+
+    try {
+      final res = await userService.createPost(postModel: event.postModel);
+      if (res) {
+        final posts = List<PostModel>.from(state.postModelList);
+
+        posts.add(state.postModel.copyWith(
+          userID: event.postModel.userID,
+          title: event.postModel.title,
+          content: event.postModel.content,
+        ));
+
+        serviceState = state.copyWith(
+          event: UserServiceEvents.createPostSuccess,
+          loading: false,
+          postModelList: posts,
+        );
+      } else {
+        serviceState = state.copyWith(
+          event: UserServiceEvents.createPostError,
+          loading: false,
+        );
+      }
+    } catch (e) {
+      serviceState = state.copyWith(
+        event: UserServiceEvents.createPostError,
+        loading: false,
+      );
+    }
+    yield serviceState;
+  }
+
+  Stream<UserServiceState> mapToGetAllStart(dynamic event) async* {
+    UserServiceState serviceState;
+
+    yield state.copyWith(
+      event: event.type,
+      loading: true,
+    );
+
+    try {
+      List<PostModel> postModelList = await userService.getPosts();
+
+      if (postModelList == null) {
+        serviceState = state.copyWith(
+          event: UserServiceEvents.getAllError,
+          loading: false,
+        );
+      }
+
+      serviceState = state.copyWith(
+        event: UserServiceEvents.getAllSuccess,
+        loading: false,
+        postModelList: postModelList,
+      );
+    } catch (e) {
+      serviceState = state.copyWith(
+        event: UserServiceEvents.getAllError,
+        loading: false,
+      );
+    }
+    yield serviceState;
   }
 }

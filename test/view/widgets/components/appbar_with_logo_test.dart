@@ -26,7 +26,7 @@ void main() {
       expect(find.byType(Scaffold), findsOneWidget);
       expect(find.byType(AppBarWithLogo), findsOneWidget);
 
-      // AuthButton tests.
+      // AppBarWithLogo tests.
       expect(find.byType(AppBar), findsOneWidget);
       expect(find.byKey(Key('anon.logo')), findsOneWidget);
     });

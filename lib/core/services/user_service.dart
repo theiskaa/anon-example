@@ -8,12 +8,33 @@ class UserService {
     try {
       await postsRef.doc().set({
         'postContent': postModel.content,
-        'ID': postModel.id,
+        'userID': postModel.userID,
         'date': Timestamp.now(),
       });
       return true;
     } catch (e) {
       return false;
     }
+  }
+
+  /// Stream for get content list.
+  Future<List<PostModel>> getPosts() async {
+    // Get data by [postsRef].
+    var snapshot = await postsRef.orderBy('date', descending: true).get();
+
+    // Empty list for save converted data.
+    List<PostModel> postModelList = [];
+
+    snapshot.docs.forEach((element) {
+      // Convert eached element of `snapshot.docs` to PostModelEntity.
+      var postEntity = PostModelEntity.fromSnapshot(element);
+
+      // Convert [PostModelEntity] to [PostModel].
+      var postModel = PostModel.fromEntity(postEntity);
+
+      postModelList.add(postModel);
+    });
+
+    return postModelList;
   }
 }

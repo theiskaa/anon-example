@@ -15,7 +15,7 @@ class UserServiceState {
   });
 
   UserServiceState copyWith({
-    @required event,
+    UserServiceEvents event,
     bool loading,
     PostModel postModel,
     List<PostModel> postModelList,

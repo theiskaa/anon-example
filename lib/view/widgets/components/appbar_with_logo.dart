@@ -13,11 +13,11 @@ class AppBarWithLogo extends AnonStatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      centerTitle: true,
-      elevation: 1,
-      backgroundColor: Colors.grey[100],
+      centerTitle: false,
+      elevation: 0,
+      backgroundColor: Colors.transparent,
       title: Image.asset(
-        'assets/anon-logo.png',
+        'assets/anon-text-logo.png',
         key: Key('anon.logo'),
         height: 35,
       ),
