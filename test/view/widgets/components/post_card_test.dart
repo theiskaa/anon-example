@@ -7,9 +7,11 @@ import 'package:anon/view/widgets/components/post_card.dart';
 
 void main() {
   Widget postCardWidget;
+  Widget secondPostCardWidget;
   Widget mainWidget;
 
   PostModel postModel;
+  PostModel secondPostModel;
 
   setUpAll(() {
     postModel = PostModel(
@@ -18,8 +20,16 @@ void main() {
       content: 'More lorem ipsum 123123',
     );
 
+    secondPostModel = postModel.copyWith(content: 'empty');
+
     postCardWidget = PostCardWidget(
       postModel: postModel,
+      onTap: () {},
+      onViewCommentsTap: () {},
+    );
+
+    secondPostCardWidget = PostCardWidget(
+      postModel: secondPostModel,
       onTap: () {},
       onViewCommentsTap: () {},
     );
@@ -53,6 +63,12 @@ void main() {
       // Gesture test.
       await tester.tap(find.byKey(Key('view.comments.button')));
       await tester.tap(find.byKey(Key('card.button')));
+    });
+
+    testWidgets('test if case when content.length less than 10',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(home: secondPostCardWidget));
+      expect(find.byKey(Key("SizedBox.shrink")), findsOneWidget);
     });
   });
 }

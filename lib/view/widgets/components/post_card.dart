@@ -95,7 +95,7 @@ class PostCardWidget extends AnonStatelessWidget {
         ),
       );
     } else {
-      return SizedBox.shrink();
+      return SizedBox.shrink(key: Key("SizedBox.shrink"));
     }
   }
 

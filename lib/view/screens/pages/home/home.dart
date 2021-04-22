@@ -1,12 +1,14 @@
 import 'dart:async';
 
+import 'package:anon/view/screens/pages/home/create_post.dart';
+import 'package:anon/view/widgets/utils/route_with_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:anon/core/blocs/auth/auth_bloc.dart';
 import 'package:anon/core/blocs/userservice/userservice_bloc.dart';
 import 'package:anon/view/widgets/anon_widgets.dart';
-import 'package:anon/view/widgets/components/appbar_with_logo.dart';
+import 'package:anon/view/widgets/components/appbars.dart';
 import 'package:anon/view/widgets/components/create_button.dart';
 import 'package:anon/view/widgets/components/opacity_button.dart';
 import 'package:anon/view/widgets/components/post_card.dart';
@@ -121,7 +123,8 @@ class _HomeState extends AnonState<Home> {
           ),
         ),
         CreateButton(
-          onTap: () {},
+          onTap: () =>
+              Navigator.push(context, routeWithTransition(CreatePost())),
         ),
       ],
     );

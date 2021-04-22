@@ -1,13 +1,14 @@
+import 'package:anon/view/widgets/anon_widgets.dart';
 import 'package:anon/view/widgets/components/opacity_button.dart';
 import 'package:flutter/material.dart';
 
-class CreateButton extends StatelessWidget {
+class CreateButton extends AnonStatelessWidget {
   final Function onTap;
   final Color backgroundColor;
   final String title;
   final Color titleColor;
 
-  const CreateButton({
+  CreateButton({
     Key key,
     @required this.onTap,
     this.backgroundColor = Colors.black,

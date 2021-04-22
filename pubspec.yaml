@@ -27,6 +27,9 @@ dependencies:
   # Console logger for clear prints.
   logger: ^1.0.0
 
+  # Markdown view for posts.
+  flutter_markdown: ^0.6.1
+
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

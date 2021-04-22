@@ -3,11 +3,12 @@ import 'package:anon/core/utils/fire.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserService {
-  /// Method for create/publish post into content list.
+  /// Method for create/publish post to content list.
   Future<bool> createPost({PostModel postModel}) async {
     try {
       await postsRef.doc().set({
-        'postContent': postModel.content,
+        'title': postModel.title,
+        'content': postModel.content,
         'userID': postModel.userID,
         'date': Timestamp.now(),
       });

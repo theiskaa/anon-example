@@ -43,11 +43,14 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
       if (res) {
         final posts = List<PostModel>.from(state.postModelList);
 
-        posts.add(state.postModel.copyWith(
-          userID: event.postModel.userID,
-          title: event.postModel.title,
-          content: event.postModel.content,
-        ));
+        posts.insert(
+          0,
+          state.postModel.copyWith(
+            userID: event.postModel.userID,
+            title: event.postModel.title,
+            content: event.postModel.content,
+          ),
+        );
 
         serviceState = state.copyWith(
           event: UserServiceEvents.createPostSuccess,
