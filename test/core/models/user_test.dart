@@ -20,5 +20,12 @@ main() {
 
       expect(userModelJson, userModelToJson);
     });
+
+    test('empty userModel', () {
+      final emptyUser = UserModel.empty;
+
+      expect(emptyUser.id, '');
+      expect(emptyUser != userModel, true);
+    });
   });
 }

@@ -1,10 +1,12 @@
 part of 'auth_bloc.dart';
 
 enum AuthEvents {
+  // User managment events.
   authUserChanged,
   authenticated,
   unauthenticated,
 
+  // Authentication events.
   signInStart,
   signInSuccess,
   signInError,

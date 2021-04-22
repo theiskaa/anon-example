@@ -1,4 +1,4 @@
-import 'package:anon/core/blocs/auth_bloc.dart';
+import 'package:anon/core/blocs/auth/auth_bloc.dart';
 import 'package:anon/core/model/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -17,12 +17,20 @@ void main() {
   });
 
   group("[AuthState]", () {
-    test("Test if AuthState.copyWith()", () {
+    test("Test if AuthState.copyWith(...) works", () {
+      // To test copyWith with default values.
+      final defualtAuthState = authState.copyWith();
+
+      // To test copyWith with different values.
       final AuthState newAuthState = authState.copyWith(
         event: AuthEvents.authenticated,
         loading: false,
         user: userModel,
       );
+
+      expect(defualtAuthState.event, authState.event);
+      expect(defualtAuthState.loading, authState.loading);
+      expect(defualtAuthState.user, authState.user);
 
       expect(newAuthState.event, AuthEvents.authenticated);
       expect(newAuthState.loading, false);

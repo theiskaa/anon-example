@@ -3,9 +3,7 @@ import 'package:flutter/widgets.dart';
 class UserModel {
   final String id;
 
-  const UserModel({
-    @required this.id,
-  }) : assert(id != null);
+  const UserModel({@required this.id});
 
   static const empty = UserModel(id: '');
 

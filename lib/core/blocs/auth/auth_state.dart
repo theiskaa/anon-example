@@ -13,7 +13,7 @@ class AuthState {
   });
 
   AuthState copyWith({
-    @required event,
+    AuthEvents event,
     bool loading,
     UserModel user,
   }) =>
