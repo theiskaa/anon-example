@@ -7,7 +7,7 @@ void wrapWith(
 }) {
   final text = controller.value.text;
   final selection = controller.selection;
-  final middle = selection.textInside(text);
+  final middle = selection.textInside(text) ?? " ";
   final newText = selection.textBefore(text) +
       '$leftSide$middle$rightSide' +
       selection.textAfter(text);
