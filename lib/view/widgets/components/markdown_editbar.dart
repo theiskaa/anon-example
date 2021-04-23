@@ -6,8 +6,13 @@ import '../anon_widgets.dart';
 
 class MarkdownEditBar extends AnonStatelessWidget {
   final TextEditingController controller;
+  final ScrollController scrollController;
 
-  MarkdownEditBar({Key key, @required this.controller}) : super(key: key);
+  MarkdownEditBar({
+    Key key,
+    @required this.controller,
+    this.scrollController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +24,7 @@ class MarkdownEditBar extends AnonStatelessWidget {
           height: 70,
           child: Center(
             child: Scrollbar(
+              controller: scrollController,
               isAlwaysShown: true,
               child: markdownEditItems(),
             ),
@@ -30,6 +36,7 @@ class MarkdownEditBar extends AnonStatelessWidget {
 
   markdownEditItems() => ListView.separated(
         shrinkWrap: true,
+        controller: scrollController,
         scrollDirection: Axis.horizontal,
         itemCount: _buttonList().length,
         itemBuilder: (context, index) {
@@ -41,34 +48,42 @@ class MarkdownEditBar extends AnonStatelessWidget {
   List<OpacityButton> _buttonList() {
     var list = [
       OpacityButton(
+        key: Key('mk.header'),
         child: Icon(Icons.format_size_rounded, color: Colors.white),
         onTap: () => wrapWith(controller, leftSide: '# ', rightSide: ''),
       ),
       OpacityButton(
+        key: Key('mk.bold'),
         child: Icon(Icons.format_bold, color: Colors.white),
         onTap: () => wrapWith(controller, leftSide: '**', rightSide: '**'),
       ),
       OpacityButton(
+        key: Key('mk.list'),
         child: Icon(Icons.list, color: Colors.white),
         onTap: () => wrapWith(controller, leftSide: '- ', rightSide: ''),
       ),
       OpacityButton(
+        key: Key('mk.italic'),
         child: Icon(Icons.format_italic, color: Colors.white),
         onTap: () => wrapWith(controller, leftSide: '*', rightSide: '*'),
       ),
       OpacityButton(
+        key: Key('mk.code'),
         child: Icon(Icons.code, color: Colors.white),
         onTap: () => wrapWith(controller, leftSide: '```', rightSide: '```'),
       ),
       OpacityButton(
+        key: Key('mk.strikethrough'),
         child: Icon(Icons.strikethrough_s_rounded, color: Colors.white),
         onTap: () => wrapWith(controller, leftSide: '~~', rightSide: '~~'),
       ),
       OpacityButton(
+        key: Key('mk.url'),
         child: Icon(Icons.link_sharp, color: Colors.white),
         onTap: () => wrapWith(controller, leftSide: '[', rightSide: ']()'),
       ),
       OpacityButton(
+        key: Key('mk.imgUrl'),
         child: Icon(Icons.image, color: Colors.white),
         onTap: () =>
             wrapWith(controller, leftSide: '![](https://', rightSide: ')'),
