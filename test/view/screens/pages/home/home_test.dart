@@ -15,7 +15,7 @@ void main() {
   // Navigator observer.
   MockNavigatorObserver mockObserver;
 
-  // Testable widget builder for lomsa for sign up tests.
+  // Testable widget builder for test Home page.
   TestableWidgetBuilder testableWidgetBuilder;
 
   setUpAll(() async {
