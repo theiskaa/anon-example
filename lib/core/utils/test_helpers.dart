@@ -1,3 +1,4 @@
+import 'package:anon/view/widgets/anon_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,6 +17,23 @@ class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 /// [MockAuthService] functions as mocked version of [AuthService] class.
 class MockAuthService extends Mock implements AuthService {}
+
+class TestStatelessWidget extends AnonStatelessWidget {
+  TestStatelessWidget({Key key}) : super(key: key);
+  @override
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class TestStatefulWidget extends AnonStatefulWidget {
+  TestStatefulWidget({Key key}) : super(key: key);
+  @override
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class TestAnonState extends AnonStatefulWidget {
+  @override
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
 
 /// Generic function that verifies whether or not
 /// a Widget instance is a subtype of [AnonStatelessWidget].

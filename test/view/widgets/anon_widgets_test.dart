@@ -1,24 +1,7 @@
 import 'package:anon/core/system/anon.dart';
 import 'package:anon/view/widgets/anon_widgets.dart';
-import 'package:flutter/material.dart';
+import 'package:anon/core/utils/test_helpers.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-class TestStatelessWidget extends AnonStatelessWidget {
-  TestStatelessWidget({Key key}) : super(key: key);
-  @override
-  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class TestStatefulWidget extends AnonStatefulWidget {
-  TestStatefulWidget({Key key}) : super(key: key);
-  @override
-  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class TestLomsaState extends AnonStatefulWidget {
-  @override
-  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
 
 void main() {
   AnonStatelessWidget testStatelessAnon;
@@ -30,7 +13,7 @@ void main() {
   setUpAll(() {
     testStatelessAnon = TestStatelessWidget();
     testStatefullAnon = TestStatefulWidget();
-    testAnon = TestLomsaState();
+    testAnon = TestAnonState();
 
     anonTest = Anon();
   });
