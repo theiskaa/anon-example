@@ -1,24 +1,27 @@
+import 'package:anon/core/system/anon.dart';
 import 'package:anon/view/screens/auth/auth.dart';
 import 'package:anon/view/widgets/opacity_animator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:anon/core/utils/test_helpers.dart';
 
 void main() {
-  Widget widget;
+  Anon anon;
+
+  TestableWidgetBuilder testableWidgetBuilder;
 
   setUpAll(() {
-    widget = MaterialApp(
-      title: "Auth Screen",
-      home: AuthScreen(),
+    anon = Anon();
+
+    testableWidgetBuilder = TestableWidgetBuilder(
+      enablePageTesting: true,
+      anon: anon,
+      widget: AuthScreen(),
     );
   });
 
   group("[Auth Screen]", () {
-    testWidgets('Auth Screen Test', (WidgetTester tester) async {
-      await tester.pumpWidget(widget);
-
-      // MainWidget tests.
-      expect(find.byType(MaterialApp), findsOneWidget);
+    Future<void> testStatelessWidgets(WidgetTester tester) async {
       expect(find.byType(AuthScreen), findsOneWidget);
 
       // Expect custom widgets.
@@ -28,6 +31,15 @@ void main() {
       expect(find.byKey(Key('anon.logo')), findsOneWidget);
       expect(find.byKey(Key('auth.button')), findsOneWidget);
       expect(find.text('Join now'), findsOneWidget);
-    });
+    }
+
+    testWidgets(
+      'should contain initial states and widgets',
+      (WidgetTester tester) async => await asyncTestWidgets(
+        tester,
+        build: testableWidgetBuilder.buildTestableWidget,
+        testCases: [testStatelessWidgets],
+      ),
+    );
   });
 }

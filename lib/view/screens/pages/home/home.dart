@@ -17,10 +17,10 @@ class Home extends AnonStatefulWidget {
   Home({Key key}) : super(key: key);
 
   @override
-  _HomeState createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends AnonState<Home> {
+class HomeState extends AnonState<Home> {
   UserserviceBloc _userserviceBloc;
 
   final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
@@ -93,6 +93,7 @@ class _HomeState extends AnonState<Home> {
         children: [
           Image.asset(
             'assets/warning.png',
+            key: Key('warning.image'),
             height: 80,
           ),
           SizedBox(height: 20),
@@ -123,6 +124,7 @@ class _HomeState extends AnonState<Home> {
           ),
         ),
         CreateButton(
+          key: Key('create.button'),
           onTap: () =>
               Navigator.push(context, routeWithTransition(CreatePost())),
         ),
