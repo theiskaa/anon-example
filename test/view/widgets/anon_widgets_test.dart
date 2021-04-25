@@ -15,7 +15,7 @@ class TestStatefulWidget extends AnonStatefulWidget {
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-class TestLomsaState extends AnonStatefulWidget {
+class TestAnonState extends AnonStatefulWidget {
   @override
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
@@ -30,7 +30,7 @@ void main() {
   setUpAll(() {
     testStatelessAnon = TestStatelessWidget();
     testStatefullAnon = TestStatefulWidget();
-    testAnon = TestLomsaState();
+    testAnon = TestAnonState();
 
     anonTest = Anon();
   });
