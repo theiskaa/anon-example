@@ -31,10 +31,13 @@ dependencies:
   flutter_markdown: ^0.6.1
 
   cupertino_icons: ^1.0.2
+  mockito:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  
 
 flutter:
   uses-material-design: true
