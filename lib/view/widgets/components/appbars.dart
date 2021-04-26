@@ -32,18 +32,21 @@ class AppBarWithLogo extends AnonStatelessWidget with PreferredSizeWidget {
 
 class DefaultAppBar extends AnonStatelessWidget with PreferredSizeWidget {
   final Function onLeadingTap;
+  final Widget centerWidget;
   final List<Widget> actions;
 
   DefaultAppBar({
     Key key,
     this.actions,
+    this.centerWidget,
     this.onLeadingTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      centerTitle: false,
+      centerTitle: true,
+      title: centerWidget,
       elevation: 0,
       backgroundColor: Colors.transparent,
       actions: actions,
