@@ -12,7 +12,8 @@ class AnonBlocObserver extends BlocObserver {
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
-    Log.d("[ onTransition $transition ]");
+    Log.d("Prev State Event: ${transition.currentState.event}\r\n" +
+        "Next State Event: ${transition.nextState.event}");
     super.onTransition(bloc, transition);
   }
 
