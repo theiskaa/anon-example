@@ -47,6 +47,7 @@ void main() {
       expect(find.byType(Text), findsNWidgets(3));
       expect(find.byType(Center), findsNWidgets(13));
       expect(find.byType(Column), findsOneWidget);
+      expect(find.byType(Form), findsOneWidget);
     }
 
     testWidgets(
@@ -58,6 +59,25 @@ void main() {
       ),
     );
 
+    testWidgets(
+      'Validator of title field should work properly',
+      (WidgetTester tester) async => await asyncTestWidgets(
+        tester,
+        build: testableWidgetBuilder.buildTestableStateWidget,
+        postProcess: () async {
+          final titleField = find.byKey(Key('title.field'));
+          final createButton = find.byKey(Key('create.button'));
+
+          // Blank empty field value to test validator.
+          await tester.enterText(titleField, "");
+
+          await tester.tap(createButton);
+          await tester.pumpAndSettle();
+
+          expect(find.text("Title can't be empty!"), findsOneWidget);
+        },
+      ),
+    );
     testWidgets(
       'Leading of Default appbar should work properly',
       (WidgetTester tester) async => await asyncTestWidgets(

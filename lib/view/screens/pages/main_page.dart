@@ -8,6 +8,8 @@ class MainPage extends AnonStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // To make BottomNavigationBar without labels.
+    // TODO: https://stackoverflow.com/a/60316654/14247462
     return Home();
   }
 }

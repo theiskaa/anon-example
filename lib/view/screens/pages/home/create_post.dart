@@ -17,6 +17,7 @@ class CreatePost extends AnonStatefulWidget {
 class _CreatePostState extends AnonState<CreatePost> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   UserserviceBloc _userserviceBloc;
 
   @override
@@ -26,15 +27,15 @@ class _CreatePostState extends AnonState<CreatePost> {
   }
 
   void _createPostAndPublish() {
-    var post = PostModel(
-      userID: fireauthInstance.currentUser.uid ?? "Anon",
-      content: _contentController.text,
-      title: _titleController.text,
-    );
+    if (formKey.currentState.validate()) {
+      var post = PostModel(
+        userID: fireauthInstance.currentUser.uid ?? "Anon",
+        content: _contentController.text,
+        title: _titleController.text,
+      );
 
-    _userserviceBloc.add(UserServiceEvent.createPostStart(post));
+      _userserviceBloc.add(UserServiceEvent.createPostStart(post));
 
-    if (_userserviceBloc.state.event == UserServiceEvents.createPostSuccess) {
       Navigator.pop(context);
     }
   }
@@ -44,7 +45,12 @@ class _CreatePostState extends AnonState<CreatePost> {
     return Scaffold(
       appBar: DefaultAppBar(
         onLeadingTap: () => Navigator.pop(context),
-        actions: [CreateButton(onTap: _createPostAndPublish)],
+        actions: [
+          CreateButton(
+            key: Key('create.button'),
+            onTap: _createPostAndPublish,
+          ),
+        ],
       ),
       bottomNavigationBar: MarkdownEditBar(controller: _contentController),
       body: Center(
@@ -56,24 +62,30 @@ class _CreatePostState extends AnonState<CreatePost> {
     );
   }
 
-  Column fields() {
-    return Column(
-      children: [
-        TextField(
-          controller: _titleController,
-          textInputAction: TextInputAction.continueAction,
-          decoration: _customFieldDecoration('Content title'),
-        ),
-        SizedBox(height: 20),
-        divider,
-        SizedBox(height: 20),
-        TextField(
-          maxLines: 50,
-          controller: _contentController,
-          textInputAction: TextInputAction.newline,
-          decoration: _customFieldDecoration('Content description as Markdown'),
-        ),
-      ],
+  Widget fields() {
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            key: Key('title.field'),
+            controller: _titleController,
+            textInputAction: TextInputAction.continueAction,
+            decoration: _customFieldDecoration('Content title'),
+            validator: (val) => (val.isEmpty) ? "Title can't be empty!" : null,
+          ),
+          SizedBox(height: 20),
+          divider,
+          SizedBox(height: 20),
+          TextField(
+            maxLines: 50,
+            controller: _contentController,
+            textInputAction: TextInputAction.newline,
+            decoration:
+                _customFieldDecoration('Content description as Markdown'),
+          ),
+        ],
+      ),
     );
   }
 
