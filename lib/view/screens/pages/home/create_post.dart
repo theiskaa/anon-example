@@ -6,10 +6,14 @@ import 'package:anon/view/widgets/components/appbars.dart';
 import 'package:anon/view/widgets/components/create_button.dart';
 import 'package:anon/view/widgets/components/markdown_editbar.dart';
 import 'package:anon/view/widgets/utils/widget_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class CreatePost extends AnonStatefulWidget {
+  final int segmentedValue;
+  CreatePost({this.segmentedValue = 0});
   @override
   _CreatePostState createState() => _CreatePostState();
 }
@@ -18,10 +22,17 @@ class _CreatePostState extends AnonState<CreatePost> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
+  String previewString = '';
+
   UserserviceBloc _userserviceBloc;
+
+  int segmentedValue = 0;
+  final views = const <int, Widget>{0: Text('Create'), 1: Text('Preview')};
 
   @override
   void initState() {
+    segmentedValue = widget.segmentedValue;
     _userserviceBloc = BlocProvider.of<UserserviceBloc>(context);
     super.initState();
   }
@@ -45,6 +56,14 @@ class _CreatePostState extends AnonState<CreatePost> {
     return Scaffold(
       appBar: DefaultAppBar(
         onLeadingTap: () => Navigator.pop(context),
+        centerWidget: CupertinoSlidingSegmentedControl(
+          groupValue: segmentedValue,
+          children: views,
+          backgroundColor: Colors.black,
+          onValueChanged: (i) {
+            setState(() => segmentedValue = i);
+          },
+        ),
         actions: [
           CreateButton(
             key: Key('create.button'),
@@ -52,39 +71,54 @@ class _CreatePostState extends AnonState<CreatePost> {
           ),
         ],
       ),
-      bottomNavigationBar: MarkdownEditBar(controller: _contentController),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(10.0),
-          child: fields(),
-        ),
-      ),
+      bottomNavigationBar: segmentedValue == 0
+          ? MarkdownEditBar(controller: _contentController)
+          : null,
+      body: segmentedValue == 0 ? create : preview,
     );
   }
 
-  Widget fields() {
-    return Form(
-      key: formKey,
-      child: Column(
-        children: [
-          TextFormField(
-            key: Key('title.field'),
-            controller: _titleController,
-            textInputAction: TextInputAction.continueAction,
-            decoration: _customFieldDecoration('Content title'),
-            validator: (val) => (val.isEmpty) ? "Title can't be empty!" : null,
+  Widget get preview => Padding(
+        padding: EdgeInsets.all(10),
+        child: MarkdownBody(
+          data: previewString,
+          selectable: true,
+          // TODO: Enable [onTapLink] function with urlLauncher.
+        ),
+      );
+
+  Widget get create {
+    return Center(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(10.0),
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                key: Key('title.field'),
+                controller: _titleController,
+                textInputAction: TextInputAction.continueAction,
+                decoration: _customFieldDecoration('Content title'),
+                validator: (val) =>
+                    (val.isEmpty) ? "Title can't be empty!" : null,
+              ),
+              SizedBox(height: 20),
+              divider,
+              SizedBox(height: 20),
+              TextField(
+                maxLines: 50,
+                controller: _contentController,
+                textInputAction: TextInputAction.newline,
+                decoration:
+                    _customFieldDecoration('Content description as Markdown'),
+                onChanged: (val) {
+                  setState(() => previewString = val);
+                },
+              ),
+            ],
           ),
-          SizedBox(height: 20),
-          divider,
-          SizedBox(height: 20),
-          TextField(
-            maxLines: 50,
-            controller: _contentController,
-            textInputAction: TextInputAction.newline,
-            decoration:
-                _customFieldDecoration('Content description as Markdown'),
-          ),
-        ],
+        ),
       ),
     );
   }
