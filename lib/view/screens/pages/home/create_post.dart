@@ -80,10 +80,28 @@ class _CreatePostState extends AnonState<CreatePost> {
 
   Widget get preview => Padding(
         padding: EdgeInsets.all(10),
-        child: MarkdownBody(
-          data: previewString,
-          selectable: true,
-          // TODO: Enable [onTapLink] function with urlLauncher.
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            Text(
+              _titleController.text,
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            SizedBox(height: 20),
+            divider,
+            SizedBox(height: 20),
+            Container(
+              alignment: Alignment.topLeft,
+              child: MarkdownBody(
+                data: previewString,
+                selectable: true,
+                // TODO: Enable [onTapLink] function with urlLauncher.
+              ),
+            ),
+          ],
         ),
       );
 
