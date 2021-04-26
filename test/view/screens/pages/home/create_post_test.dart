@@ -9,6 +9,7 @@ import 'package:anon/core/system/anon.dart';
 import 'package:anon/view/widgets/components/appbars.dart';
 import 'package:anon/view/widgets/components/create_button.dart';
 import 'package:anon/view/widgets/components/opacity_button.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 void main() {
   Anon anon;
@@ -19,6 +20,9 @@ void main() {
   // Testable widget builder for test CreatePost page.
   TestableWidgetBuilder testableWidgetBuilder;
 
+  // Testable widget builder for test CreatePost page.
+  TestableWidgetBuilder testableWidgetBuilderForPreview;
+
   setUpAll(() async {
     anon = Anon();
 
@@ -28,6 +32,16 @@ void main() {
       enablePageTesting: true,
       anon: anon,
       widget: CreatePost(),
+      navigatorObservers: [mockObserver],
+      blocProviders: [
+        BlocProvider<UserserviceBloc>(create: (_) => UserserviceBloc()),
+      ],
+    );
+
+    testableWidgetBuilderForPreview = TestableWidgetBuilder(
+      enablePageTesting: true,
+      anon: anon,
+      widget: CreatePost(segmentedValue: 1),
       navigatorObservers: [mockObserver],
       blocProviders: [
         BlocProvider<UserserviceBloc>(create: (_) => UserserviceBloc()),
@@ -89,9 +103,31 @@ void main() {
           await tester.tap(appBarLeading);
           await tester.pumpAndSettle();
 
-          // Verify that navigation was pushed.
+          // Verify that navigation was popped.
           verify(mockObserver.didPop(any, any));
         },
+      ),
+    );
+
+    Future<void> testCreatPageWhithPreviewWidget(WidgetTester tester) async {
+      expect(find.byType(Scaffold), findsOneWidget);
+      expect(find.byType(DefaultAppBar), findsOneWidget);
+      expect(find.byType(Padding), findsNWidgets(7));
+      expect(find.byType(CreateButton), findsOneWidget);
+      expect(find.byType(OpacityButton), findsNWidgets(2));
+      expect(find.byType(MarkdownBody), findsOneWidget);
+      expect(find.byType(Text), findsNWidgets(4));
+      expect(find.byType(Center), findsNWidgets(3));
+      expect(find.byType(Column), findsNWidgets(2));
+      expect(find.byType(SizedBox), findsNWidgets(6));
+    }
+
+    testWidgets(
+      'should contain initial states and widgets (Preview)',
+      (WidgetTester tester) async => await asyncTestWidgets(
+        tester,
+        build: testableWidgetBuilderForPreview.buildTestableStateWidget,
+        testCases: [testCreatPageWhithPreviewWidget],
       ),
     );
   });

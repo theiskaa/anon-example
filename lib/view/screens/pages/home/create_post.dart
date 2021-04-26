@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CreatePost extends AnonStatefulWidget {
   final int segmentedValue;
@@ -98,7 +99,7 @@ class _CreatePostState extends AnonState<CreatePost> {
               child: MarkdownBody(
                 data: previewString,
                 selectable: true,
-                // TODO: Enable [onTapLink] function with urlLauncher.
+                onTapLink: (text, href, title) => launch(href),
               ),
             ),
           ],

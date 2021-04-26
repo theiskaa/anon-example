@@ -30,6 +30,8 @@ dependencies:
   # Markdown view for posts.
   flutter_markdown: ^0.6.1
 
+  url_launcher: ^6.0.3
+
   cupertino_icons: ^1.0.2
   mockito:
 
