@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 main() {
   PostModel postModel;
   PostModelEntity postModelEntity;
+  List<PostModel> postModelsList;
 
   const Map<String, String> postModelJson = {
     'userID': 'empty',
@@ -13,12 +14,18 @@ main() {
 
   setUpAll(() {
     postModel = PostModel(
-      userID: 'empty',
+      userID: "empty",
       title: "title",
       content: 'content',
     );
 
     postModelEntity = postModel.toEntity();
+
+    postModelsList = [
+      postModel,
+      postModel.copyWith(userID: 'empty1'),
+      postModel.copyWith(userID: 'empty2'),
+    ];
   });
 
   group('[PostModel]', () {
@@ -45,7 +52,7 @@ main() {
       expect(postModel.content, postModelFromEntity.content);
     });
 
-    test("Test if PostModelEntity.copyWith(...) works", () {
+    test("Test if PostModel.copyWith(...) works", () {
       // To test copyWith with default values.
       final copiedSameModel = postModel.copyWith();
 
@@ -63,6 +70,14 @@ main() {
       expect(newPostModel.userID, 'asf1iu3rhfajsf2');
       expect(newPostModel.title, 'second title');
       expect(newPostModel.content, 'second content');
+    });
+
+    test("Test if PostModel.encode(...) and PostModel.decode(...) works", () {
+      String encodedList = PostModel.encode(postModelsList);
+      List<PostModel> decodedString = PostModel.decode(encodedList);
+
+      expect(encodedList, isA<String>());
+      expect(decodedString, isA<List<PostModel>>());
     });
   });
 

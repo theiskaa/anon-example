@@ -11,9 +11,7 @@ part 'userservice_state.dart';
 class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
   final UserService userService;
 
-  UserserviceBloc({
-    this.userService,
-  }) : super(UserServiceState.defaultState());
+  UserserviceBloc({this.userService}) : super(UserServiceState.defaultState());
 
   @override
   Stream<UserServiceState> mapEventToState(
@@ -81,7 +79,9 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
     );
 
     try {
-      List<PostModel> postModelList = await userService.getPosts();
+      final fullListFromFirestore = await userService.getPosts();
+      List<PostModel> postModelList =
+          await userService.saveAndGetPostsFromLocal(fullListFromFirestore);
 
       if (postModelList == null) {
         serviceState = state.copyWith(
