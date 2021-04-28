@@ -1,19 +1,20 @@
 import 'dart:async';
 
-import 'package:anon/core/model/post.dart';
-import 'package:anon/view/screens/pages/home/create_post.dart';
-import 'package:anon/view/widgets/utils/route_with_transition.dart';
+import 'package:anon/view/widgets/components/lazyload_listview.dart';
+import 'package:anon/view/widgets/utils/widget_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:anon/core/blocs/auth/auth_bloc.dart';
 import 'package:anon/core/blocs/userservice/userservice_bloc.dart';
+import 'package:anon/core/model/post.dart';
+import 'package:anon/view/screens/pages/home/create_post.dart';
 import 'package:anon/view/widgets/anon_widgets.dart';
 import 'package:anon/view/widgets/components/appbars.dart';
 import 'package:anon/view/widgets/components/create_button.dart';
 import 'package:anon/view/widgets/components/opacity_button.dart';
-import 'package:anon/view/widgets/components/post_card.dart';
+import 'package:anon/view/widgets/utils/route_with_transition.dart';
 
 class Home extends AnonStatefulWidget {
   Home({Key key}) : super(key: key);
@@ -28,7 +29,7 @@ class HomeState extends AnonState<Home> {
   final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   final _scrollController = ScrollController();
 
-  int currentMaxPostLength = 10;
+  int currentMaxPostLength = 30;
 
   List<PostModel> posts;
 
@@ -44,14 +45,18 @@ class HomeState extends AnonState<Home> {
     });
   }
 
+  int testLength = 30;
   void _getList() {
-    if (_userserviceBloc.state.postModelList.length != posts.length) {
+    setState(() {
+      testLength = testLength + 30;
+    });
+    if (testLength < _userserviceBloc.state.postModelList.length) {
       posts = _userserviceBloc.state.postModelList
-          .getRange(0, currentMaxPostLength + 10)
+          .getRange(0, currentMaxPostLength + 30)
           .toList();
       print("Yihuuuuuu");
       setState(() {
-        currentMaxPostLength = currentMaxPostLength + 10;
+        currentMaxPostLength = currentMaxPostLength + 30;
       });
     }
   }
@@ -66,12 +71,12 @@ class HomeState extends AnonState<Home> {
   Widget build(BuildContext context) {
     return BlocBuilder<UserserviceBloc, UserServiceState>(
       builder: (context, state) {
+        // Add initial 30 post as optional.
         posts = state.postModelList.take(currentMaxPostLength).toList();
         return Scaffold(
           appBar: _appbar(context),
           body: posts.length == 0
-              ? Container()
-              // ? Center(child: CupertinoActivityIndicator(radius: 25))
+              ? loadingIndicator
               : _buildRefreshableBody(state),
         );
       },
@@ -86,29 +91,7 @@ class HomeState extends AnonState<Home> {
       onRefresh: _refresh,
       child: (state.event == UserServiceEvents.getAllError)
           ? errorModal()
-          : buildContentList(state),
-    );
-  }
-
-  ListView buildContentList(UserServiceState state) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: currentMaxPostLength,
-      controller: _scrollController,
-      itemBuilder: (context, index) {
-        if (index == posts.length) {
-          return CupertinoActivityIndicator(radius: 15);
-        }
-        return Column(
-          children: [
-            PostCardWidget(
-              postModel: posts[index],
-              onTap: () {},
-              onViewCommentsTap: () {},
-            ),
-          ],
-        );
-      },
+          : LazyLoadListView(defaultList: state.postModelList),
     );
   }
 

@@ -42,34 +42,30 @@ class UserService {
     });
 
     return postModelList;
-
-    // List<PostModel> generatedPostModelList = List.generate(
-    //   60,
-    //   (index) => PostModel(
-    //       userID: index.toString(),
-    //       title: "Title $index",
-    //       content: "Content $index"),
-    // );
   }
 
   /// Function to save getted posts into local database.
   Future<List<PostModel>> saveAndGetPostsFromLocal(
       List<PostModel> postsList) async {
-    // Initilaze instance of SharedPreferences.
-    if (_preferences == null)
-      _preferences = await SharedPreferences.getInstance();
+    if (postsList.isEmpty || postsList == null)
+      return [];
+    else {
+      // Initilaze instance of SharedPreferences.
+      if (_preferences == null)
+        _preferences = await SharedPreferences.getInstance();
 
-    // Convert PostModel list to String.
-    final encodedList = PostModel.encode(postsList);
+      // Convert PostModel list to String.
+      final encodedList = PostModel.encode(postsList);
 
-    // Save encoded/converted list/string to local database
-    await _preferences.setString(LocalDbKeys.postsList, encodedList);
+      // Save encoded/converted list/string to local database
+      await _preferences.setString(LocalDbKeys.postsList, encodedList);
 
-    // Get encoded/converted PostModel list from local database.
-    final savedList = _preferences.getString(LocalDbKeys.postsList);
+      // Get encoded/converted PostModel list from local database.
+      final savedList = _preferences.getString(LocalDbKeys.postsList);
 
-    // Decode/Convert saved string/list to List<PostModel>.
-    final List<PostModel> decodedList = PostModel.decode(savedList);
-    return decodedList;
+      // Decode/Convert saved string/list to List<PostModel>.
+      final List<PostModel> decodedList = PostModel.decode(savedList);
+      return decodedList;
+    }
   }
 }
