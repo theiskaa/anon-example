@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
@@ -27,10 +29,10 @@ class PostModel {
         this.title = json['title'],
         this.content = json['content'];
 
-  Map<String, dynamic> toJson() => {
-        'userID': userID,
-        'title': title,
-        'content': content,
+  Map<String, dynamic> toJson({PostModel postModel}) => {
+        'userID': userID ?? postModel.userID,
+        'title': title ?? postModel.title,
+        'content': content ?? postModel.content,
       };
 
   PostModelEntity toEntity() =>
@@ -43,6 +45,15 @@ class PostModel {
       content: entity.content,
     );
   }
+
+  static String encode(List<PostModel> posts) => jsonEncode(posts
+      .map<Map<String, Object>>((post) => PostModel().toJson(postModel: post))
+      .toList());
+
+  static List<PostModel> decode(String posts) =>
+      (json.decode(posts) as List<dynamic>)
+          .map<PostModel>((item) => PostModel.fromJson(item))
+          .toList();
 }
 
 class PostModelEntity {

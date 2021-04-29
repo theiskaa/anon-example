@@ -1,17 +1,19 @@
 import 'dart:async';
 
-import 'package:anon/view/screens/pages/home/create_post.dart';
-import 'package:anon/view/widgets/utils/route_with_transition.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:anon/core/blocs/auth/auth_bloc.dart';
 import 'package:anon/core/blocs/userservice/userservice_bloc.dart';
+import 'package:anon/view/screens/pages/home/create_post.dart';
 import 'package:anon/view/widgets/anon_widgets.dart';
 import 'package:anon/view/widgets/components/appbars.dart';
 import 'package:anon/view/widgets/components/create_button.dart';
+import 'package:anon/view/widgets/components/lazyload_listview.dart';
 import 'package:anon/view/widgets/components/opacity_button.dart';
-import 'package:anon/view/widgets/components/post_card.dart';
+import 'package:anon/view/widgets/utils/route_with_transition.dart';
+import 'package:anon/view/widgets/utils/widget_utils.dart';
 
 class Home extends AnonStatefulWidget {
   Home({Key key}) : super(key: key);
@@ -43,46 +45,23 @@ class HomeState extends AnonState<Home> {
       builder: (context, state) {
         return Scaffold(
           appBar: _appbar(context),
-          body: _buildRefreshableBody(),
+          body: state.postModelList.length == 0
+              ? loadingIndicator
+              : _buildRefreshableBody(state),
         );
       },
     );
   }
 
-  RefreshIndicator _buildRefreshableBody() {
+  RefreshIndicator _buildRefreshableBody(UserServiceState state) {
     return RefreshIndicator(
       backgroundColor: Colors.black,
       color: Colors.white,
       key: _refreshIndicatorKey,
       onRefresh: _refresh,
-      child: BlocBuilder<UserserviceBloc, UserServiceState>(
-        builder: (context, state) {
-          if (state.event == UserServiceEvents.getAllError) {
-            return errorModal();
-          }
-          return buildContentList(state);
-        },
-      ),
-    );
-  }
-
-  ListView buildContentList(UserServiceState state) {
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        SizedBox(height: 20),
-        Column(
-          children: state.postModelList
-              .map(
-                (postModel) => PostCardWidget(
-                  postModel: postModel,
-                  onTap: () {},
-                  onViewCommentsTap: () {},
-                ),
-              )
-              .toList(),
-        ),
-      ],
+      child: (state.event == UserServiceEvents.getAllError)
+          ? errorModal()
+          : LazyLoadListView(defaultList: state.postModelList),
     );
   }
 
@@ -125,8 +104,10 @@ class HomeState extends AnonState<Home> {
         ),
         CreateButton(
           key: Key('create.button'),
-          onTap: () =>
-              Navigator.push(context, routeWithTransition(CreatePost())),
+          onTap: () => Navigator.push(
+            context,
+            routeWithTransition(CreatePost()),
+          ),
         ),
       ],
     );

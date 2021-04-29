@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// Custom divider.
@@ -8,4 +9,8 @@ Widget get divider {
     indent: 50,
     endIndent: 50,
   );
+}
+
+Center get loadingIndicator {
+  return Center(child: CupertinoActivityIndicator(radius: 20));
 }
