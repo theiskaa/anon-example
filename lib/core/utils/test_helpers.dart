@@ -105,13 +105,11 @@ Future<void> asyncTestWidgets(
 }) async =>
     await tester.runAsync(() async {
       if (preProcess != null) await preProcess();
+      final widget = build();
+      await tester.pumpWidget(widget);
 
       if (build != null) {
-        final widget = build();
-
-        await tester.pumpWidget(widget);
-
-        if (!containsAnimations) {
+        if (containsAnimations) {
           await tester.pumpAndSettle();
         } else {
           await tester.pump(Duration(seconds: 3));
