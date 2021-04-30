@@ -1,4 +1,5 @@
 import 'package:anon/core/model/post.dart';
+import 'package:anon/view/screens/pages/home/view_post.dart';
 import 'package:anon/view/widgets/anon_widgets.dart';
 import 'package:anon/view/widgets/components/post_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -66,7 +67,12 @@ class _LazyLoadListViewState extends AnonState<LazyLoadListView> {
   buildListItem(int index) => Center(
         child: PostCardWidget(
           postModel: udatedPosts[index],
-          onTap: () {},
+          onTap: () => Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => ViewPost(postModel: udatedPosts[index]),
+            ),
+          ),
           onViewCommentsTap: () {},
         ),
       );

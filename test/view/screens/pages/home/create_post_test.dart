@@ -119,7 +119,7 @@ void main() {
       expect(find.byType(Text), findsNWidgets(4));
       expect(find.byType(Center), findsNWidgets(3));
       expect(find.byType(Column), findsNWidgets(2));
-      expect(find.byType(SizedBox), findsNWidgets(6));
+      expect(find.byType(SizedBox), findsNWidgets(7));
     }
 
     testWidgets(

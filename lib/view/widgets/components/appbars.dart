@@ -56,7 +56,7 @@ class DefaultAppBar extends AnonStatelessWidget with PreferredSizeWidget {
           Icons.arrow_back_ios_outlined,
           color: Colors.black,
         ),
-        onTap: onLeadingTap,
+        onTap: onLeadingTap ?? () => Navigator.pop(context),
       ),
     );
   }

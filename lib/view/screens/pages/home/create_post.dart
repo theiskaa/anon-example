@@ -40,15 +40,19 @@ class _CreatePostState extends AnonState<CreatePost> {
 
   void _createPostAndPublish() {
     if (formKey.currentState.validate()) {
-      var post = PostModel(
-        userID: fireauthInstance.currentUser.uid ?? "Anon",
-        content: _contentController.text,
-        title: _titleController.text,
-      );
+      if (segmentedValue == 1 && _titleController.text.length < 3)
+        setState(() => segmentedValue = 0);
+      else {
+        var post = PostModel(
+          userID: fireauthInstance.currentUser.uid ?? "Anon",
+          content: _contentController.text,
+          title: _titleController.text,
+        );
 
-      _userserviceBloc.add(UserServiceEvent.createPostStart(post));
+        _userserviceBloc.add(UserServiceEvent.createPostStart(post));
 
-      Navigator.pop(context);
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -75,11 +79,16 @@ class _CreatePostState extends AnonState<CreatePost> {
       bottomNavigationBar: segmentedValue == 0
           ? MarkdownEditBar(controller: _contentController)
           : null,
-      body: segmentedValue == 0 ? create : preview,
+      body: formBody(),
     );
   }
 
-  Widget get preview => Padding(
+  Widget formBody() => Form(
+        key: formKey,
+        child: segmentedValue == 0 ? create : preview,
+      );
+
+  Widget get preview => SingleChildScrollView(
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
@@ -102,6 +111,7 @@ class _CreatePostState extends AnonState<CreatePost> {
                 onTapLink: (text, href, title) => launch(href),
               ),
             ),
+            SizedBox(height: 20),
           ],
         ),
       );
@@ -110,33 +120,28 @@ class _CreatePostState extends AnonState<CreatePost> {
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(10.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                key: Key('title.field'),
-                controller: _titleController,
-                textInputAction: TextInputAction.continueAction,
-                decoration: _customFieldDecoration('Content title'),
-                validator: (val) =>
-                    (val.isEmpty) ? "Title can't be empty!" : null,
-              ),
-              SizedBox(height: 20),
-              divider,
-              SizedBox(height: 20),
-              TextField(
-                maxLines: 50,
-                controller: _contentController,
-                textInputAction: TextInputAction.newline,
-                decoration:
-                    _customFieldDecoration('Content description as Markdown'),
-                onChanged: (val) {
-                  setState(() => previewString = val);
-                },
-              ),
-            ],
-          ),
+        child: Column(
+          children: [
+            TextFormField(
+              key: Key('title.field'),
+              controller: _titleController,
+              textInputAction: TextInputAction.continueAction,
+              decoration: _customFieldDecoration('Content title'),
+              validator: (val) =>
+                  (val.isEmpty) ? "Title can't be empty!" : null,
+            ),
+            SizedBox(height: 20),
+            divider,
+            SizedBox(height: 20),
+            TextField(
+              maxLines: 50,
+              controller: _contentController,
+              textInputAction: TextInputAction.newline,
+              decoration:
+                  _customFieldDecoration('Content description as Markdown'),
+              onChanged: (val) => setState(() => previewString = val),
+            ),
+          ],
         ),
       ),
     );
