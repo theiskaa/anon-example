@@ -79,7 +79,7 @@ class _CreatePostState extends AnonState<CreatePost> {
     );
   }
 
-  Widget get preview => Padding(
+  Widget get preview => SingleChildScrollView(
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
@@ -102,6 +102,7 @@ class _CreatePostState extends AnonState<CreatePost> {
                 onTapLink: (text, href, title) => launch(href),
               ),
             ),
+            SizedBox(height: 20),
           ],
         ),
       );
@@ -131,9 +132,7 @@ class _CreatePostState extends AnonState<CreatePost> {
                 textInputAction: TextInputAction.newline,
                 decoration:
                     _customFieldDecoration('Content description as Markdown'),
-                onChanged: (val) {
-                  setState(() => previewString = val);
-                },
+                onChanged: (val) => setState(() => previewString = val),
               ),
             ],
           ),
