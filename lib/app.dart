@@ -1,6 +1,5 @@
 import 'package:anon/core/blocs/auth/auth_bloc.dart';
 import 'package:anon/core/blocs/userservice/userservice_bloc.dart';
-import 'package:anon/core/services/user_service.dart';
 import 'package:anon/view/screens/auth/auth.dart';
 import 'package:anon/view/screens/pages/main_page.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,6 @@ class App extends AnonStatefulWidget {
 
 class _AppState extends AnonState<App> {
   final _authService = AuthService();
-  final _userService = UserService();
 
   final _navigatorKey = GlobalKey<NavigatorState>();
 
@@ -31,8 +29,8 @@ class _AppState extends AnonState<App> {
           create: (context) => AuthBloc(authService: _authService),
         ),
         BlocProvider<UserserviceBloc>(
-          create: (context) => UserserviceBloc(userService: _userService)
-            ..add(UserServiceEvent.getAllStart()),
+          create: (context) =>
+              UserserviceBloc()..add(UserServiceEvent.getAllStart()),
         )
       ],
       child: repoProvider(),
@@ -42,10 +40,7 @@ class _AppState extends AnonState<App> {
   RepositoryProvider repoProvider() {
     return RepositoryProvider.value(
       value: _authService,
-      child: RepositoryProvider.value(
-        value: _userService,
-        child: app(),
-      ),
+      child: app(),
     );
   }
 

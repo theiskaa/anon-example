@@ -57,7 +57,10 @@ class UserService {
       // Convert PostModel list to String.
       final encodedList = PostModel.encode(postsList);
 
-      // Save encoded/converted list/string to local database
+      // Remove exiting list.
+      await _preferences.remove(LocalDbKeys.postsList);
+
+      // And save encoded list to string to local database.
       await _preferences.setString(LocalDbKeys.postsList, encodedList);
 
       // Get encoded/converted PostModel list from local database.
