@@ -1,13 +1,14 @@
 part of 'userservice_bloc.dart';
 
 @immutable
+// ignore: must_be_immutable
 class UserServiceState {
   final UserServiceEvents event;
   final bool loading;
   final PostModel postModel;
-  final List<PostModel> postModelList;
+  List<PostModel> postModelList;
 
-  const UserServiceState({
+  UserServiceState({
     @required this.event,
     this.loading,
     this.postModel,
@@ -27,11 +28,11 @@ class UserServiceState {
         postModelList: postModelList ?? this.postModelList,
       );
 
-  const UserServiceState.defaultState()
+  UserServiceState.defaultState()
       : this(
           event: null,
           loading: true,
           postModel: const PostModel(),
-          postModelList: const <PostModel>[],
+          postModelList: <PostModel>[],
         );
 }
