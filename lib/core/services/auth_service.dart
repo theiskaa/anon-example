@@ -23,16 +23,19 @@ class AuthService {
   /// Main Authentication method which creates Anonymous user.
   Future<bool> signIn() async {
     try {
-      UserCredential user = await FirebaseAuth.instance.signInAnonymously();
-      if (user == null) {
-        return false;
-      }
+      await FirebaseAuth.instance.signInAnonymously();
       return true;
     } catch (e) {
-      print(e.toString());
       return false;
     }
   }
 
-  Future<void> logOut() async => await Future.wait([_firebaseAuth.signOut()]);
+  // Main logout method.
+  // It deletes current anonymous user and log outs.
+  Future<void> logOut() async {
+    // Delete current anonymous user.
+    await FirebaseAuth.instance.currentUser.delete();
+
+    Future.wait([_firebaseAuth.signOut()]);
+  }
 }
