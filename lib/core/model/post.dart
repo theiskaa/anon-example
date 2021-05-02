@@ -7,7 +7,12 @@ class PostModel {
   final String content;
   final List<dynamic> comments;
 
-  const PostModel({this.userID, this.title, this.content, this.comments});
+  const PostModel({
+    this.userID,
+    this.title,
+    this.content,
+    this.comments,
+  });
 
   PostModel copyWith({
     String userID,
@@ -42,26 +47,4 @@ class PostModel {
         this.title = element.data()['title'],
         this.content = element.data()['content'],
         this.comments = comments;
-
-  // static String encode(List<PostModel> posts, [String encodedComments]) =>
-  //     jsonEncode(
-  //       posts
-  //           .map<Map<String, Object>>((post) => PostModel()
-  //               .toJson(postModel: post.copyWith(comments: [encodedComments])))
-  //           .toList(),
-  //     );
-
-  // static List<PostModel> decode(String posts, [String comments]) {
-  //   var decodedComments;
-  //   if (comments != null) {
-  //     decodedComments = (json.decode(comments) as List<dynamic>)
-  //         .map<CommentModel>((item) => CommentModel.fromJson(item))
-  //         .toList();
-  //   }
-
-  //   return (json.decode(posts) as List<dynamic>)
-  //       .map<PostModel>((item) =>
-  //           PostModel.fromJson(item).copyWith(comments: decodedComments ?? []))
-  //       .toList();
-  // }
 }
