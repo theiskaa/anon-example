@@ -43,14 +43,25 @@ class HomeState extends AnonState<Home> {
   Widget build(BuildContext context) {
     return BlocBuilder<UserserviceBloc, UserServiceState>(
       builder: (context, state) {
-        return Scaffold(
-          appBar: _appbar(context),
-          body: state.postModelList.length == 0
-              ? loadingIndicator
-              : _buildRefreshableBody(state),
-        );
+        return Scaffold(appBar: _appbar(context), body: buildRightBody(state));
       },
     );
+  }
+
+  Widget buildRightBody(UserServiceState state) {
+    if (state.postModelList.length == 0 ||
+        state.loading ||
+        state.event == UserServiceEvents.getAllStart ||
+        state.event == UserServiceEvents.createPostStart) {
+      return loadingIndicator;
+    }
+
+    if (state.event == UserServiceEvents.getAllError ||
+        state.event == UserServiceEvents.createPostError) {
+      return errorModal();
+    }
+
+    return _buildRefreshableBody(state);
   }
 
   RefreshIndicator _buildRefreshableBody(UserServiceState state) {
@@ -59,9 +70,7 @@ class HomeState extends AnonState<Home> {
       color: Colors.white,
       key: _refreshIndicatorKey,
       onRefresh: _refresh,
-      child: (state.event == UserServiceEvents.getAllError)
-          ? errorModal()
-          : LazyLoadListView(defaultList: state.postModelList),
+      child: LazyLoadListView(defaultList: state.postModelList),
     );
   }
 
