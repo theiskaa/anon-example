@@ -82,13 +82,16 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
       state.postModelList.clear();
 
       final postsFromFirestore = await _userService.getPosts();
-      List<PostModel> postModelList =
-          await _userService.saveAndGetPostsFromLocal(postsFromFirestore);
+
+      await Future.delayed(Duration(seconds: 2));
+
+      // List<PostModel> postModelList =
+      //     await _userService.saveAndGetPostsFromLocal(postsFromFirestore);
 
       serviceState = state.copyWith(
         event: UserServiceEvents.getAllSuccess,
         loading: false,
-        postModelList: postModelList,
+        postModelList: postsFromFirestore,
       );
     } catch (e) {
       serviceState = state.copyWith(
