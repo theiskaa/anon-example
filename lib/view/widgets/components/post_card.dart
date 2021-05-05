@@ -41,12 +41,12 @@ class PostCardWidget extends AnonStatelessWidget {
         color: Colors.black,
         shape: BoxShape.circle,
         border: Border.all(
-          color: Colors.blueGrey,
+          color: Colors.blue[700],
         ),
       ),
       child: Center(
         child: Text(
-          "N",
+          postModel.comments.length == 0 ? "N" : "${postModel.comments.length}",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -99,18 +99,22 @@ class PostCardWidget extends AnonStatelessWidget {
     }
   }
 
-  OpacityButton buildViewCommentsButton() {
-    return OpacityButton(
-      key: Key('view.comments.button'),
-      onTap: onViewCommentsTap,
-      child: Text(
-        'View comments',
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.w800,
+  Widget buildViewCommentsButton() {
+    if (postModel.comments.length > 0) {
+      return OpacityButton(
+        key: Key('view.comments.button'),
+        onTap: onViewCommentsTap,
+        child: Text(
+          'View comments',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w800,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return SizedBox.shrink(key: Key("SizedBox.shrink.2"));
+    }
   }
 
   Container buildTitleWidget() {

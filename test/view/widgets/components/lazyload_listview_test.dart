@@ -1,3 +1,4 @@
+import 'package:anon/core/model/comment.dart';
 import 'package:anon/core/model/post.dart';
 import 'package:anon/view/widgets/components/post_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +18,7 @@ void main() {
       userID: "UID $i",
       title: "Title $i",
       content: "Content $i",
+      comments: [CommentModel(title: 'test title')],
     ),
   );
 
