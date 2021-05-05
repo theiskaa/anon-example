@@ -1,6 +1,7 @@
 import 'package:anon/core/model/post.dart';
 import 'package:anon/view/widgets/anon_widgets.dart';
 import 'package:anon/view/widgets/components/appbars.dart';
+import 'package:anon/view/widgets/components/bottombars.dart';
 import 'package:anon/view/widgets/utils/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -19,6 +20,12 @@ class _ViewPostState extends AnonState<ViewPost> {
     return Scaffold(
       appBar: DefaultAppBar(),
       body: buildBody(),
+      bottomNavigationBar: widget.postModel.comments.length > 0
+          ? ViewCommentsBar(
+              commentsLength: widget.postModel.comments.length,
+              onTap: () {},
+            )
+          : SizedBox.shrink(),
     );
   }
 
