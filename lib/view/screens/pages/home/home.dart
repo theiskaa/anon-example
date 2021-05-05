@@ -49,8 +49,9 @@ class HomeState extends AnonState<Home> {
   }
 
   Widget buildRightBody(UserServiceState state) {
-    if (state.postModelList.length == 0 ||
-        state.loading ||
+    if (state.loading ||
+        state.postModelList.length == 0 &&
+            state.event == UserServiceEvents.getAllStart ||
         state.event == UserServiceEvents.getAllStart ||
         state.event == UserServiceEvents.createPostStart) {
       return loadingIndicator;
@@ -86,11 +87,23 @@ class HomeState extends AnonState<Home> {
           ),
           SizedBox(height: 20),
           Text(
-            "Oops.. Something went wrong, please try again",
+            "Oops.. Something went wrong",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 15),
+          OpacityButton(
+            onTap: _refresh,
+            child: Text(
+              "Try again",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],

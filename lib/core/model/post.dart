@@ -27,7 +27,7 @@ class PostModel {
         comments: comments ?? this.comments,
       );
 
-  PostModel.fromJson(Map<String, Object> json)
+  PostModel.fromJson(dynamic json)
       : this.userID = json['userID'],
         this.title = json['title'],
         this.content = json['content'],
