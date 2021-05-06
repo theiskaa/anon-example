@@ -30,21 +30,20 @@ class UserService {
 
   /// Stream for get content list.
   Future<List<PostModel>> getPosts() async {
-    final snapshot =
-        await postsRef.orderBy('date', descending: true).limit(300).get();
+    final snapshot = await postsRef.orderBy('date', descending: true).get();
 
     // Empty list for save converted data.
     List<PostModel> postModelList = [];
 
-    snapshot.docs.forEach((post) async {
+    for (var i = 0; i < snapshot.docs.length; i++) {
+      var post = snapshot.docs[i];
       var comments = await getComments(post.id);
 
       // Convert each element of `snapshot.docs` to PostModel.
       var postModel = PostModel.fromSnapshot(post, comments);
-      // print(comment);
-      postModelList.add(postModel);
-    });
 
+      postModelList.add(postModel);
+    }
     await Future.delayed(Duration(seconds: 2));
 
     return postModelList;
