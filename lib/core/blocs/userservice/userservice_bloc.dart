@@ -47,7 +47,7 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
 
       await _userService.cachePosts(
         postsFromFirestore,
-        clearPostsFirst: postsFromFirestore == null ? false : true,
+        clearPostsFirst: true,
       );
 
       List<PostModel> postsFromLocalDatabase =
@@ -80,15 +80,18 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
       print(res);
       if (res) {
         List<PostModel> posts = List<PostModel>.from(state.postModelList);
-
+        print(posts.length);
         posts.insert(
           0,
           state.postModel.copyWith(
             userID: event.postModel.userID,
+            postID: event.postModel.postID,
             title: event.postModel.title,
             content: event.postModel.content,
           ),
         );
+        print("Second");
+        print(posts.length);
 
         serviceState = state.copyWith(
           event: UserServiceEvents.createPostSuccess,
@@ -119,33 +122,25 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
     );
 
     try {
-      final res = await _userService.putComment('HJfYaZ8N84DH2xMd7h1N');
+      final res = await _userService.putComment(
+        event.postModel.postID,
+        event.commentModel,
+      );
+
       if (res) {
-        final posts = List<PostModel>.from(state.postModelList);
-
-        posts.insert(
-          0,
-          state.postModel.copyWith(
-            userID: event.postModel.userID,
-            title: event.postModel.title,
-            content: event.postModel.content,
-          ),
-        );
-
         serviceState = state.copyWith(
-          event: UserServiceEvents.createPostSuccess,
+          event: UserServiceEvents.putCommentSuccess,
           loading: false,
-          postModelList: posts,
         );
       } else {
         serviceState = state.copyWith(
-          event: UserServiceEvents.createPostError,
+          event: UserServiceEvents.putCommentError,
           loading: false,
         );
       }
     } catch (e) {
       serviceState = state.copyWith(
-        event: UserServiceEvents.createPostError,
+        event: UserServiceEvents.putCommentError,
         loading: false,
       );
     }

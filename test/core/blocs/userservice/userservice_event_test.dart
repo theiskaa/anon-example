@@ -46,7 +46,8 @@ void main() {
     });
 
     test('putCommentStart', () {
-      userServiceEvent = UserServiceEvent.putCommentStart(commentModel);
+      userServiceEvent =
+          UserServiceEvent.putCommentStart(postModel, commentModel);
 
       expect(userServiceEvent.type, UserServiceEvents.putCommentStart);
     });

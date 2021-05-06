@@ -58,21 +58,23 @@ class UserService {
     // Get cached posts from local database.
     final _cachedListAsString =
         _preferences.getStringList(LocalDbKeys.postsList);
+    final _cachedListsLength = _preferences.getInt(LocalDbKeys.postListLength);
 
     List<PostModel> postModelList = [];
 
     try {
-      for (var i = 0; i < _cachedListAsString.length; i++) {
-        _cachedListAsString.map((element) async {
-          // Decode element  (convert string to map).
-          // We do that because, we need Map for create a post model from json.
-          Map decodedElement = await jsonDecode(element);
+      for (var i = 0; i < _cachedListsLength; i++) {
+        // Take a string item from [_cachedListAsString].
+        var item = _cachedListAsString[i];
 
-          // Create post from decoded element.
-          PostModel post = PostModel.fromJson(decodedElement);
+        // Decode itme - (convert string to map).
+        // We do that because, we need Map for create a post model from json.
+        Map decodedItem = await jsonDecode(item);
 
-          postModelList.add(post);
-        }).toList();
+        // Create post from decoded item.
+        PostModel post = PostModel.fromJson(decodedItem);
+
+        postModelList.add(post);
       }
 
       return postModelList;
@@ -83,18 +85,20 @@ class UserService {
   }
 
   Future<void> cachePosts(List<PostModel> postList,
-      {bool clearPostsFirst = false}) async {
+      {bool clearPostsFirst}) async {
     if (_preferences == null)
       _preferences = await SharedPreferences.getInstance();
 
-    if (clearPostsFirst == true) {
+    if (clearPostsFirst) {
       _preferences.remove(LocalDbKeys.postsList);
+      _preferences.remove(LocalDbKeys.postListLength);
     }
 
     // Convert [postList] to <String> list.
     List<String> encodedPosts =
         postList.map((post) => jsonEncode(post.toJson())).toList();
     await _preferences.setStringList(LocalDbKeys.postsList, encodedPosts);
+    await _preferences.setInt(LocalDbKeys.postListLength, postList.length);
   }
 
   Future<List<CommentModel>> getComments(final postID) async {
@@ -112,7 +116,7 @@ class UserService {
   }
 
   /// Method for put a comment to selected post list.
-  Future<bool> putComment(final postID, {CommentModel commentModel}) async {
+  Future<bool> putComment(final postID, CommentModel commentModel) async {
     try {
       await commentsRef(postID).doc().set({
         'title': commentModel.title,

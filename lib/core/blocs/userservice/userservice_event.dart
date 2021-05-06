@@ -44,7 +44,8 @@ class UserServiceEvent {
     this.type = UserServiceEvents.getAllError;
   }
 
-  UserServiceEvent.putCommentStart(CommentModel commentModel) {
+  UserServiceEvent.putCommentStart(
+      PostModel postModel, CommentModel commentModel) {
     this.type = UserServiceEvents.putCommentStart;
     this.commentModel = commentModel;
   }
