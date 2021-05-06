@@ -1,10 +1,12 @@
 import 'package:anon/core/blocs/userservice/userservice_bloc.dart';
+import 'package:anon/core/model/comment.dart';
 import 'package:anon/core/model/post.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   UserServiceEvent userServiceEvent;
   PostModel postModel;
+  CommentModel commentModel;
 
   group('[UserServiceEvent]', () {
     test('createPostStart', () {
@@ -41,6 +43,24 @@ void main() {
       userServiceEvent = UserServiceEvent.getAllError();
 
       expect(userServiceEvent.type, UserServiceEvents.getAllError);
+    });
+
+    test('putCommentStart', () {
+      userServiceEvent = UserServiceEvent.putCommentStart(commentModel);
+
+      expect(userServiceEvent.type, UserServiceEvents.putCommentStart);
+    });
+
+    test('putCommentSuccess', () {
+      userServiceEvent = UserServiceEvent.putCommentSuccess();
+
+      expect(userServiceEvent.type, UserServiceEvents.putCommentSuccess);
+    });
+
+    test('putCommentError', () {
+      userServiceEvent = UserServiceEvent.putCommentError();
+
+      expect(userServiceEvent.type, UserServiceEvents.putCommentError);
     });
   });
 }

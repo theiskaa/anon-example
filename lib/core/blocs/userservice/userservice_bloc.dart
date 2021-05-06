@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:anon/core/model/comment.dart';
 import 'package:anon/core/model/post.dart';
 import 'package:anon/core/services/user_service.dart';
 import 'package:bloc/bloc.dart';
@@ -18,14 +19,52 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
     UserServiceEvent event,
   ) async* {
     switch (event.type) {
-      case UserServiceEvents.createPostStart:
-        yield* mapToCreatePostStart(event);
-        break;
       case UserServiceEvents.getAllStart:
         yield* mapToGetAllStart(event);
         break;
+      case UserServiceEvents.createPostStart:
+        yield* mapToCreatePostStart(event);
+        break;
+
+      case UserServiceEvents.putCommentStart:
+        break;
       default:
     }
+  }
+
+  Stream<UserServiceState> mapToGetAllStart(dynamic event) async* {
+    UserServiceState serviceState;
+
+    yield state.copyWith(
+      event: event.type,
+      loading: true,
+    );
+
+    try {
+      state.postModelList.clear();
+
+      final postsFromFirestore = await _userService.getPosts();
+
+      await _userService.cachePosts(
+        postsFromFirestore,
+        clearPostsFirst: postsFromFirestore == null ? false : true,
+      );
+
+      List<PostModel> postsFromLocalDatabase =
+          await _userService.getCachedPosts();
+
+      serviceState = state.copyWith(
+        event: UserServiceEvents.getAllSuccess,
+        loading: false,
+        postModelList: postsFromLocalDatabase ?? postsFromFirestore,
+      );
+    } catch (e) {
+      serviceState = state.copyWith(
+        event: UserServiceEvents.getAllError,
+        loading: false,
+      );
+    }
+    yield serviceState;
   }
 
   Stream<UserServiceState> mapToCreatePostStart(dynamic event) async* {
@@ -38,8 +77,9 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
 
     try {
       final res = await _userService.createPost(postModel: event.postModel);
+      print(res);
       if (res) {
-        final posts = List<PostModel>.from(state.postModelList);
+        List<PostModel> posts = List<PostModel>.from(state.postModelList);
 
         posts.insert(
           0,
@@ -70,7 +110,7 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
     yield serviceState;
   }
 
-  Stream<UserServiceState> mapToGetAllStart(dynamic event) async* {
+  Stream<UserServiceState> mapToPutCommentStart(dynamic event) async* {
     UserServiceState serviceState;
 
     yield state.copyWith(
@@ -79,26 +119,33 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
     );
 
     try {
-      state.postModelList.clear();
+      final res = await _userService.putComment('HJfYaZ8N84DH2xMd7h1N');
+      if (res) {
+        final posts = List<PostModel>.from(state.postModelList);
 
-      final postsFromFirestore = await _userService.getPosts();
+        posts.insert(
+          0,
+          state.postModel.copyWith(
+            userID: event.postModel.userID,
+            title: event.postModel.title,
+            content: event.postModel.content,
+          ),
+        );
 
-      await _userService.cachePosts(
-        postsFromFirestore,
-        clearPostsFirst: postsFromFirestore == null ? false : true,
-      );
-
-      List<PostModel> postsFromLocalDatabase =
-          await _userService.getPostsFromLocal();
-
-      serviceState = state.copyWith(
-        event: UserServiceEvents.getAllSuccess,
-        loading: false,
-        postModelList: postsFromLocalDatabase ?? postsFromFirestore,
-      );
+        serviceState = state.copyWith(
+          event: UserServiceEvents.createPostSuccess,
+          loading: false,
+          postModelList: posts,
+        );
+      } else {
+        serviceState = state.copyWith(
+          event: UserServiceEvents.createPostError,
+          loading: false,
+        );
+      }
     } catch (e) {
       serviceState = state.copyWith(
-        event: UserServiceEvents.getAllError,
+        event: UserServiceEvents.createPostError,
         loading: false,
       );
     }

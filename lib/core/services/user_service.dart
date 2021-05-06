@@ -8,13 +8,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  // ignore: unused_field
   static SharedPreferences _preferences;
 
   /// Method for create/publish post to content list.
   Future<bool> createPost({PostModel postModel}) async {
+    final post = postsRef.doc();
+
     try {
-      await postsRef.doc().set({
+      await post.set({
+        'postID': post.id,
         'title': postModel.title,
         'content': postModel.content,
         'userID': postModel.userID,
@@ -48,22 +50,8 @@ class UserService {
     return postModelList;
   }
 
-  Future<List<CommentModel>> getComments(final postID) async {
-    // Empty list for save converted data.
-    List<CommentModel> commentsList = [];
-
-    final commentsSnapshot = await commentsRef(postID).get();
-
-    commentsSnapshot.docs.forEach((comment) {
-      var commentModel = CommentModel.fromSnapshot(comment);
-      commentsList.add(commentModel);
-    });
-
-    return commentsList;
-  }
-
   /// Function to save getted posts into local database.
-  Future<List<PostModel>> getPostsFromLocal() async {
+  Future<List<PostModel>> getCachedPosts() async {
     if (_preferences == null)
       _preferences = await SharedPreferences.getInstance();
 
@@ -107,5 +95,33 @@ class UserService {
     List<String> encodedPosts =
         postList.map((post) => jsonEncode(post.toJson())).toList();
     await _preferences.setStringList(LocalDbKeys.postsList, encodedPosts);
+  }
+
+  Future<List<CommentModel>> getComments(final postID) async {
+    // Empty list for save converted data.
+    List<CommentModel> commentsList = [];
+
+    final commentsSnapshot = await commentsRef(postID).get();
+
+    commentsSnapshot.docs.forEach((comment) {
+      var commentModel = CommentModel.fromSnapshot(comment);
+      commentsList.add(commentModel);
+    });
+
+    return commentsList;
+  }
+
+  /// Method for put a comment to selected post list.
+  Future<bool> putComment(final postID, {CommentModel commentModel}) async {
+    try {
+      await commentsRef(postID).doc().set({
+        'title': commentModel.title,
+        'date': Timestamp.now(),
+      });
+
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
