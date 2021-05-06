@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:anon/core/model/comment.dart';
 import 'package:anon/core/model/post.dart';
 import 'package:anon/core/utils/fire.dart';
 import 'package:anon/core/utils/localdb_keys.dart';
@@ -5,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
+  // ignore: unused_field
   static SharedPreferences _preferences;
 
   /// Method for create/publish post to content list.
@@ -24,51 +28,84 @@ class UserService {
 
   /// Stream for get content list.
   Future<List<PostModel>> getPosts() async {
-    // Get data by [postsRef].
     final snapshot =
         await postsRef.orderBy('date', descending: true).limit(300).get();
 
     // Empty list for save converted data.
     List<PostModel> postModelList = [];
 
-    snapshot.docs.forEach((element) {
-      // Convert eached element of `snapshot.docs` to PostModelEntity.
-      var postEntity = PostModelEntity.fromSnapshot(element);
+    snapshot.docs.forEach((post) async {
+      var comments = await getComments(post.id);
 
-      // Convert [PostModelEntity] to [PostModel].
-      var postModel = PostModel.fromEntity(postEntity);
-
+      // Convert each element of `snapshot.docs` to PostModel.
+      var postModel = PostModel.fromSnapshot(post, comments);
+      // print(comment);
       postModelList.add(postModel);
     });
+
+    await Future.delayed(Duration(seconds: 2));
 
     return postModelList;
   }
 
+  Future<List<CommentModel>> getComments(final postID) async {
+    // Empty list for save converted data.
+    List<CommentModel> commentsList = [];
+
+    final commentsSnapshot = await commentsRef(postID).get();
+
+    commentsSnapshot.docs.forEach((comment) {
+      var commentModel = CommentModel.fromSnapshot(comment);
+      commentsList.add(commentModel);
+    });
+
+    return commentsList;
+  }
+
   /// Function to save getted posts into local database.
-  Future<List<PostModel>> saveAndGetPostsFromLocal(
-      List<PostModel> postsList) async {
-    if (postsList.isEmpty || postsList == null)
-      return [];
-    else {
-      // Initilaze instance of SharedPreferences.
-      if (_preferences == null)
-        _preferences = await SharedPreferences.getInstance();
+  Future<List<PostModel>> getPostsFromLocal() async {
+    if (_preferences == null)
+      _preferences = await SharedPreferences.getInstance();
 
-      // Convert PostModel list to String.
-      final encodedList = PostModel.encode(postsList);
+    // Get cached posts from local database.
+    final _cachedListAsString =
+        _preferences.getStringList(LocalDbKeys.postsList);
 
-      // Remove exiting list.
-      await _preferences.remove(LocalDbKeys.postsList);
+    List<PostModel> postModelList = [];
 
-      // And save encoded list to string to local database.
-      await _preferences.setString(LocalDbKeys.postsList, encodedList);
+    try {
+      for (var i = 0; i < _cachedListAsString.length; i++) {
+        _cachedListAsString.map((element) async {
+          // Decode element  (convert string to map).
+          // We do that because, we need Map for create a post model from json.
+          Map decodedElement = await jsonDecode(element);
 
-      // Get encoded/converted PostModel list from local database.
-      final savedList = _preferences.getString(LocalDbKeys.postsList);
+          // Create post from decoded element.
+          PostModel post = PostModel.fromJson(decodedElement);
 
-      // Decode/Convert saved string/list to List<PostModel>.
-      final List<PostModel> decodedList = PostModel.decode(savedList);
-      return decodedList;
+          postModelList.add(post);
+        }).toList();
+      }
+
+      return postModelList;
+    } catch (e) {
+      print(e.toString());
+      return null;
     }
+  }
+
+  Future<void> cachePosts(List<PostModel> postList,
+      {bool clearPostsFirst = false}) async {
+    if (_preferences == null)
+      _preferences = await SharedPreferences.getInstance();
+
+    if (clearPostsFirst == true) {
+      _preferences.remove(LocalDbKeys.postsList);
+    }
+
+    // Convert [postList] to <String> list.
+    List<String> encodedPosts =
+        postList.map((post) => jsonEncode(post.toJson())).toList();
+    await _preferences.setStringList(LocalDbKeys.postsList, encodedPosts);
   }
 }

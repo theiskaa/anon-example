@@ -5,3 +5,6 @@ FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
 FirebaseAuth fireauthInstance = FirebaseAuth.instance;
 
 CollectionReference postsRef = firestoreInstance.collection('posts');
+
+CollectionReference commentsRef(final postID) =>
+    postsRef.doc(postID).collection('comments');

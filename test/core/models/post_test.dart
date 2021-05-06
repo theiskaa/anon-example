@@ -1,31 +1,46 @@
+import 'package:anon/core/model/comment.dart';
 import 'package:anon/core/model/post.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 main() {
   PostModel postModel;
-  PostModelEntity postModelEntity;
-  List<PostModel> postModelsList;
+  CommentModel commentModel;
+  List<CommentModel> commentModelList;
+  // List<PostModel> postModelsList;
 
-  const Map<String, String> postModelJson = {
-    'userID': 'empty',
-    'title': "title",
-    'content': "content"
-  };
+  Map<String, dynamic> postModelJson;
 
   setUpAll(() {
+    commentModel = CommentModel(
+      title: 'title',
+      description: 'description',
+    );
+
+    commentModelList = [
+      commentModel,
+      commentModel.copyWith(title: 'title1'),
+      commentModel.copyWith(title: 'title2'),
+    ];
+
     postModel = PostModel(
       userID: "empty",
       title: "title",
       content: 'content',
+      comments: commentModelList,
     );
 
-    postModelEntity = postModel.toEntity();
+    // postModelsList = [
+    //   postModel,
+    //   postModel.copyWith(userID: 'empty1'),
+    //   postModel.copyWith(userID: 'empty2'),
+    // ];
 
-    postModelsList = [
-      postModel,
-      postModel.copyWith(userID: 'empty1'),
-      postModel.copyWith(userID: 'empty2'),
-    ];
+    postModelJson = {
+      'userID': 'empty',
+      'title': "title",
+      'content': "content",
+      'comments': commentModelList,
+    };
   });
 
   group('[PostModel]', () {
@@ -36,20 +51,13 @@ main() {
       expect(postModel.userID, postModelFromJson.userID);
       expect(postModel.title, postModelFromJson.title);
       expect(postModel.content, postModelFromJson.content);
+      expect(postModel.comments, postModelFromJson.comments);
     });
 
     test('converts to json correctly', () {
       final postModelToJson = postModel.toJson();
 
       expect(postModelJson, postModelToJson);
-    });
-
-    test('get [PostModel] from [PostModelEntity] correctly', () {
-      final postModelFromEntity = PostModel.fromEntity(postModelEntity);
-
-      expect(postModel.userID, postModelFromEntity.userID);
-      expect(postModel.title, postModelFromEntity.title);
-      expect(postModel.content, postModelFromEntity.content);
     });
 
     test("Test if PostModel.copyWith(...) works", () {
@@ -61,60 +69,30 @@ main() {
         userID: 'asf1iu3rhfajsf2',
         title: 'second title',
         content: 'second content',
+        comments: [],
       );
 
       expect(copiedSameModel.userID, postModel.userID);
       expect(copiedSameModel.title, postModel.title);
       expect(copiedSameModel.content, postModel.content);
+      expect(copiedSameModel.comments, postModel.comments);
 
       expect(newPostModel.userID, 'asf1iu3rhfajsf2');
       expect(newPostModel.title, 'second title');
       expect(newPostModel.content, 'second content');
+      expect(newPostModel.comments, []);
     });
 
-    test("Test if PostModel.encode(...) and PostModel.decode(...) works", () {
-      String encodedList = PostModel.encode(postModelsList);
-      List<PostModel> decodedString = PostModel.decode(encodedList);
+    // test("Test if PostModel.encode(...) and PostModel.decode(...) works", () {
+    //   String encodedCommentList = CommentModel.encode(commentModelList);
+    //   String encodedList = PostModel.encode(postModelsList, encodedCommentList);
 
-      expect(encodedList, isA<String>());
-      expect(decodedString, isA<List<PostModel>>());
-    });
-  });
+    //   // print(encodedList);
+    //   List<PostModel> decodedString =
+    //       PostModel.decode(encodedList, encodedCommentList);
 
-  group('[PostModelEntity]', () {
-    test('converts from json correctly', () {
-      final postModelFromJson = PostModelEntity.fromJson(postModelJson);
-
-      // Need to match properties rather than instances.
-      expect(postModel.userID, postModelFromJson.userID);
-      expect(postModel.title, postModelFromJson.title);
-      expect(postModel.content, postModelFromJson.content);
-    });
-
-    test('converts to json correctly', () {
-      final postModelEntityToJson = postModelEntity.toJson();
-
-      expect(postModelJson, postModelEntityToJson);
-    });
-
-    test("Test if PostModelEntity.copyWith(...) works", () {
-      // To test copyWith with default values.
-      final copiedSameModel = postModelEntity.copyWith();
-
-      // To test copyWith with different values.
-      final newEntity = postModelEntity.copyWith(
-        userID: 'asf1iu3rhfajsf2',
-        title: 'second title',
-        content: 'second content',
-      );
-
-      expect(copiedSameModel.userID, postModelEntity.userID);
-      expect(copiedSameModel.title, postModelEntity.title);
-      expect(copiedSameModel.content, postModelEntity.content);
-
-      expect(newEntity.userID, 'asf1iu3rhfajsf2');
-      expect(newEntity.title, 'second title');
-      expect(newEntity.content, 'second content');
-    });
+    //   expect(encodedList, isA<String>());
+    //   expect(decodedString, isA<List<PostModel>>());
+    // });
   });
 }

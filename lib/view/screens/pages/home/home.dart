@@ -43,14 +43,26 @@ class HomeState extends AnonState<Home> {
   Widget build(BuildContext context) {
     return BlocBuilder<UserserviceBloc, UserServiceState>(
       builder: (context, state) {
-        return Scaffold(
-          appBar: _appbar(context),
-          body: state.postModelList.length == 0
-              ? loadingIndicator
-              : _buildRefreshableBody(state),
-        );
+        return Scaffold(appBar: _appbar(context), body: buildRightBody(state));
       },
     );
+  }
+
+  Widget buildRightBody(UserServiceState state) {
+    if (state.loading ||
+        state.postModelList.length == 0 &&
+            state.event == UserServiceEvents.getAllStart ||
+        state.event == UserServiceEvents.getAllStart ||
+        state.event == UserServiceEvents.createPostStart) {
+      return loadingIndicator;
+    }
+
+    if (state.event == UserServiceEvents.getAllError ||
+        state.event == UserServiceEvents.createPostError) {
+      return errorModal();
+    }
+
+    return _buildRefreshableBody(state);
   }
 
   RefreshIndicator _buildRefreshableBody(UserServiceState state) {
@@ -59,9 +71,7 @@ class HomeState extends AnonState<Home> {
       color: Colors.white,
       key: _refreshIndicatorKey,
       onRefresh: _refresh,
-      child: (state.event == UserServiceEvents.getAllError)
-          ? errorModal()
-          : LazyLoadListView(defaultList: state.postModelList),
+      child: LazyLoadListView(defaultList: state.postModelList),
     );
   }
 
@@ -77,11 +87,23 @@ class HomeState extends AnonState<Home> {
           ),
           SizedBox(height: 20),
           Text(
-            "Oops.. Something went wrong, please try again",
+            "Oops.. Something went wrong",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 15),
+          OpacityButton(
+            onTap: _refresh,
+            child: Text(
+              "Try again",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],

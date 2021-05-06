@@ -1,3 +1,4 @@
+import 'package:anon/core/model/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -18,9 +19,13 @@ void main() {
       userID: 'empty',
       title: 'Lorem ipsum dolor sit amet ..',
       content: 'More lorem ipsum 123123',
+      comments: [CommentModel(title: 'test title')],
     );
 
-    secondPostModel = postModel.copyWith(content: 'empty');
+    secondPostModel = postModel.copyWith(
+      content: 'empty',
+      comments: [],
+    );
 
     postCardWidget = PostCardWidget(
       postModel: postModel,
@@ -59,16 +64,20 @@ void main() {
       expect(find.byType(Text), findsNWidgets(4));
       expect(find.byType(Center), findsOneWidget);
       expect(find.byType(SizedBox), findsOneWidget);
+      expect(find.text(postModel.comments.length.toString()), findsOneWidget);
 
       // Gesture test.
       await tester.tap(find.byKey(Key('view.comments.button')));
       await tester.tap(find.byKey(Key('card.button')));
     });
 
-    testWidgets('test if case when content.length less than 10',
+    testWidgets("test conditions of empty values'",
         (WidgetTester tester) async {
       await tester.pumpWidget(MaterialApp(home: secondPostCardWidget));
+
       expect(find.byKey(Key("SizedBox.shrink")), findsOneWidget);
+      expect(find.byKey(Key("SizedBox.shrink.2")), findsOneWidget);
+      expect(find.text("N"), findsOneWidget);
     });
   });
 }
