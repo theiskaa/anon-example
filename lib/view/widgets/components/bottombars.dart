@@ -29,7 +29,7 @@ class ViewCommentsBar extends StatelessWidget {
   }
 
   Text buildTitle() => Text(
-        "View comments ($commentsLength)",
+        commentsLength > 0 ? "View comments ($commentsLength)" : "Add comment",
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
