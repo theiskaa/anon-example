@@ -105,11 +105,12 @@ class UserService {
     List<CommentModel> commentsList = [];
 
     final commentsSnapshot = await commentsRef(postID).get();
-
-    commentsSnapshot.docs.forEach((comment) {
-      var commentModel = CommentModel.fromSnapshot(comment);
-      commentsList.add(commentModel);
-    });
+    if (commentsSnapshot.docs.length != 0) {
+      commentsSnapshot.docs.forEach((comment) {
+        var commentModel = CommentModel.fromSnapshot(comment);
+        commentsList.add(commentModel);
+      });
+    }
 
     return commentsList;
   }
@@ -119,7 +120,7 @@ class UserService {
     try {
       await commentsRef(postID).doc().set({
         'title': commentModel.title,
-        'date': Timestamp.now(),
+        'date': Timestamp.now().toString(),
       });
 
       return true;

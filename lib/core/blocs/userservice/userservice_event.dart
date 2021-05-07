@@ -45,9 +45,12 @@ class UserServiceEvent {
   }
 
   UserServiceEvent.putCommentStart(
-      PostModel postModel, CommentModel commentModel) {
+    PostModel postModel,
+    CommentModel commentModel,
+  ) {
     this.type = UserServiceEvents.putCommentStart;
     this.commentModel = commentModel;
+    this.postModel = postModel;
   }
 
   UserServiceEvent.putCommentSuccess() {

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:anon/core/model/comment.dart';
 import 'package:anon/core/model/post.dart';
 import 'package:anon/core/services/user_service.dart';
+import 'package:anon/core/system/logger.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -27,6 +28,7 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
         break;
 
       case UserServiceEvents.putCommentStart:
+        yield* mapToPutCommentStart(event);
         break;
       default:
     }
@@ -59,6 +61,7 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
         postModelList: postsFromLocalDatabase ?? postsFromFirestore,
       );
     } catch (e) {
+      Log.e(e.toString());
       serviceState = state.copyWith(
         event: UserServiceEvents.getAllError,
         loading: false,
@@ -127,9 +130,21 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
       );
 
       if (res) {
+        List<PostModel> currentPosts =
+            List<PostModel>.from(state.postModelList);
+
+        final postIndex = currentPosts.indexWhere(
+          (post) => post == event.postModel,
+        );
+
+        var currentPost = currentPosts[postIndex];
+        currentPost.comments.insert(0, event.commentModel.toJson());
+
         serviceState = state.copyWith(
           event: UserServiceEvents.putCommentSuccess,
           loading: false,
+          postModel: currentPost,
+          postModelList: currentPosts,
         );
       } else {
         serviceState = state.copyWith(
