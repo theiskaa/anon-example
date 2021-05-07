@@ -28,7 +28,7 @@ class _ViewCommentsState extends AnonState<ViewComments> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: widget.post.comments.length > 0 ? buildBody() : emptyList(),
+      body: bodyWithListener(),
       bottomNavigationBar: CommentField(
         controller: _controller,
         onSend: onPutComment,
@@ -36,20 +36,39 @@ class _ViewCommentsState extends AnonState<ViewComments> {
     );
   }
 
-  void onPutComment() async {
-    var comment = CommentModel(title: _controller.text);
-    BlocProvider.of<UserserviceBloc>(context).add(
-      UserServiceEvent.putCommentStart(widget.post, comment),
+  BlocListener<UserserviceBloc, UserServiceState> bodyWithListener() {
+    return BlocListener<UserserviceBloc, UserServiceState>(
+      listener: (context, state) {
+        if (state.event == UserServiceEvents.putCommentError) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.red[800],
+            content: Text(
+              "Something went wrong when you trying posting comment, please try again later..",
+            ),
+          ));
+        }
+      },
+      child:
+          widget.post.comments.length > 0 ? buildCommentsBody() : emptyList(),
     );
-    await Future.delayed(Duration(seconds: 2));
-    setState(() => _controller.text = "");
+  }
+
+  void onPutComment() async {
+    if (_controller.text.length > 3) {
+      var comment = CommentModel(title: _controller.text);
+      BlocProvider.of<UserserviceBloc>(context).add(
+        UserServiceEvent.putCommentStart(widget.post, comment),
+      );
+      await Future.delayed(Duration(milliseconds: 500));
+      setState(() => _controller.text = "");
+    }
   }
 
   Widget emptyList() => Center(
         child: Text("This post hasn't any comment"),
       );
 
-  SingleChildScrollView buildBody() {
+  SingleChildScrollView buildCommentsBody() {
     return SingleChildScrollView(
       padding: EdgeInsets.all(10),
       child: Column(
