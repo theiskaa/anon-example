@@ -1,9 +1,9 @@
-import 'package:anon/view/widgets/components/comment_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:anon/view/widgets/components/opacity_button.dart';
+import 'package:anon/view/widgets/components/animated_add_button.dart';
+import 'package:anon/view/widgets/components/comment_field.dart';
 
 void main() {
   Widget commentField;
@@ -36,10 +36,10 @@ void main() {
 
       // CommentField tests.
       expect(find.byType(Transform), findsNWidgets(3));
-      expect(find.byType(Container), findsNWidgets(2));
-      expect(find.byType(Center), findsNWidgets(2));
+      expect(find.byType(Container), findsNWidgets(3));
+      expect(find.byType(Center), findsNWidgets(3));
       expect(find.byType(Row), findsNWidgets(2));
-      expect(find.byType(OpacityButton), findsOneWidget);
+      expect(find.byType(AnimatedAddButton), findsOneWidget);
       expect(find.byType(Icon), findsOneWidget);
       expect(find.byType(Expanded), findsNWidgets(2));
       expect(find.byType(CupertinoTextField), findsOneWidget);

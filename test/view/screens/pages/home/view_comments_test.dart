@@ -79,7 +79,7 @@ void main() {
     );
 
     Future<void> testNoCommentsWidget(WidgetTester tester) async {
-      expect(find.byType(Center), findsNWidgets(4));
+      expect(find.byType(Center), findsNWidgets(5));
       expect(find.byType(Text), findsNWidgets(3));
       expect(
         find.text("This post hasn't any comment"),
