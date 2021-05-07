@@ -46,7 +46,7 @@ class _ViewCommentsState extends AnonState<ViewComments> {
   }
 
   Widget emptyList() => Center(
-        child: Text("This post hasn't any comment yet"),
+        child: Text("This post hasn't any comment"),
       );
 
   SingleChildScrollView buildBody() {

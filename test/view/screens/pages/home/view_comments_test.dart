@@ -1,9 +1,11 @@
+import 'package:anon/core/blocs/userservice/userservice_bloc.dart';
 import 'package:anon/core/model/comment.dart';
 import 'package:anon/core/model/post.dart';
 import 'package:anon/view/screens/pages/home/view_comments.dart';
 import 'package:anon/view/widgets/components/appbars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:anon/core/system/anon.dart';
 import 'package:anon/core/utils/test_helpers.dart';
@@ -12,6 +14,8 @@ void main() {
   Anon anon;
   PostModel postModel;
   PostModel postModelWithNoComments;
+
+  UserserviceBloc _userServiceBloc;
 
   TestableWidgetBuilder testableWidgetBuilder;
 
@@ -27,6 +31,8 @@ void main() {
       comments: [CommentModel(title: "test title").toJson()],
     );
 
+    _userServiceBloc = UserserviceBloc();
+
     postModelWithNoComments = postModel.copyWith(comments: []);
 
     mockObserver = MockNavigatorObserver();
@@ -35,6 +41,9 @@ void main() {
       enablePageTesting: true,
       anon: anon,
       navigatorObservers: [mockObserver],
+      blocProviders: [
+        BlocProvider<UserserviceBloc>(create: (context) => _userServiceBloc),
+      ],
       widget: ViewComments(post: postModel),
     );
   });
@@ -45,7 +54,7 @@ void main() {
       expect(find.byType(DefaultAppBar), findsOneWidget);
       expect(find.byType(SingleChildScrollView), findsOneWidget);
       expect(find.byType(Column), findsOneWidget);
-      expect(find.byType(Text), findsNWidgets(2));
+      expect(find.byType(Text), findsNWidgets(3));
       expect(find.byType(ListTile), findsOneWidget);
       expect(
         find.byIcon(CupertinoIcons.arrowshape_turn_up_right_fill),
@@ -68,12 +77,12 @@ void main() {
         await tester.pumpWidget(MaterialApp(
           home: ViewComments(post: postModelWithNoComments),
         )),
-        expect(find.byType(Center), findsNWidgets(2)),
-        expect(find.byType(Text), findsNWidgets(2)),
+        expect(find.byType(Center), findsNWidgets(4)),
+        expect(find.byType(Text), findsNWidgets(3)),
         expect(
-          find.text("This post hasn't any comment, let's add first!"),
+          find.text("This post hasn't any comment"),
           findsOneWidget,
-        )
+        ),
       },
     );
   });
