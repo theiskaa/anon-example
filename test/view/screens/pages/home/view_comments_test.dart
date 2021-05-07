@@ -15,9 +15,8 @@ void main() {
   PostModel postModel;
   PostModel postModelWithNoComments;
 
-  UserserviceBloc _userServiceBloc;
-
   TestableWidgetBuilder testableWidgetBuilder;
+  TestableWidgetBuilder secondTestableWidgetBuilder;
 
   MockNavigatorObserver mockObserver;
 
@@ -31,8 +30,6 @@ void main() {
       comments: [CommentModel(title: "test title").toJson()],
     );
 
-    _userServiceBloc = UserserviceBloc();
-
     postModelWithNoComments = postModel.copyWith(comments: []);
 
     mockObserver = MockNavigatorObserver();
@@ -42,9 +39,19 @@ void main() {
       anon: anon,
       navigatorObservers: [mockObserver],
       blocProviders: [
-        BlocProvider<UserserviceBloc>(create: (context) => _userServiceBloc),
+        BlocProvider<UserserviceBloc>(create: (context) => UserserviceBloc()),
       ],
       widget: ViewComments(post: postModel),
+    );
+
+    secondTestableWidgetBuilder = TestableWidgetBuilder(
+      enablePageTesting: true,
+      anon: anon,
+      navigatorObservers: [mockObserver],
+      blocProviders: [
+        BlocProvider<UserserviceBloc>(create: (context) => UserserviceBloc()),
+      ],
+      widget: ViewComments(post: postModelWithNoComments),
     );
   });
 
@@ -66,24 +73,27 @@ void main() {
       'should contain initial states and widgets',
       (WidgetTester tester) async => await asyncTestWidgets(
         tester,
-        build: testableWidgetBuilder.buildTestableWidget,
+        build: testableWidgetBuilder.buildTestableStateWidget,
         testCases: [testViewComments],
       ),
     );
 
+    Future<void> testNoCommentsWidget(WidgetTester tester) async {
+      expect(find.byType(Center), findsNWidgets(4));
+      expect(find.byType(Text), findsNWidgets(3));
+      expect(
+        find.text("This post hasn't any comment"),
+        findsOneWidget,
+      );
+    }
+
     testWidgets(
       "Empty comments screen test",
-      (WidgetTester tester) async => {
-        await tester.pumpWidget(MaterialApp(
-          home: ViewComments(post: postModelWithNoComments),
-        )),
-        expect(find.byType(Center), findsNWidgets(4)),
-        expect(find.byType(Text), findsNWidgets(3)),
-        expect(
-          find.text("This post hasn't any comment"),
-          findsOneWidget,
-        ),
-      },
+      (WidgetTester tester) async => await asyncTestWidgets(
+        tester,
+        build: secondTestableWidgetBuilder.buildTestableStateWidget,
+        testCases: [testNoCommentsWidget],
+      ),
     );
   });
 }
