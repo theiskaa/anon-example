@@ -6,12 +6,12 @@ main() {
 
   const Map<String, String> commentModelJson = {
     'title': 'Test title',
-    'description': "Test description"
+    'date': "Test date"
   };
 
   setUpAll(() => commentModel = CommentModel(
         title: "Test title",
-        description: "Test description",
+        date: "Test date",
       ));
 
   group('[CommentModel]', () {
@@ -20,7 +20,7 @@ main() {
 
       // Need to match properties rather than instances.
       expect(commentModel.title, commentModelFromJson.title);
-      expect(commentModel.description, commentModelFromJson.description);
+      expect(commentModel.date, commentModelFromJson.date);
     });
 
     test('converts to json correctly', () {
@@ -36,14 +36,14 @@ main() {
       // To test copyWith with different values.
       final newComment = commentModel.copyWith(
         title: 'New comment title',
-        description: 'New comment description',
+        date: 'New comment date',
       );
 
       expect(copiedSameModel.title, commentModel.title);
-      expect(copiedSameModel.description, commentModel.description);
+      expect(copiedSameModel.date, commentModel.date);
 
       expect(newComment.title, 'New comment title');
-      expect(newComment.description, 'New comment description');
+      expect(newComment.date, 'New comment date');
     });
   });
 }

@@ -1,20 +1,23 @@
 part of 'userservice_bloc.dart';
 
 enum UserServiceEvents {
-  // Post events.
+  getAllStart,
+  getAllSuccess,
+  getAllError,
+
   createPostStart,
   createPostSuccess,
   createPostError,
 
-  // Get events.
-  getAllStart,
-  getAllSuccess,
-  getAllError,
+  putCommentStart,
+  putCommentSuccess,
+  putCommentError,
 }
 
 class UserServiceEvent {
   UserServiceEvents type;
   PostModel postModel;
+  CommentModel commentModel;
 
   UserServiceEvent.createPostStart(PostModel postModel) {
     this.type = UserServiceEvents.createPostStart;
@@ -39,5 +42,22 @@ class UserServiceEvent {
 
   UserServiceEvent.getAllError() {
     this.type = UserServiceEvents.getAllError;
+  }
+
+  UserServiceEvent.putCommentStart(
+    PostModel postModel,
+    CommentModel commentModel,
+  ) {
+    this.type = UserServiceEvents.putCommentStart;
+    this.commentModel = commentModel;
+    this.postModel = postModel;
+  }
+
+  UserServiceEvent.putCommentSuccess() {
+    this.type = UserServiceEvents.putCommentSuccess;
+  }
+
+  UserServiceEvent.putCommentError() {
+    this.type = UserServiceEvents.putCommentError;
   }
 }

@@ -6,14 +6,13 @@ main() {
   PostModel postModel;
   CommentModel commentModel;
   List<CommentModel> commentModelList;
-  // List<PostModel> postModelsList;
 
   Map<String, dynamic> postModelJson;
 
   setUpAll(() {
     commentModel = CommentModel(
       title: 'title',
-      description: 'description',
+      date: 'date',
     );
 
     commentModelList = [
@@ -24,19 +23,15 @@ main() {
 
     postModel = PostModel(
       userID: "empty",
+      postID: 'AfasRHfuwgFsuwoh23Rfqw',
       title: "title",
       content: 'content',
       comments: commentModelList,
     );
 
-    // postModelsList = [
-    //   postModel,
-    //   postModel.copyWith(userID: 'empty1'),
-    //   postModel.copyWith(userID: 'empty2'),
-    // ];
-
     postModelJson = {
       'userID': 'empty',
+      'postID': "AfasRHfuwgFsuwoh23Rfqw",
       'title': "title",
       'content': "content",
       'comments': commentModelList,
@@ -67,32 +62,23 @@ main() {
       // To test copyWith with different values.
       final newPostModel = postModel.copyWith(
         userID: 'asf1iu3rhfajsf2',
+        postID: "gFsuwoh23RfqwAfasRHfuw",
         title: 'second title',
         content: 'second content',
         comments: [],
       );
 
       expect(copiedSameModel.userID, postModel.userID);
+      expect(copiedSameModel.postID, postModel.postID);
       expect(copiedSameModel.title, postModel.title);
       expect(copiedSameModel.content, postModel.content);
       expect(copiedSameModel.comments, postModel.comments);
 
       expect(newPostModel.userID, 'asf1iu3rhfajsf2');
+      expect(newPostModel.postID, 'gFsuwoh23RfqwAfasRHfuw');
       expect(newPostModel.title, 'second title');
       expect(newPostModel.content, 'second content');
       expect(newPostModel.comments, []);
     });
-
-    // test("Test if PostModel.encode(...) and PostModel.decode(...) works", () {
-    //   String encodedCommentList = CommentModel.encode(commentModelList);
-    //   String encodedList = PostModel.encode(postModelsList, encodedCommentList);
-
-    //   // print(encodedList);
-    //   List<PostModel> decodedString =
-    //       PostModel.decode(encodedList, encodedCommentList);
-
-    //   expect(encodedList, isA<String>());
-    //   expect(decodedString, isA<List<PostModel>>());
-    // });
   });
 }

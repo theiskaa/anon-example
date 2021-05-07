@@ -1,8 +1,10 @@
+import 'package:anon/core/blocs/userservice/userservice_bloc.dart';
 import 'package:anon/core/model/comment.dart';
 import 'package:anon/core/model/post.dart';
 import 'package:anon/view/screens/pages/home/view_post.dart';
 import 'package:anon/view/widgets/components/appbars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:anon/core/system/anon.dart';
 import 'package:anon/core/utils/test_helpers.dart';
@@ -31,6 +33,9 @@ void main() {
       enablePageTesting: true,
       anon: anon,
       navigatorObservers: [mockObserver],
+      blocProviders: [
+        BlocProvider<UserserviceBloc>(create: (context) => UserserviceBloc()),
+      ],
       widget: ViewPost(postModel: postModel),
     );
   });
@@ -48,7 +53,7 @@ void main() {
       'should contain initial states and widgets',
       (WidgetTester tester) async => await asyncTestWidgets(
         tester,
-        build: testableWidgetBuilder.buildTestableWidget,
+        build: testableWidgetBuilder.buildTestableStateWidget,
         testCases: [testViewPostPage],
         postProcess: () async {
           var bottomBar = find.byKey(Key("view.comments.bar"));

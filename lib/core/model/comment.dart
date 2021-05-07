@@ -2,33 +2,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CommentModel {
   final String title;
-  final String description;
+  final String date;
 
   const CommentModel({
     this.title,
-    this.description,
+    this.date,
   });
 
   CommentModel copyWith({
     String title,
-    String description,
+    String date,
   }) =>
       CommentModel(
         title: title ?? this.title,
-        description: description ?? this.description,
+        date: date ?? this.date,
       );
 
   CommentModel.fromJson(Map<String, Object> json)
       : this.title = json['title'],
-        this.description = json['description'];
+        this.date = json['date'];
 
   Map<String, dynamic> toJson({CommentModel commentModel}) => {
         'title': title ?? this.title,
-        'description': description ?? this.description,
+        'date': date ?? this.date,
       };
 
   CommentModel.fromSnapshot(
     DocumentSnapshot element,
   )   : this.title = element.data()['title'],
-        this.description = element.data()['description'];
+        this.date = element.data()['date'];
 }
