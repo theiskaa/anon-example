@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../anon_widgets.dart';
-import 'opacity_button.dart';
+import 'animated_add_button.dart';
 
 class CommentField extends AnonStatelessWidget {
   final TextEditingController controller;
@@ -35,20 +35,14 @@ class CommentField extends AnonStatelessWidget {
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [field(), sendButton()],
+          children: [
+            field(),
+            AnimatedAddButton(
+              key: Key("send.button"),
+              onTap: onSend,
+            )
+          ],
         ),
-      ),
-    );
-  }
-
-  OpacityButton sendButton() {
-    return OpacityButton(
-      onTap: onSend,
-      key: Key("send.button"),
-      child: Icon(
-        CupertinoIcons.arrowtriangle_up,
-        color: Colors.black,
-        size: 30,
       ),
     );
   }
