@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'home/home.dart';
+import 'home/me.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key}) : super(key: key);
@@ -13,10 +14,7 @@ class MainPage extends StatefulWidget {
 class MainPageState extends State<MainPage> {
   int selectedPage = 0;
 
-  List<Widget> pages = [
-    Home(),
-    Container(color: Colors.yellow),
-  ];
+  List<Widget> pages = [Home(), Me()];
 
   @override
   Widget build(BuildContext context) {

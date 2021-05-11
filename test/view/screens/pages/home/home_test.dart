@@ -40,12 +40,12 @@ void main() {
     Future<void> testInitialWidgetsAndStatesOfHome(WidgetTester tester) async {
       expect(find.byType(Scaffold), findsOneWidget);
       expect(find.byType(AppBarWithLogo), findsOneWidget);
-      expect(find.byType(Padding), findsNWidgets(3));
-      expect(find.byType(OpacityButton), findsNWidgets(2));
+      expect(find.byType(Padding), findsNWidgets(2));
+      expect(find.byType(OpacityButton), findsOneWidget);
       expect(find.byType(CreateButton), findsOneWidget);
       expect(find.byType(Text), findsOneWidget);
-      expect(find.byType(Center), findsNWidgets(3));
-      expect(find.byType(SizedBox), findsNWidgets(2));
+      expect(find.byType(Center), findsNWidgets(2));
+      expect(find.byType(SizedBox), findsOneWidget);
       // FIXME: expect(find.byType(RefreshIndicator), findsOneWidget);
       // FIXME: expect(find.byType(LazyLoadListView), findsOneWidget);
       // FIXME: expect(find.byType(PostCardWidget), findsOneWidget);
