@@ -4,6 +4,7 @@ import 'package:anon/core/model/comment.dart';
 import 'package:anon/core/model/post.dart';
 import 'package:anon/core/services/user_service.dart';
 import 'package:anon/core/system/logger.dart';
+import 'package:anon/core/utils/localdb_keys.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -26,9 +27,14 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
       case UserServiceEvents.createPostStart:
         yield* mapToCreatePostStart(event);
         break;
-
       case UserServiceEvents.putCommentStart:
         yield* mapToPutCommentStart(event);
+        break;
+      case UserServiceEvents.getSavedStart:
+        yield* mapToGetSavedStart(event);
+        break;
+      case UserServiceEvents.savePostStart:
+        yield* mapToSavePostStart(event);
         break;
       default:
     }
@@ -53,7 +59,10 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
       );
 
       List<PostModel> postsFromLocalDatabase =
-          await _userService.getCachedPosts();
+          await _userService.getCachedPosts(
+        LocalDbKeys.postsList,
+        LocalDbKeys.postListLength,
+      );
 
       serviceState = state.copyWith(
         event: UserServiceEvents.getAllSuccess,
@@ -155,6 +164,72 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
     } catch (e) {
       serviceState = state.copyWith(
         event: UserServiceEvents.putCommentError,
+        loading: false,
+      );
+    }
+    yield serviceState;
+  }
+
+  Stream<UserServiceState> mapToGetSavedStart(dynamic event) async* {
+    UserServiceState serviceState;
+
+    yield state.copyWith(
+      event: event.type,
+      loading: true,
+    );
+
+    try {
+      List<PostModel> savedPosts = await _userService.getCachedPosts(
+        LocalDbKeys.savedPosts,
+        LocalDbKeys.savedPostsLength,
+      );
+
+      serviceState = state.copyWith(
+        event: UserServiceEvents.getSavedSuccess,
+        loading: false,
+        savedPosts: savedPosts,
+      );
+    } catch (e) {
+      Log.e(e.toString());
+      serviceState = state.copyWith(
+        event: UserServiceEvents.getSavedError,
+        loading: false,
+      );
+    }
+    yield serviceState;
+  }
+
+  Stream<UserServiceState> mapToSavePostStart(dynamic event) async* {
+    UserServiceState serviceState;
+
+    yield state.copyWith(
+      event: event.type,
+      loading: true,
+    );
+
+    try {
+      List<PostModel> savedPosts = await _userService.getCachedPosts(
+        LocalDbKeys.savedPosts,
+        LocalDbKeys.savedPostsLength,
+      );
+
+      savedPosts.insert(0, event.postModel);
+
+      await _userService.cachePosts(
+        savedPosts,
+        listKey: LocalDbKeys.savedPosts,
+        listLengthKey: LocalDbKeys.savedPostsLength,
+      );
+
+      serviceState = state.copyWith(
+        event: UserServiceEvents.savePostSuccess,
+        loading: false,
+        savedPosts: savedPosts,
+      );
+    } catch (e) {
+      Log.e(e.toString());
+      serviceState = state.copyWith(
+        event: UserServiceEvents.savePostError,
         loading: false,
       );
     }

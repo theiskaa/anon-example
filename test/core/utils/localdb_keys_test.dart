@@ -3,10 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 main() {
   group("[LocalDbKeys]", () {
-    test("Test [postsList]", () {
-      final postsList = LocalDbKeys.postsList;
-      expect(postsList, LocalDbKeys.postsList);
-      expect(postsList, "postsList");
+    test("Test keys", () {
+      expect(LocalDbKeys.postsList, "postsList");
+      expect(LocalDbKeys.postListLength, "postsListLength");
+      expect(LocalDbKeys.savedPosts, "savedPosts");
+      expect(LocalDbKeys.savedPostsLength, "savedPostsLength");
     });
   });
 }

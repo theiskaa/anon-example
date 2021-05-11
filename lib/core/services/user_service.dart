@@ -50,31 +50,32 @@ class UserService {
   }
 
   /// Function to save getted posts into local database.
-  Future<List<PostModel>> getCachedPosts() async {
+  Future<List<PostModel>> getCachedPosts(
+      String listKey, String listLengthKey) async {
     if (_preferences == null)
       _preferences = await SharedPreferences.getInstance();
 
     // Get cached posts from local database.
-    final _cachedListAsString =
-        _preferences.getStringList(LocalDbKeys.postsList);
-    final _cachedListsLength = _preferences.getInt(LocalDbKeys.postListLength);
+    final _cachedListAsString = _preferences.getStringList(listKey);
+    final _cachedListsLength = _preferences.getInt(listLengthKey);
 
-    List<PostModel> postModelList = [];
+    List<PostModel> postModelList = <PostModel>[];
 
     try {
-      for (var i = 0; i < _cachedListsLength; i++) {
-        // Take a string item from [_cachedListAsString].
-        var item = _cachedListAsString[i];
+      if (_cachedListsLength != null)
+        for (var i = 0; i < _cachedListsLength; i++) {
+          // Take a string item from [_cachedListAsString].
+          var item = _cachedListAsString[i];
 
-        // Decode itme - (convert string to map).
-        // We do that because, we need Map for create a post model from json.
-        Map decodedItem = await jsonDecode(item);
+          // Decode itme - (convert string to map).
+          // We do that because, we need Map for create a post model from json.
+          Map decodedItem = await jsonDecode(item);
 
-        // Create post from decoded item.
-        PostModel post = PostModel.fromJson(decodedItem);
+          // Create post from decoded item.
+          PostModel post = PostModel.fromJson(decodedItem);
 
-        postModelList.add(post);
-      }
+          postModelList.add(post);
+        }
 
       return postModelList;
     } catch (e) {
@@ -83,21 +84,25 @@ class UserService {
     }
   }
 
-  Future<void> cachePosts(List<PostModel> postList,
-      {bool clearPostsFirst}) async {
+  Future<void> cachePosts(
+    List<PostModel> postList, {
+    bool clearPostsFirst = true,
+    String listKey = LocalDbKeys.postsList,
+    String listLengthKey = LocalDbKeys.postListLength,
+  }) async {
     if (_preferences == null)
       _preferences = await SharedPreferences.getInstance();
 
     if (clearPostsFirst) {
-      _preferences.remove(LocalDbKeys.postsList);
-      _preferences.remove(LocalDbKeys.postListLength);
+      _preferences.remove(listKey);
+      _preferences.remove(listLengthKey);
     }
 
     // Convert [postList] to <String> list.
     List<String> encodedPosts =
         postList.map((post) => jsonEncode(post.toJson())).toList();
-    await _preferences.setStringList(LocalDbKeys.postsList, encodedPosts);
-    await _preferences.setInt(LocalDbKeys.postListLength, postList.length);
+    await _preferences.setStringList(listKey, encodedPosts);
+    await _preferences.setInt(listLengthKey, postList.length);
   }
 
   Future<List<CommentModel>> getComments(final postID) async {

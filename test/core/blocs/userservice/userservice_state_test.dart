@@ -17,6 +17,7 @@ void main() {
       event: UserServiceEvents.getAllStart,
       loading: true,
       postModel: postModel,
+      savedPosts: [],
       postModelList: [],
     );
   });
@@ -34,6 +35,7 @@ void main() {
         event: UserServiceEvents.getAllSuccess,
         loading: false,
         postModel: newPostModel,
+        savedPosts: [postModel],
         postModelList: [postModel],
       );
 
@@ -44,11 +46,13 @@ void main() {
         defualtUserServiceState.postModelList,
         userServiceState.postModelList,
       );
+      expect(defualtUserServiceState.savedPosts, userServiceState.savedPosts);
 
       expect(newUserServiceState.event, UserServiceEvents.getAllSuccess);
       expect(newUserServiceState.loading, false);
       expect(newUserServiceState.postModel, newPostModel);
       expect(newUserServiceState.postModelList, [postModel]);
+      expect(newUserServiceState.savedPosts, [postModel]);
     });
 
     test("Test if UserServiceState.defaultState() works", () {
@@ -57,6 +61,7 @@ void main() {
       expect(defaultState.event, null);
       expect(defaultState.loading, true);
       expect(defaultState.postModel, const PostModel());
+      expect(defaultState.savedPosts, const <PostModel>[]);
       expect(defaultState.postModelList, const <PostModel>[]);
     });
   });

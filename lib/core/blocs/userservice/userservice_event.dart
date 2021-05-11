@@ -12,6 +12,14 @@ enum UserServiceEvents {
   putCommentStart,
   putCommentSuccess,
   putCommentError,
+
+  getSavedStart,
+  getSavedSuccess,
+  getSavedError,
+
+  savePostStart,
+  savePostSuccess,
+  savePostError,
 }
 
 class UserServiceEvent {
@@ -59,5 +67,30 @@ class UserServiceEvent {
 
   UserServiceEvent.putCommentError() {
     this.type = UserServiceEvents.putCommentError;
+  }
+
+  UserServiceEvent.savePostStart(PostModel post) {
+    this.type = UserServiceEvents.savePostStart;
+    this.postModel = post;
+  }
+
+  UserServiceEvent.savePostSuccess() {
+    this.type = UserServiceEvents.savePostSuccess;
+  }
+
+  UserServiceEvent.savePostError() {
+    this.type = UserServiceEvents.savePostError;
+  }
+
+  UserServiceEvent.getSavedStart() {
+    this.type = UserServiceEvents.getSavedStart;
+  }
+
+  UserServiceEvent.getSavedSuccess() {
+    this.type = UserServiceEvents.getSavedSuccess;
+  }
+
+  UserServiceEvent.getSavedError() {
+    this.type = UserServiceEvents.getSavedError;
   }
 }
