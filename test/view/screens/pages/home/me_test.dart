@@ -76,10 +76,11 @@ void main() {
       expect(find.byType(AppBarWithLogo), findsOneWidget);
       expect(find.byType(SingleChildScrollView), findsOneWidget);
       expect(find.byType(Column), findsNWidgets(3));
+      expect(find.byType(Row), findsNWidgets(3));
       expect(find.byType(SizedBox), findsNWidgets(7));
       expect(find.byType(Container), findsNWidgets(5));
       expect(find.byType(PostCardWidget), findsOneWidget);
-      expect(find.byType(Text), findsNWidgets(4));
+      expect(find.byType(Text), findsNWidgets(5));
     }
 
     testWidgets(
