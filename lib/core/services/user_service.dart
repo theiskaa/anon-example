@@ -133,4 +133,15 @@ class UserService {
       return false;
     }
   }
+
+  Future<void> clearList({
+    String listKey = LocalDbKeys.savedPosts,
+    String listLengthKey = LocalDbKeys.savedPostsLength,
+  }) async {
+    if (_preferences == null)
+      _preferences = await SharedPreferences.getInstance();
+
+    await _preferences.remove(listKey);
+    _preferences.remove(listLengthKey);
+  }
 }

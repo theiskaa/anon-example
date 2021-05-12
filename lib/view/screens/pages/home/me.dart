@@ -1,5 +1,6 @@
 import 'package:anon/core/blocs/auth/auth_bloc.dart';
 import 'package:anon/core/blocs/userservice/userservice_bloc.dart';
+import 'package:anon/core/services/user_service.dart';
 import 'package:anon/view/widgets/anon_widgets.dart';
 import 'package:anon/view/widgets/components/appbars.dart';
 import 'package:anon/view/widgets/components/opacity_button.dart';
@@ -55,41 +56,65 @@ class _MeState extends AnonState<Me> {
           SizedBox(height: 10),
           divider,
           SizedBox(height: 20),
-          Container(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Favorite Posts:",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
-            ),
-          ),
+          titleAndClearButton(),
           SizedBox(height: 20),
-          Column(
-            children: state.savedPosts
-                .map(
-                  (post) => PostCardWidget(
-                    postModel: post,
-                    onTap: () => Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => ViewPost(
-                          postModel: post,
-                          postIsSaved: true,
-                        ),
-                      ),
-                    ),
-                    onViewCommentsTap: () => Navigator.push(
-                      context,
-                      routeWithTransition(ViewComments(
-                        post: post,
-                        postIsSaved: true,
-                      )),
-                    ),
-                  ),
-                )
-                .toList(),
-          )
+          posts(state)
         ],
       ),
+    );
+  }
+
+  Container titleAndClearButton() {
+    return Container(
+      alignment: Alignment.topLeft,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Favorite Posts:",
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
+          ),
+          OpacityButton(
+            onTap: () async {
+              await UserService().clearList();
+              BlocProvider.of<UserserviceBloc>(context)
+                  .add(UserServiceEvent.getSavedStart());
+            },
+            child: Text(
+              "Clear all",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Column posts(UserServiceState state) {
+    return Column(
+      children: state.savedPosts
+          .map(
+            (post) => PostCardWidget(
+              postModel: post,
+              onTap: () => Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => ViewPost(
+                    postModel: post,
+                    postIsSaved: true,
+                  ),
+                ),
+              ),
+              onViewCommentsTap: () => Navigator.push(
+                context,
+                routeWithTransition(ViewComments(
+                  post: post,
+                  postIsSaved: true,
+                )),
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 
