@@ -15,8 +15,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'view_comments.dart';
 
 class ViewPost extends AnonStatefulWidget {
+  final bool postIsSaved;
   final PostModel postModel;
-  ViewPost({@required this.postModel});
+  ViewPost({@required this.postModel, this.postIsSaved = false});
   @override
   _ViewPostState createState() => _ViewPostState();
 }
@@ -39,17 +40,19 @@ class _ViewPostState extends AnonState<ViewPost> {
 
   DefaultAppBar buildAppBar() {
     return DefaultAppBar(
-      actions: [
-        OpacityButton(
-          child: Icon(Icons.favorite_rounded, color: Colors.black),
-          onTap: () {
-            BlocProvider.of<UserserviceBloc>(context).add(
-              UserServiceEvent.savePostStart(widget.postModel),
-            );
-          },
-        ),
-        SizedBox(width: 15),
-      ],
+      actions: widget.postIsSaved
+          ? null
+          : [
+              OpacityButton(
+                child: Icon(Icons.favorite_rounded, color: Colors.black),
+                onTap: () {
+                  BlocProvider.of<UserserviceBloc>(context).add(
+                    UserServiceEvent.savePostStart(widget.postModel),
+                  );
+                },
+              ),
+              SizedBox(width: 15),
+            ],
     );
   }
 

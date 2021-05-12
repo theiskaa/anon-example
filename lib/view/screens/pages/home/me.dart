@@ -4,10 +4,14 @@ import 'package:anon/view/widgets/anon_widgets.dart';
 import 'package:anon/view/widgets/components/appbars.dart';
 import 'package:anon/view/widgets/components/opacity_button.dart';
 import 'package:anon/view/widgets/components/post_card.dart';
+import 'package:anon/view/widgets/utils/route_with_transition.dart';
 import 'package:anon/view/widgets/utils/widget_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'view_comments.dart';
+import 'view_post.dart';
 
 class Me extends AnonStatefulWidget {
   Me({Key key}) : super(key: key);
@@ -62,7 +66,25 @@ class _MeState extends AnonState<Me> {
           Column(
             children: state.savedPosts
                 .map(
-                  (post) => PostCardWidget(postModel: post, onTap: () {}),
+                  (post) => PostCardWidget(
+                    postModel: post,
+                    onTap: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => ViewPost(
+                          postModel: post,
+                          postIsSaved: true,
+                        ),
+                      ),
+                    ),
+                    onViewCommentsTap: () => Navigator.push(
+                      context,
+                      routeWithTransition(ViewComments(
+                        post: post,
+                        postIsSaved: true,
+                      )),
+                    ),
+                  ),
                 )
                 .toList(),
           )
