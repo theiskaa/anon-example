@@ -63,5 +63,41 @@ void main() {
 
       expect(userServiceEvent.type, UserServiceEvents.putCommentError);
     });
+
+    test('getSavedStart', () {
+      userServiceEvent = UserServiceEvent.getSavedStart();
+
+      expect(userServiceEvent.type, UserServiceEvents.getSavedStart);
+    });
+
+    test('getSavedSuccess', () {
+      userServiceEvent = UserServiceEvent.getSavedSuccess();
+
+      expect(userServiceEvent.type, UserServiceEvents.getSavedSuccess);
+    });
+
+    test('getSavedError', () {
+      userServiceEvent = UserServiceEvent.getSavedError();
+
+      expect(userServiceEvent.type, UserServiceEvents.getSavedError);
+    });
+
+    test('savePostStart', () {
+      userServiceEvent = UserServiceEvent.savePostStart(postModel);
+
+      expect(userServiceEvent.type, UserServiceEvents.savePostStart);
+    });
+
+    test('savePostSuccess', () {
+      userServiceEvent = UserServiceEvent.savePostSuccess();
+
+      expect(userServiceEvent.type, UserServiceEvents.savePostSuccess);
+    });
+
+    test('savePostError', () {
+      userServiceEvent = UserServiceEvent.savePostError();
+
+      expect(userServiceEvent.type, UserServiceEvents.savePostError);
+    });
   });
 }

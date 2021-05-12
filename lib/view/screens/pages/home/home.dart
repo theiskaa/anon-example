@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:anon/core/blocs/auth/auth_bloc.dart';
 import 'package:anon/core/blocs/userservice/userservice_bloc.dart';
 import 'package:anon/view/screens/pages/home/create_post.dart';
 import 'package:anon/view/widgets/anon_widgets.dart';
@@ -114,16 +113,6 @@ class HomeState extends AnonState<Home> {
   AppBarWithLogo _appbar(BuildContext context) {
     return AppBarWithLogo(
       actions: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15),
-          child: OpacityButton(
-            key: Key('logout.button'),
-            child: Icon(Icons.logout, color: Colors.black),
-            onTap: () {
-              BlocProvider.of<AuthBloc>(context).add(AuthEvent.logoutStart());
-            },
-          ),
-        ),
         CreateButton(
           key: Key('create.button'),
           onTap: () => Navigator.push(

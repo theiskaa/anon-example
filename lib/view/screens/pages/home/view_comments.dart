@@ -9,8 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ViewComments extends AnonStatefulWidget {
+  final bool postIsSaved;
   final PostModel post;
-  ViewComments({@required this.post});
+  ViewComments({@required this.post, this.postIsSaved = false});
 
   @override
   _ViewCommentsState createState() => _ViewCommentsState();
@@ -29,10 +30,12 @@ class _ViewCommentsState extends AnonState<ViewComments> {
         ),
       ),
       body: bodyWithListener(),
-      bottomNavigationBar: CommentField(
-        controller: _controller,
-        onSend: onPutComment,
-      ),
+      bottomNavigationBar: widget.postIsSaved
+          ? SizedBox.shrink()
+          : CommentField(
+              controller: _controller,
+              onSend: onPutComment,
+            ),
     );
   }
 

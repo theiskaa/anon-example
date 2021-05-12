@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -28,15 +29,20 @@ void main() {
   group("[Main Page]", () {
     Future<void> testStatelessWidgets(WidgetTester tester) async {
       expect(find.byType(Home), findsOneWidget);
+      expect(find.byType(BottomNavigationBar), findsOneWidget);
+      // expect(find.byType(BottomNavigationBarItem), findsNWidgets(2));
     }
 
     testWidgets(
       'should contain initial states and widgets',
-      (WidgetTester tester) async => await asyncTestWidgets(
-        tester,
-        build: testableWidgetBuilder.buildTestableStateWidget,
-        testCases: [testStatelessWidgets],
-      ),
+      (WidgetTester tester) async => await asyncTestWidgets(tester,
+          build: testableWidgetBuilder.buildTestableStateWidget,
+          testCases: [testStatelessWidgets], postProcess: () async {
+        final MainPageState mainPageState = tester.state(find.byType(MainPage));
+
+        expect(mainPageState.selectedPage, 0);
+        await tester.tap(find.byType(BottomNavigationBar));
+      }),
     );
   });
 }

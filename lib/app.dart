@@ -29,8 +29,9 @@ class _AppState extends AnonState<App> {
           create: (context) => AuthBloc(authService: _authService),
         ),
         BlocProvider<UserserviceBloc>(
-          create: (context) =>
-              UserserviceBloc()..add(UserServiceEvent.getAllStart()),
+          create: (context) => UserserviceBloc()
+            ..add(UserServiceEvent.getAllStart())
+            ..add(UserServiceEvent.getSavedStart()),
         )
       ],
       child: repoProvider(),
