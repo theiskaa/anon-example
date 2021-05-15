@@ -110,17 +110,15 @@ class HomeState extends AnonState<Home> {
     );
   }
 
-  AppBarWithLogo _appbar(BuildContext context) {
-    return AppBarWithLogo(
-      actions: [
-        CreateButton(
-          key: Key('create.button'),
-          onTap: () => Navigator.push(
-            context,
-            routeWithTransition(CreatePost()),
-          ),
+  Widget _appbar(BuildContext context) {
+    return SearchBar(
+      action: CreateButton(
+        key: Key('create.button'),
+        onTap: () => Navigator.push(
+          context,
+          routeWithTransition(CreatePost()),
         ),
-      ],
+      ),
     );
   }
 }

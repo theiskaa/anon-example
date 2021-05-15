@@ -169,6 +169,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  field_suggestion:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: special-for-anon
+      resolved-ref: "6c9c317e54da552ea348f8f2f9559cfb9c710a6f"
+      url: "git://github.com/theiskaa/field_suggestion.git"
+    source: git
+    version: "0.1.1"
   file:
     dependency: transitive
     description:
