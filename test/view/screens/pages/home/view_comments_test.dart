@@ -6,6 +6,7 @@ import 'package:anon/view/widgets/components/appbars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:anon/core/system/anon.dart';
 import 'package:anon/core/utils/test_helpers.dart';
@@ -60,9 +61,12 @@ void main() {
       expect(find.byType(Scaffold), findsOneWidget);
       expect(find.byType(DefaultAppBar), findsOneWidget);
       expect(find.byType(SingleChildScrollView), findsOneWidget);
-      expect(find.byType(Column), findsOneWidget);
-      expect(find.byType(Text), findsNWidgets(3));
+      expect(find.byType(Column), findsNWidgets(2));
+      expect(find.byType(Text), findsNWidgets(2));
+      expect(find.byType(Padding), findsNWidgets(12));
       expect(find.byType(ListTile), findsOneWidget);
+      expect(find.byType(Container), findsNWidgets(4));
+      expect(find.byType(MarkdownBody), findsOneWidget);
       expect(
         find.byIcon(CupertinoIcons.arrowshape_turn_up_right_fill),
         findsOneWidget,
