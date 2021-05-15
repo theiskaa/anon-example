@@ -7,6 +7,7 @@ import 'package:anon/view/widgets/components/comment_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ViewComments extends AnonStatefulWidget {
   final bool postIsSaved;
@@ -24,10 +25,7 @@ class _ViewCommentsState extends AnonState<ViewComments> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: DefaultAppBar(
-        centerWidget: Text(
-          "Comments of - ${widget.post.title}",
-          style: TextStyle(color: Colors.black),
-        ),
+        centerWidget: Text("Comments", style: TextStyle(color: Colors.black)),
       ),
       body: bodyWithListener(),
       bottomNavigationBar: widget.postIsSaved
@@ -82,12 +80,22 @@ class _ViewCommentsState extends AnonState<ViewComments> {
     );
   }
 
-  ListTile commentCard(comment) {
-    return ListTile(
-      title: Text(comment['title']),
-      leading: Icon(
-        CupertinoIcons.arrowshape_turn_up_right_fill,
-        color: Colors.blueGrey,
+  Widget commentCard(comment) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: ListTile(
+        title: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(width: .1),
+          ),
+          padding: EdgeInsets.all(8),
+          child: MarkdownBody(data: comment['title']),
+        ),
+        leading: Icon(
+          CupertinoIcons.arrowshape_turn_up_right_fill,
+          color: Colors.blueGrey,
+        ),
       ),
     );
   }
