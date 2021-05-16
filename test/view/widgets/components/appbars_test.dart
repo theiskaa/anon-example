@@ -1,19 +1,56 @@
+import 'package:anon/core/blocs/userservice/userservice_bloc.dart';
+import 'package:anon/core/model/post.dart';
+import 'package:anon/core/system/anon.dart';
+import 'package:anon/core/utils/test_helpers.dart';
 import 'package:anon/view/widgets/components/appbars.dart';
 import 'package:anon/view/widgets/components/opacity_button.dart';
+import 'package:anon/view/widgets/opacity_animator.dart';
+import 'package:field_suggestion/field_suggestion.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  Anon anon;
+  Widget searchBar;
   Widget appBarWithLogo;
   Widget defaultAppBar;
 
+  TestableWidgetBuilder testableWidgetBuilderForSearchBar;
   Widget mainWidgetForAppBarWithLogo;
   Widget mainWidgetForDefaultAppBar;
 
+  MockNavigatorObserver navigatorObserver;
+
+  const searchablePosts = <PostModel>[
+    PostModel(
+      userID: 'fasgfasgasgasgasg',
+      postID: 'ighuqioialnskaisogq',
+      title: 'Test title',
+      comments: [],
+      content: 'something interesting',
+    )
+  ];
+
   setUpAll(() {
+    anon = Anon();
+
+    searchBar = SearchBar(posts: searchablePosts);
     appBarWithLogo = AppBarWithLogo();
     defaultAppBar = DefaultAppBar(
       onLeadingTap: () {},
+    );
+
+    navigatorObserver = MockNavigatorObserver();
+
+    testableWidgetBuilderForSearchBar = TestableWidgetBuilder(
+      enablePageTesting: true,
+      anon: anon,
+      widget: Scaffold(appBar: searchBar),
+      navigatorObservers: [navigatorObserver],
+      blocProviders: [
+        BlocProvider<UserserviceBloc>(create: (context) => UserserviceBloc()),
+      ],
     );
 
     mainWidgetForAppBarWithLogo = MaterialApp(
@@ -24,6 +61,59 @@ void main() {
     mainWidgetForDefaultAppBar = MaterialApp(
       title: "Default AppBar",
       home: Scaffold(appBar: defaultAppBar),
+    );
+  });
+
+  group("[SearchBar]", () {
+    Future<void> widgetAndFieldTests(WidgetTester tester) async {
+      expect(find.byType(Scaffold), findsOneWidget);
+      expect(find.byType(SearchBar), findsOneWidget);
+
+      expect(find.byType(AppBar), findsOneWidget);
+      expect(find.byType(OpacityAnimator), findsNWidgets(2));
+      expect(find.byType(SizedBox), findsOneWidget);
+      expect(find.byType(Center), findsNWidgets(2));
+      expect(find.byType(OpacityButton), findsOneWidget);
+      expect(find.byType(Icon), findsOneWidget);
+      expect(find.byType(FieldSuggestion), findsNothing);
+
+      expect(find.byKey(Key('anon.logo')), findsOneWidget);
+    }
+
+    testWidgets(
+      'test initial widget/states & enter text and expect widget',
+      (WidgetTester tester) async => await asyncTestWidgets(
+        tester,
+        build: testableWidgetBuilderForSearchBar.buildTestableStateWidget,
+        testCases: [widgetAndFieldTests],
+        postProcess: () async {
+          final SearchBarState searchBarState =
+              tester.state(find.byType(SearchBar));
+
+          final searchButton = find.byKey(Key('enable.searching.button'));
+          final searchField = find.byKey(Key("search.field"));
+          final resultPost = find.byKey(Key('suggested.item'));
+
+          expect(searchBarState.isSearchingEnabled, false);
+
+          await tester.tap(searchButton);
+          await tester.pumpAndSettle();
+
+          expect(searchBarState.isSearchingEnabled, true);
+          expect(searchField, findsOneWidget);
+
+          await tester.enterText(searchField, 'Test');
+          await tester.pumpAndSettle();
+
+          expect(resultPost, findsOneWidget);
+
+          await tester.tap(resultPost);
+          await tester.pumpAndSettle();
+
+          // Verify that navigation was pushed.
+          verify(navigatorObserver.didPush(any, any));
+        },
+      ),
     );
   });
 
