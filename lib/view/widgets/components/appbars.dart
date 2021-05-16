@@ -1,30 +1,28 @@
-import 'package:anon/core/blocs/userservice/userservice_bloc.dart';
-import 'package:anon/view/screens/pages/home/view_post.dart';
-import 'package:anon/view/widgets/components/opacity_button.dart';
-import 'package:anon/view/widgets/opacity_animator.dart';
 import 'package:field_suggestion/field_suggestion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:anon/core/model/post.dart';
+import 'package:anon/view/screens/pages/home/view_post.dart';
+import 'package:anon/view/widgets/opacity_animator.dart';
 
 import '../anon_widgets.dart';
+import 'opacity_button.dart';
 
 class SearchBar extends StatefulWidget with PreferredSizeWidget {
+  final List<PostModel> posts;
   final Widget action;
 
-  SearchBar({
-    Key key,
-    this.action,
-  }) : super(key: key);
+  SearchBar({Key key, @required this.posts, this.action}) : super(key: key);
 
   @override
-  _SearchBarState createState() => _SearchBarState();
+  SearchBarState createState() => SearchBarState();
 
   @override
   Size get preferredSize => Size.fromHeight(55);
 }
 
-class _SearchBarState extends State<SearchBar>
+class SearchBarState extends State<SearchBar>
     with SingleTickerProviderStateMixin {
   bool isSearchingEnabled = false;
   final fieldController = TextEditingController();
@@ -51,6 +49,7 @@ class _SearchBarState extends State<SearchBar>
   Center searchButton() {
     return Center(
       child: OpacityButton(
+        key: Key('enable.searching.button'),
         onTap: () => setState(() => isSearchingEnabled = !isSearchingEnabled),
         child: Icon(
           !isSearchingEnabled
@@ -78,10 +77,10 @@ class _SearchBarState extends State<SearchBar>
 
   FieldSuggestion buildSearchField(BuildContext context) {
     return FieldSuggestion(
+      key: Key("search.field"),
       hint: "Search by post title",
       textController: fieldController,
-      suggestionList:
-          BlocProvider.of<UserserviceBloc>(context).state.postModelList,
+      suggestionList: widget.posts,
       wDivider: true,
       onItemSelected: (dynamic post) => Navigator.push(
         context,

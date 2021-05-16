@@ -174,7 +174,7 @@ packages:
     description:
       path: "."
       ref: special-for-anon
-      resolved-ref: "6c9c317e54da552ea348f8f2f9559cfb9c710a6f"
+      resolved-ref: "559f16047488edd49fa674ded2812abd391c5e87"
       url: "git://github.com/theiskaa/field_suggestion.git"
     source: git
     version: "0.1.1"

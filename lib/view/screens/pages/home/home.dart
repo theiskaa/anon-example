@@ -112,6 +112,7 @@ class HomeState extends AnonState<Home> {
 
   Widget _appbar(BuildContext context) {
     return SearchBar(
+      posts: BlocProvider.of<UserserviceBloc>(context).state.postModelList,
       action: CreateButton(
         key: Key('create.button'),
         onTap: () => Navigator.push(
