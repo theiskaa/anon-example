@@ -35,10 +35,12 @@ dependencies:
   # To save data to local db.
   shared_preferences: ^2.0.5
 
+  # field_suggestion:
+  #   git:
+  #     url: git://github.com/theiskaa/field_suggestion.git
+  #     ref: special-for-anon
   field_suggestion:
-    git:
-      url: git://github.com/theiskaa/field_suggestion.git
-      ref: special-for-anon
+    path: /Users/ismaelshakverdiev/DEV/projects/field_suggestion
 
   cupertino_icons: ^1.0.2
   mockito:
