@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:anon/core/blocs/userservice/userservice_bloc.dart';
 import 'package:anon/core/model/post.dart';
 import 'package:anon/core/utils/fire.dart';
@@ -23,6 +25,7 @@ class _CreatePostState extends AnonState<CreatePost> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  var random = Random();
 
   String previewString = '';
 
@@ -30,6 +33,17 @@ class _CreatePostState extends AnonState<CreatePost> {
 
   int segmentedValue = 0;
   final views = const <int, Widget>{0: Text('Create'), 1: Text('Preview')};
+
+  final postColors = const [
+    "#F5EEF8",
+    "#E8F8F5",
+    "#EBF5FB",
+    "#EAFAF1",
+    "#FEF9E7",
+    "#FDFEFE",
+    "#FDFEFE",
+    "#FDFEFE",
+  ];
 
   @override
   void initState() {
@@ -43,10 +57,13 @@ class _CreatePostState extends AnonState<CreatePost> {
       if (segmentedValue == 1 && _titleController.text.length < 3)
         setState(() => segmentedValue = 0);
       else {
+        var randomColorIndex = random.nextInt(postColors.length);
+
         var post = PostModel(
           userID: fireauthInstance.currentUser.uid ?? "Anon",
           content: _contentController.text,
           title: _titleController.text,
+          color: postColors[randomColorIndex],
         );
 
         _userserviceBloc.add(UserServiceEvent.createPostStart(post));

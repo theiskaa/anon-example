@@ -101,6 +101,7 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
             title: event.postModel.title,
             content: event.postModel.content,
             comments: [],
+            color: event.postModel.color,
           ),
         );
 
