@@ -29,7 +29,8 @@ void main() {
       title: 'Test title',
       comments: [],
       content: 'something interesting',
-    )
+      color: '#F5EEF8',
+    ),
   ];
 
   setUpAll(() {
