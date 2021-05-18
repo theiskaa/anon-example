@@ -21,6 +21,7 @@ class UserService {
         'content': postModel.content,
         'userID': postModel.userID,
         'date': Timestamp.now(),
+        'color': postModel.color,
       });
       return true;
     } catch (e) {

@@ -54,9 +54,8 @@ class SearchBarState extends State<SearchBar>
         child: Icon(
           !isSearchingEnabled
               ? CupertinoIcons.search_circle_fill
-              : CupertinoIcons.clear,
+              : CupertinoIcons.clear_circled_solid,
           color: Colors.black,
-          size: isSearchingEnabled ? 20 : 30,
         ),
       ),
     );

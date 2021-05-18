@@ -1,4 +1,5 @@
 import 'package:anon/core/model/comment.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,6 +21,7 @@ void main() {
       title: 'Lorem ipsum dolor sit amet ..',
       content: 'More lorem ipsum 123123',
       comments: [CommentModel(title: 'test title')],
+      color: "#E8F8F5",
     );
 
     secondPostModel = postModel.copyWith(
@@ -57,17 +59,19 @@ void main() {
       expect(find.byType(PostCardWidget), findsOneWidget);
 
       // [PostCardWidget] tests.
-      expect(find.byType(OpacityButton), findsNWidgets(2));
-      expect(find.byType(Stack), findsNWidgets(2));
+      expect(find.byType(OpacityButton), findsOneWidget);
       expect(find.byType(Container), findsNWidgets(3));
-      expect(find.byType(Padding), findsNWidgets(5));
-      expect(find.byType(Text), findsNWidgets(4));
+      expect(find.byType(Padding), findsNWidgets(2));
+      expect(find.byType(Text), findsNWidgets(2));
       expect(find.byType(Center), findsOneWidget);
-      expect(find.byType(SizedBox), findsOneWidget);
+      expect(find.byType(SizedBox), findsNWidgets(4));
       expect(find.text(postModel.comments.length.toString()), findsOneWidget);
+      expect(
+        find.byIcon(CupertinoIcons.bubble_left_bubble_right_fill),
+        findsOneWidget,
+      );
 
       // Gesture test.
-      await tester.tap(find.byKey(Key('view.comments.button')));
       await tester.tap(find.byKey(Key('card.button')));
     });
 
@@ -75,8 +79,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(MaterialApp(home: secondPostCardWidget));
 
-      expect(find.byKey(Key("SizedBox.shrink")), findsOneWidget);
-      expect(find.byKey(Key("SizedBox.shrink.2")), findsOneWidget);
+      expect(find.byType(SizedBox), findsNWidgets(4));
       expect(find.text("N"), findsOneWidget);
     });
   });

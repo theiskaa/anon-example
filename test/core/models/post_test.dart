@@ -27,6 +27,7 @@ main() {
       title: "title",
       content: 'content',
       comments: commentModelList,
+      color: "#F4ECF7",
     );
 
     postModelJson = {
@@ -35,6 +36,7 @@ main() {
       'title': "title",
       'content': "content",
       'comments': commentModelList,
+      'color': "#F4ECF7",
     };
   });
 
@@ -47,6 +49,7 @@ main() {
       expect(postModel.title, postModelFromJson.title);
       expect(postModel.content, postModelFromJson.content);
       expect(postModel.comments, postModelFromJson.comments);
+      expect(postModel.color, postModelFromJson.color);
     });
 
     test('converts to json correctly', () {
@@ -66,6 +69,7 @@ main() {
         title: 'second title',
         content: 'second content',
         comments: [],
+        color: "#E8F8F5",
       );
 
       expect(copiedSameModel.userID, postModel.userID);
@@ -73,12 +77,14 @@ main() {
       expect(copiedSameModel.title, postModel.title);
       expect(copiedSameModel.content, postModel.content);
       expect(copiedSameModel.comments, postModel.comments);
+      expect(copiedSameModel.color, postModel.color);
 
       expect(newPostModel.userID, 'asf1iu3rhfajsf2');
       expect(newPostModel.postID, 'gFsuwoh23RfqwAfasRHfuw');
       expect(newPostModel.title, 'second title');
       expect(newPostModel.content, 'second content');
       expect(newPostModel.comments, []);
+      expect(newPostModel.color, "#E8F8F5");
     });
   });
 }
