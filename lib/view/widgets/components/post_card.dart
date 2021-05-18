@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:anon/core/model/post.dart';
 import 'package:anon/view/widgets/components/opacity_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:anon/view/widgets/utils/ext.dart' as ext;
 
 import '../anon_widgets.dart';
 
@@ -15,7 +17,7 @@ class PostCardWidget extends AnonStatelessWidget {
     Key key,
     @required this.postModel,
     @required this.onTap,
-    this.onViewCommentsTap,
+    @required this.onViewCommentsTap,
   }) : super(key: key);
 
   @override
@@ -23,120 +25,55 @@ class PostCardWidget extends AnonStatelessWidget {
     return OpacityButton(
       key: Key('card.button'),
       onTap: onTap,
-      opacityValue: .7,
-      child: Stack(
-        children: [
-          buildButtonBody(context),
-          likeCounterCircle(),
-        ],
-      ),
-    );
-  }
-
-  Container likeCounterCircle() {
-    return Container(
-      height: 50,
-      width: 50,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: Colors.blue[700],
+      onLongPress: onViewCommentsTap,
+      opacityValue: .5,
+      child: Container(
+        margin: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: postModel.color.toColor(),
+          borderRadius: BorderRadius.circular(20),
         ),
-      ),
-      child: Center(
-        child: Text(
-          postModel.comments.length == 0 ? "N" : "${postModel.comments.length}",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
+        padding: EdgeInsets.all(10),
+        width: MediaQuery.of(context).size.width - 10,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [buildTitleWidget(), SizedBox(height: 10), buildComments()],
         ),
       ),
     );
   }
 
-  Container buildButtonBody(BuildContext context) {
+  Container buildComments() {
     return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.all(8.0),
-      width: MediaQuery.of(context).size.width - 50,
-      decoration: buildCardDecoration(),
-      child: Column(
-        children: [
-          buildTitleWidget(),
-          SizedBox(height: 30),
-          buildDownActs(),
-        ],
-      ),
-    );
-  }
-
-  Padding buildDownActs() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
+      alignment: Alignment.bottomRight,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          buildTaptoViewMoreHolder(),
-          buildViewCommentsButton(),
+          Icon(CupertinoIcons.bubble_left_bubble_right_fill),
+          SizedBox(width: 5),
+          Text(
+            postModel.comments.length > 0
+                ? "${postModel.comments.length}"
+                : "N",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(width: 5),
         ],
       ),
     );
-  }
-
-  Widget buildTaptoViewMoreHolder() {
-    if (postModel.content.length > 10) {
-      return Text(
-        'Tap to view more',
-        style: TextStyle(
-          color: Colors.black.withOpacity(.5),
-        ),
-      );
-    } else {
-      return SizedBox.shrink(key: Key("SizedBox.shrink"));
-    }
-  }
-
-  Widget buildViewCommentsButton() {
-    if (postModel.comments.length > 0) {
-      return OpacityButton(
-        key: Key('view.comments.button'),
-        onTap: onViewCommentsTap,
-        child: Text(
-          'View comments',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-      );
-    } else {
-      return SizedBox.shrink(key: Key("SizedBox.shrink.2"));
-    }
   }
 
   Container buildTitleWidget() {
     return Container(
-      padding: EdgeInsets.only(left: 15, right: 10),
+      alignment: Alignment.topLeft,
       child: Text(
         postModel.title ?? "",
-        textAlign: TextAlign.right,
+        textAlign: TextAlign.left,
         style: TextStyle(
-          color: Colors.black,
-          fontSize: 15.5,
-          fontWeight: FontWeight.w600,
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
         ),
       ),
-    );
-  }
-
-  BoxDecoration buildCardDecoration() {
-    return BoxDecoration(
-      color: Colors.white,
-      border: Border.all(color: Colors.blueGrey[700], width: 2),
-      borderRadius: BorderRadius.circular(20),
     );
   }
 }

@@ -12,18 +12,21 @@ void main() {
 
   TestableWidgetBuilder testableWidgetBuilder;
 
-  List<PostModel> postsList = List.generate(
-    30,
-    (i) => PostModel(
-      userID: "UID $i",
-      title: "Title $i",
-      content: "Content $i",
-      comments: [CommentModel(title: 'test title')],
-    ),
-  );
+  List<PostModel> postsList;
 
   setUpAll(() async {
     anon = Anon();
+
+    postsList = List.generate(
+      30,
+      (i) => PostModel(
+        userID: "UID $i",
+        title: "Title $i",
+        content: "Content $i",
+        comments: [CommentModel(title: 'test title')],
+        color: "#FEF9E7",
+      ),
+    );
 
     testableWidgetBuilder = TestableWidgetBuilder(
       enablePageTesting: false,
@@ -35,9 +38,9 @@ void main() {
   group("[LazyLoadListView]", () {
     Future<void> testLoadedList(WidgetTester tester) async {
       expect(find.byType(ListView), findsOneWidget);
-      expect(find.byType(PostCardWidget), findsNWidgets(6));
-      expect(find.byType(Padding), findsNWidgets(30));
-      expect(find.byType(Center), findsNWidgets(12));
+      expect(find.byType(PostCardWidget), findsNWidgets(7));
+      expect(find.byType(Padding), findsNWidgets(14));
+      expect(find.byType(Center), findsNWidgets(14));
     }
 
     testWidgets(

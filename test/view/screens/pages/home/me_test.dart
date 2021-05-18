@@ -26,6 +26,7 @@ void main() {
         title: "Title of Post",
         content: 'Des of post',
         comments: [],
+        color: "#A9CCE3",
       )
     ];
 
@@ -77,10 +78,10 @@ void main() {
       expect(find.byType(SingleChildScrollView), findsOneWidget);
       expect(find.byType(Column), findsNWidgets(3));
       expect(find.byType(Row), findsNWidgets(3));
-      expect(find.byType(SizedBox), findsNWidgets(7));
+      expect(find.byType(SizedBox), findsNWidgets(9));
       expect(find.byType(Container), findsNWidgets(5));
       expect(find.byType(PostCardWidget), findsOneWidget);
-      expect(find.byType(Text), findsNWidgets(5));
+      expect(find.byType(Text), findsNWidgets(4));
     }
 
     testWidgets(
