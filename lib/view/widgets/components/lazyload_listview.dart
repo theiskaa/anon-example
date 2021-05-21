@@ -26,7 +26,6 @@ class _LazyLoadListViewState extends AnonState<LazyLoadListView> {
   @override
   void initState() {
     super.initState();
-    // _controller = widget.scrollController ?? ScrollController();
     udatedPosts = widget.defaultList.getRange(0, currentMaxPostLength).toList();
     _controller.addListener(() {
       if (_controller.position.pixels == _controller.position.maxScrollExtent)
@@ -59,9 +58,8 @@ class _LazyLoadListViewState extends AnonState<LazyLoadListView> {
         itemCount: currentMaxPostLength,
         controller: _controller,
         itemBuilder: (context, index) {
-          if (index == currentMaxPostLength - 1) {
-            return loadingAndEmptytitle();
-          }
+          if (index == currentMaxPostLength - 1) return loadingAndEmptytitle();
+
           return buildListItem(index);
         });
   }
