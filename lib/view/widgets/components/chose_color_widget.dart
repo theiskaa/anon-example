@@ -1,4 +1,5 @@
 import 'package:anon/view/widgets/components/opacity_button.dart';
+import 'package:anon/view/widgets/opacity_animator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,15 +8,21 @@ import 'package:anon/view/widgets/utils/ext.dart';
 
 class ChooseColorCard extends AnonStatefulWidget {
   final List<String> postColors;
+  final Function(String) onSelected;
+  final Function onUnselected;
 
-  ChooseColorCard({Key key, @required this.postColors}) : super(key: key);
+  ChooseColorCard({
+    Key key,
+    @required this.postColors,
+    @required this.onSelected,
+    @required this.onUnselected,
+  }) : super(key: key);
 
   @override
   _ChooseColorCardState createState() => _ChooseColorCardState();
 }
 
-class _ChooseColorCardState extends AnonState<ChooseColorCard>
-    with SingleTickerProviderStateMixin {
+class _ChooseColorCardState extends AnonState<ChooseColorCard> {
   List<Color> colors = [];
   String choosedColor;
 
@@ -30,6 +37,7 @@ class _ChooseColorCardState extends AnonState<ChooseColorCard>
       choosedColor = color;
       colors = [color.toColor(), color.toColor()];
     });
+    widget.onSelected(color);
   }
 
   void removeChoosedColor() {
@@ -37,6 +45,7 @@ class _ChooseColorCardState extends AnonState<ChooseColorCard>
       choosedColor = null;
       colors = widget.postColors.map<Color>((i) => i.toColor()).toList();
     });
+    widget.onUnselected();
   }
 
   @override
@@ -55,8 +64,8 @@ class _ChooseColorCardState extends AnonState<ChooseColorCard>
   }
 
   Widget choosedColorArea() {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 800),
+    return OpacityAnimator(
+      duration: const Duration(milliseconds: 500),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -74,7 +83,7 @@ class _ChooseColorCardState extends AnonState<ChooseColorCard>
             child: const Icon(
               CupertinoIcons.clear_circled_solid,
               color: Colors.black,
-              size: 18,
+              size: 17,
             ),
           ),
         ],
@@ -85,40 +94,24 @@ class _ChooseColorCardState extends AnonState<ChooseColorCard>
   Widget choosingArea() {
     return AnimatedContainer(
       duration: Duration(milliseconds: 800),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: widget.postColors
-            .map((stringColor) => OpacityButton(
+      child: OpacityAnimator(
+        duration: const Duration(milliseconds: 500),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: widget.postColors
+              .map(
+                (stringColor) => OpacityButton(
                   onTap: () => chooseColor(stringColor),
-                  child: _ChooseColor(
-                    colorAsString: stringColor,
-                    isChoosed: false,
+                  child: Text(
+                    stringColor.colorToTitle(),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ))
-            .toList(),
-      ),
-    );
-  }
-}
-
-class _ChooseColor extends StatelessWidget {
-  final bool isChoosed;
-  final String colorAsString;
-
-  const _ChooseColor({
-    Key key,
-    this.isChoosed,
-    this.colorAsString,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text(
-        colorAsString.colorToTitle(),
-        style: TextStyle(
-          color: Colors.black.withOpacity(.8),
-          fontWeight: FontWeight.w500,
+                ),
+              )
+              .toList(),
         ),
       ),
     );

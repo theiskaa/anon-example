@@ -29,6 +29,7 @@ class _CreatePostState extends AnonState<CreatePost> {
   var random = Random();
 
   String previewString = '';
+  String selectedColor;
 
   UserserviceBloc _userserviceBloc;
 
@@ -57,13 +58,15 @@ class _CreatePostState extends AnonState<CreatePost> {
       if (segmentedValue == 1 && _titleController.text.length < 3)
         setState(() => segmentedValue = 0);
       else {
-        var randomColorIndex = random.nextInt(postColors.length);
-
+        if (selectedColor == null) {
+          var randomColorIndex = random.nextInt(postColors.length);
+          selectedColor = postColors[randomColorIndex];
+        }
         var post = PostModel(
           userID: fireauthInstance.currentUser.uid ?? "Anon",
           content: _contentController.text,
           title: _titleController.text,
-          color: postColors[randomColorIndex],
+          color: selectedColor,
         );
 
         _userserviceBloc.add(UserServiceEvent.createPostStart(post));
@@ -100,10 +103,10 @@ class _CreatePostState extends AnonState<CreatePost> {
 
   Widget formBody() => Form(
         key: formKey,
-        child: segmentedValue == 0 ? create : preview,
+        child: segmentedValue == 0 ? create() : preview(),
       );
 
-  Widget get preview => SingleChildScrollView(
+  Widget preview() => SingleChildScrollView(
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
@@ -123,18 +126,23 @@ class _CreatePostState extends AnonState<CreatePost> {
                 onTapLink: (text, href, title) => launch(href),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
           ],
         ),
       );
 
-  Widget get create {
+  Widget create() {
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            ChooseColorCard(postColors: postColors.sublist(0, 5)),
+            ChooseColorCard(
+              postColors: postColors.sublist(0, 5),
+              onSelected: (value) => setState(() => selectedColor = value),
+              onUnselected: () => setState(() => selectedColor = null),
+            ),
+            const SizedBox(height: 20),
             TextFormField(
               key: const Key('title.field'),
               controller: _titleController,
@@ -154,6 +162,7 @@ class _CreatePostState extends AnonState<CreatePost> {
                   _customFieldDecoration('Content description as Markdown'),
               onChanged: (val) => setState(() => previewString = val),
             ),
+            const SizedBox(height: 50),
           ],
         ),
       ),

@@ -90,32 +90,25 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
     try {
       final res = await _userService.createPost(postModel: event.postModel);
 
-      if (res) {
-        List<PostModel> posts = List<PostModel>.from(state.postModelList);
+      List<PostModel> posts = List<PostModel>.from(state.postModelList);
 
-        posts.insert(
-          0,
-          state.postModel.copyWith(
-            userID: event.postModel.userID,
-            postID: event.postModel.postID,
-            title: event.postModel.title,
-            content: event.postModel.content,
-            comments: [],
-            color: event.postModel.color,
-          ),
-        );
+      posts.insert(
+        0,
+        state.postModel.copyWith(
+          userID: event.postModel.userID,
+          postID: res,
+          title: event.postModel.title,
+          content: event.postModel.content,
+          comments: [],
+          color: event.postModel.color,
+        ),
+      );
 
-        serviceState = state.copyWith(
-          event: UserServiceEvents.createPostSuccess,
-          loading: false,
-          postModelList: posts,
-        );
-      } else {
-        serviceState = state.copyWith(
-          event: UserServiceEvents.createPostError,
-          loading: false,
-        );
-      }
+      serviceState = state.copyWith(
+        event: UserServiceEvents.createPostSuccess,
+        loading: false,
+        postModelList: posts,
+      );
     } catch (e) {
       serviceState = state.copyWith(
         event: UserServiceEvents.createPostError,
