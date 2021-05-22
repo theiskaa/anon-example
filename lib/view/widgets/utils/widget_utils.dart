@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 /// Custom divider.
 Widget get divider {
-  return Divider(
+  return const Divider(
     height: 5,
     thickness: 1,
     indent: 50,
@@ -12,5 +12,5 @@ Widget get divider {
 }
 
 Center get loadingIndicator {
-  return Center(child: CupertinoActivityIndicator(radius: 20));
+  return const Center(child: const CupertinoActivityIndicator(radius: 20));
 }
