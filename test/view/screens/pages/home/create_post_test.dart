@@ -53,12 +53,12 @@ void main() {
     Future<void> testStatelessWidgets(WidgetTester tester) async {
       expect(find.byType(Scaffold), findsOneWidget);
       expect(find.byType(DefaultAppBar), findsOneWidget);
-      expect(find.byType(Padding), findsNWidgets(7));
+      expect(find.byType(Padding), findsNWidgets(9));
       expect(find.byType(CreateButton), findsOneWidget);
       expect(find.byType(MarkdownEditBar), findsOneWidget);
-      expect(find.byType(OpacityButton), findsNWidgets(10));
+      expect(find.byType(OpacityButton), findsNWidgets(15));
       expect(find.byType(SingleChildScrollView), findsOneWidget);
-      expect(find.byType(Text), findsNWidgets(5));
+      expect(find.byType(Text), findsNWidgets(10));
       expect(find.byType(Center), findsNWidgets(13));
       expect(find.byType(Column), findsOneWidget);
       expect(find.byType(Form), findsOneWidget);

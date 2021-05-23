@@ -63,7 +63,7 @@ void main() {
       expect(find.byType(SingleChildScrollView), findsOneWidget);
       expect(find.byType(Column), findsNWidgets(2));
       expect(find.byType(Text), findsNWidgets(2));
-      expect(find.byType(Padding), findsNWidgets(12));
+      expect(find.byType(Padding), findsNWidgets(13));
       expect(find.byType(ListTile), findsOneWidget);
       expect(find.byType(Container), findsNWidgets(4));
       expect(find.byType(MarkdownBody), findsOneWidget);

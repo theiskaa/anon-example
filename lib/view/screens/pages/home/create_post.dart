@@ -5,6 +5,7 @@ import 'package:anon/core/model/post.dart';
 import 'package:anon/core/utils/fire.dart';
 import 'package:anon/view/widgets/anon_widgets.dart';
 import 'package:anon/view/widgets/components/appbars.dart';
+import 'package:anon/view/widgets/components/chose_color_widget.dart';
 import 'package:anon/view/widgets/components/create_button.dart';
 import 'package:anon/view/widgets/components/markdown_editbar.dart';
 import 'package:anon/view/widgets/utils/widget_utils.dart';
@@ -28,6 +29,7 @@ class _CreatePostState extends AnonState<CreatePost> {
   var random = Random();
 
   String previewString = '';
+  String selectedColor;
 
   UserserviceBloc _userserviceBloc;
 
@@ -38,7 +40,6 @@ class _CreatePostState extends AnonState<CreatePost> {
     "#F5EEF8",
     "#E8F8F5",
     "#EBF5FB",
-    "#EAFAF1",
     "#FEF9E7",
     "#FDFEFE",
     "#FDFEFE",
@@ -57,13 +58,15 @@ class _CreatePostState extends AnonState<CreatePost> {
       if (segmentedValue == 1 && _titleController.text.length < 3)
         setState(() => segmentedValue = 0);
       else {
-        var randomColorIndex = random.nextInt(postColors.length);
-
+        if (selectedColor == null) {
+          var randomColorIndex = random.nextInt(postColors.length);
+          selectedColor = postColors[randomColorIndex];
+        }
         var post = PostModel(
           userID: fireauthInstance.currentUser.uid ?? "Anon",
           content: _contentController.text,
           title: _titleController.text,
-          color: postColors[randomColorIndex],
+          color: selectedColor,
         );
 
         _userserviceBloc.add(UserServiceEvent.createPostStart(post));
@@ -82,13 +85,11 @@ class _CreatePostState extends AnonState<CreatePost> {
           groupValue: segmentedValue,
           children: views,
           backgroundColor: Colors.black,
-          onValueChanged: (i) {
-            setState(() => segmentedValue = i);
-          },
+          onValueChanged: (i) => setState(() => segmentedValue = i),
         ),
         actions: [
           CreateButton(
-            key: Key('create.button'),
+            key: const Key('create.button'),
             onTap: _createPostAndPublish,
           ),
         ],
@@ -102,24 +103,21 @@ class _CreatePostState extends AnonState<CreatePost> {
 
   Widget formBody() => Form(
         key: formKey,
-        child: segmentedValue == 0 ? create : preview,
+        child: segmentedValue == 0 ? create() : preview(),
       );
 
-  Widget get preview => SingleChildScrollView(
+  Widget preview() => SingleChildScrollView(
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               _titleController.text,
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w900,
-              ),
+              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             divider,
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               alignment: Alignment.topLeft,
               child: MarkdownBody(
@@ -128,28 +126,34 @@ class _CreatePostState extends AnonState<CreatePost> {
                 onTapLink: (text, href, title) => launch(href),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 50),
           ],
         ),
       );
 
-  Widget get create {
+  Widget create() {
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
+            ChooseColorCard(
+              postColors: postColors.sublist(0, 5),
+              onSelected: (value) => setState(() => selectedColor = value),
+              onUnselected: () => setState(() => selectedColor = null),
+            ),
+            const SizedBox(height: 20),
             TextFormField(
-              key: Key('title.field'),
+              key: const Key('title.field'),
               controller: _titleController,
               textInputAction: TextInputAction.continueAction,
               decoration: _customFieldDecoration('Content title'),
               validator: (val) =>
                   (val.isEmpty) ? "Title can't be empty!" : null,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             divider,
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
               maxLines: 50,
               controller: _contentController,
@@ -158,6 +162,7 @@ class _CreatePostState extends AnonState<CreatePost> {
                   _customFieldDecoration('Content description as Markdown'),
               onChanged: (val) => setState(() => previewString = val),
             ),
+            const SizedBox(height: 50),
           ],
         ),
       ),

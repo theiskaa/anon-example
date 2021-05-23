@@ -34,14 +34,7 @@ class _AppState extends AnonState<App> {
             ..add(UserServiceEvent.getSavedStart()),
         )
       ],
-      child: repoProvider(),
-    );
-  }
-
-  RepositoryProvider repoProvider() {
-    return RepositoryProvider.value(
-      value: _authService,
-      child: app(),
+      child: RepositoryProvider.value(value: _authService, child: app()),
     );
   }
 
@@ -50,12 +43,8 @@ class _AppState extends AnonState<App> {
       debugShowCheckedModeBanner: false,
       title: 'Anon-app',
       navigatorKey: _navigatorKey,
-      onGenerateRoute: (_) => MaterialPageRoute(
-        builder: (_) => Splash(),
-      ),
-      builder: (context, child) {
-        return blocListener(child);
-      },
+      onGenerateRoute: (_) => MaterialPageRoute(builder: (_) => Splash()),
+      builder: (context, child) => blocListener(child),
     );
   }
 
@@ -74,17 +63,13 @@ class _AppState extends AnonState<App> {
             break;
           case AuthEvents.unauthenticated:
             _navigator.pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => AuthScreen(),
-              ),
+              MaterialPageRoute(builder: (context) => AuthScreen()),
               (route) => false,
             );
             break;
           default:
             _navigator.pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => AuthScreen(),
-              ),
+              MaterialPageRoute(builder: (context) => AuthScreen()),
               (route) => false,
             );
         }

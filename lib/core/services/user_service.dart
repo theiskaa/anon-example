@@ -11,7 +11,7 @@ class UserService {
   static SharedPreferences _preferences;
 
   /// Method for create/publish post to content list.
-  Future<bool> createPost({PostModel postModel}) async {
+  Future<String> createPost({PostModel postModel}) async {
     final post = postsRef.doc();
 
     try {
@@ -23,9 +23,9 @@ class UserService {
         'date': Timestamp.now(),
         'color': postModel.color,
       });
-      return true;
+      return post.id;
     } catch (e) {
-      return false;
+      return "error";
     }
   }
 
