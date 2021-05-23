@@ -79,6 +79,7 @@ class _ChooseColorCardState extends AnonState<ChooseColorCard> {
             ),
           ),
           OpacityButton(
+            key: Key('unselect.button'),
             onTap: removeChoosedColor,
             child: const Icon(
               CupertinoIcons.clear_circled_solid,
@@ -92,27 +93,25 @@ class _ChooseColorCardState extends AnonState<ChooseColorCard> {
   }
 
   Widget choosingArea() {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 800),
-      child: OpacityAnimator(
-        duration: const Duration(milliseconds: 500),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: widget.postColors
-              .map(
-                (stringColor) => OpacityButton(
-                  onTap: () => chooseColor(stringColor),
-                  child: Text(
-                    stringColor.colorToTitle(),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                    ),
+    return OpacityAnimator(
+      duration: const Duration(milliseconds: 500),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: widget.postColors
+            .map(
+              (stringColor) => OpacityButton(
+                key: Key("color-$stringColor"),
+                onTap: () => chooseColor(stringColor),
+                child: Text(
+                  stringColor.colorToTitle(),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-              )
-              .toList(),
-        ),
+              ),
+            )
+            .toList(),
       ),
     );
   }
