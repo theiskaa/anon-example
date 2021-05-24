@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "463297391146",
+    "project_id": "anon-cc03a",
+    "storage_bucket": "anon-cc03a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463297391146:android:27d9e68a09a181b6003153",
+        "android_client_info": {
+          "package_name": "com.example.anon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "463297391146-0eq2tdrpp6lm9dimb23jfrs8k14lqsbv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA0AdMHxi5jf3X2gAF3P2ECo2Es_Cj_VQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "463297391146-0eq2tdrpp6lm9dimb23jfrs8k14lqsbv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "463297391146-4r3ntqgqbqvfunm9hlhkqkphj0f0hgoc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.anon"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

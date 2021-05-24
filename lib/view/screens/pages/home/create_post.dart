@@ -146,7 +146,6 @@ class _CreatePostState extends AnonState<CreatePost> {
             TextFormField(
               key: const Key('title.field'),
               controller: _titleController,
-              textInputAction: TextInputAction.continueAction,
               decoration: _customFieldDecoration('Content title'),
               validator: (val) =>
                   (val.isEmpty) ? "Title can't be empty!" : null,
