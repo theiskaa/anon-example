@@ -19,7 +19,7 @@
   </a>
   <br>
   <a href="https://github.com/theiskaa/anon/releases">
-    <img src="https://img.shields.io/github/v/release/theiskaa/anon?label=last%20release"
+    <img src="https://img.shields.io/github/v/release/theiskaa/anon?label=Last%20release"
       alt="last release" />
   </a>
   <a href="https://github.com/theiskaa/anon/stargazers">
