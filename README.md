@@ -13,10 +13,6 @@
     <img src="https://codecov.io/gh/theiskaa/anon-app/branch/develop/graph/badge.svg?token=vT72y57Pcn"
       alt="Coverage" />
   </a>
-  <a href="https://github.com/theiskaa/anon">
-    <img src="https://img.shields.io/appveyor/build/theiskaa/anon"
-      alt="building" />
-  </a>
   <br>
   <a href="https://github.com/theiskaa/anon/releases">
     <img src="https://img.shields.io/github/v/release/theiskaa/anon?label=Last%20release"
