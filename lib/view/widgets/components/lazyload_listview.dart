@@ -18,8 +18,8 @@ class LazyLoadListView extends AnonStatefulWidget {
 class _LazyLoadListViewState extends AnonState<LazyLoadListView> {
   ScrollController _controller = ScrollController();
 
-  int currentMaxPostLength = 15;
-  int _testMaxLength = 15;
+  int currentMaxPostLength = 10;
+  int _testMaxLength = 10;
 
   List<PostModel> udatedPosts;
 
@@ -35,12 +35,12 @@ class _LazyLoadListViewState extends AnonState<LazyLoadListView> {
 
   void _updatePosts() {
     if (_testMaxLength < widget.defaultList.length)
-      setState(() => _testMaxLength = _testMaxLength + 15);
+      setState(() => _testMaxLength = _testMaxLength + 10);
 
     if (_testMaxLength < widget.defaultList.length) {
       udatedPosts =
-          widget.defaultList.getRange(0, currentMaxPostLength + 15).toList();
-      setState(() => currentMaxPostLength = currentMaxPostLength + 15);
+          widget.defaultList.getRange(0, currentMaxPostLength + 10).toList();
+      setState(() => currentMaxPostLength = currentMaxPostLength + 10);
     } else {
       udatedPosts = widget.defaultList.take(widget.defaultList.length).toList();
       setState(() => currentMaxPostLength = widget.defaultList.length);
@@ -81,7 +81,7 @@ class _LazyLoadListViewState extends AnonState<LazyLoadListView> {
       );
 
   loadingAndEmptytitle() => Padding(
-        padding: const EdgeInsets.only(top: 5),
+        padding: const EdgeInsets.all(8),
         child: _testMaxLength > widget.defaultList.length
             ? buildEmptyTitle()
             : CupertinoActivityIndicator(radius: 15),
