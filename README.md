@@ -44,3 +44,7 @@
 src="https://raw.githubusercontent.com/theiskaa/anon/feature/readme/assets/overview/gifs/searching.gif"> <img height="330" 
 src="https://raw.githubusercontent.com/theiskaa/anon/feature/readme/assets/overview/gifs/commenting.gif"> <img height="330" 
 src="https://raw.githubusercontent.com/theiskaa/anon/feature/readme/assets/overview/gifs/saving.gif">
+
+# Contributions
+**If you find a bug or want a feature, but don't know how to fix/implement it, please fill an *[issue](https://github.com/theiskaa/anon/issues)*.** <br>
+**If you fixed a bug or implemented a new feature, please send a *[pull request](https://github.com/theiskaa/anon/pulls)*.**
