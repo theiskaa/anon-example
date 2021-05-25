@@ -44,7 +44,7 @@
 ---
 <h3 align="center">Gifs:</h3>
 
-<img height="350" src="https://raw.githubusercontent.com/theiskaa/anon/feature/readme/assets/overview/gifs/auth.gif"> <img height="350" src="https://raw.githubusercontent.com/theiskaa/anon/feature/readme/assets/overview/gifs/posting.gif"> <img height="350" 
-src="https://raw.githubusercontent.com/theiskaa/anon/feature/readme/assets/overview/gifs/searching.gif"> <img height="350" 
-src="https://raw.githubusercontent.com/theiskaa/anon/feature/readme/assets/overview/gifs/commenting.gif"> <img height="350" 
+<img height="330" src="https://raw.githubusercontent.com/theiskaa/anon/feature/readme/assets/overview/gifs/auth.gif"> <img height="330" src="https://raw.githubusercontent.com/theiskaa/anon/feature/readme/assets/overview/gifs/posting.gif"> <img height="330" 
+src="https://raw.githubusercontent.com/theiskaa/anon/feature/readme/assets/overview/gifs/searching.gif"> <img height="330" 
+src="https://raw.githubusercontent.com/theiskaa/anon/feature/readme/assets/overview/gifs/commenting.gif"> <img height="330" 
 src="https://raw.githubusercontent.com/theiskaa/anon/feature/readme/assets/overview/gifs/saving.gif">
