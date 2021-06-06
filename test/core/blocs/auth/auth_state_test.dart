@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   const userModel = UserModel(id: "empty");
 
-  AuthState authState;
+  late AuthState authState;
 
   setUpAll(() {
     // Initial version of AuthState.

@@ -6,11 +6,11 @@ import '../anon_widgets.dart';
 
 class MarkdownEditBar extends AnonStatelessWidget {
   final TextEditingController controller;
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   MarkdownEditBar({
-    Key key,
-    @required this.controller,
+    Key? key,
+    required this.controller,
     this.scrollController,
   }) : super(key: key);
 

@@ -8,7 +8,7 @@ import 'package:anon/view/widgets/components/comment_field.dart';
 void main() {
   Widget commentField;
 
-  Widget mainWidget;
+  late Widget mainWidget;
   TextEditingController textEditingController;
 
   setUpAll(() {

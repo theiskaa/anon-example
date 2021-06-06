@@ -9,28 +9,28 @@ import 'package:anon/view/widgets/utils/ext.dart' as ext;
 import '../anon_widgets.dart';
 
 class PostCardWidget extends AnonStatelessWidget {
-  final PostModel postModel;
+  final PostModel? postModel;
   final Function onTap;
   final Function onViewCommentsTap;
 
   PostCardWidget({
-    Key key,
-    @required this.postModel,
-    @required this.onTap,
-    @required this.onViewCommentsTap,
+    Key? key,
+    required this.postModel,
+    required this.onTap,
+    required this.onViewCommentsTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return OpacityButton(
       key: Key('card.button'),
-      onTap: onTap,
-      onLongPress: onViewCommentsTap,
+      onTap: onTap as void Function()?,
+      onLongPress: onViewCommentsTap as void Function()?,
       opacityValue: .5,
       child: Container(
         margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: postModel.color.toColor(),
+          color: postModel!.color!.toColor(),
           borderRadius: BorderRadius.circular(20),
         ),
         padding: EdgeInsets.all(10),
@@ -52,8 +52,8 @@ class PostCardWidget extends AnonStatelessWidget {
           Icon(CupertinoIcons.bubble_left_bubble_right_fill),
           SizedBox(width: 5),
           Text(
-            postModel.comments.length > 0
-                ? "${postModel.comments.length}"
+            postModel!.comments!.length > 0
+                ? "${postModel!.comments!.length}"
                 : "N",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
@@ -67,7 +67,7 @@ class PostCardWidget extends AnonStatelessWidget {
     return Container(
       alignment: Alignment.topLeft,
       child: Text(
-        postModel.title ?? "",
+        postModel!.title ?? "",
         textAlign: TextAlign.left,
         style: TextStyle(
           fontSize: 18,

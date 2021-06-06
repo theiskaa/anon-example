@@ -22,19 +22,14 @@ extension ColorExt on String {
     switch (this) {
       case "#FDFEFE":
         return "Default";
-        break;
       case "#F5EEF8":
         return "Purple";
-        break;
       case "#E8F8F5":
         return "Green";
-        break;
       case "#EBF5FB":
         return "Blue";
-        break;
       case "#FEF9E7":
         return "Yellow";
-        break;
     }
   }
 }

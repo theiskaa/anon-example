@@ -9,9 +9,9 @@ class CommentField extends AnonStatelessWidget {
   final Function onSend;
 
   CommentField({
-    Key key,
-    @required this.controller,
-    @required this.onSend,
+    Key? key,
+    required this.controller,
+    required this.onSend,
   }) : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class CommentField extends AnonStatelessWidget {
       margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.blueGrey.withOpacity(.3)),
-        color: Colors.blueGrey[900].withOpacity(.1),
+        color: Colors.blueGrey[900]!.withOpacity(.1),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Center(
@@ -39,7 +39,7 @@ class CommentField extends AnonStatelessWidget {
             field(),
             AnimatedAddButton(
               key: Key("send.button"),
-              onTap: onSend,
+              onTap: onSend as void Function(),
             )
           ],
         ),

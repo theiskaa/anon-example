@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   Widget opacityAnimator;
-  Widget mainWidget;
+  late Widget mainWidget;
 
   setUpAll(() {
     opacityAnimator = OpacityAnimator(child: Text(":D"));

@@ -2,12 +2,12 @@ import 'package:flutter/widgets.dart';
 
 void wrapWith(
   TextEditingController controller, {
-  @required String leftSide,
-  String rightSide,
+  required String leftSide,
+  String? rightSide,
 }) {
   final text = controller.value.text;
   final selection = controller.selection;
-  final middle = selection.textInside(text) ?? " ";
+  final middle = selection.textInside(text);
   final newText = selection.textBefore(text) +
       '$leftSide$middle$rightSide' +
       selection.textAfter(text);

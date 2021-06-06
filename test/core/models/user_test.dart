@@ -2,7 +2,7 @@ import 'package:anon/core/model/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 main() {
-  UserModel userModel;
+  UserModel? userModel;
   const Map<String, String> userModelJson = {'id': 'empty'};
 
   setUpAll(() => userModel = UserModel(id: 'empty'));
@@ -12,11 +12,11 @@ main() {
       final userModelFromJson = UserModel.fromJson(userModelJson);
 
       // Need to match properties rather than instances.
-      expect(userModel.id, userModelFromJson.id);
+      expect(userModel!.id, userModelFromJson.id);
     });
 
     test('converts to json correctly', () {
-      final userModelToJson = userModel.toJson();
+      final userModelToJson = userModel!.toJson();
 
       expect(userModelJson, userModelToJson);
     });

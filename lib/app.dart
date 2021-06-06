@@ -19,7 +19,7 @@ class _AppState extends AnonState<App> {
 
   final _navigatorKey = GlobalKey<NavigatorState>();
 
-  NavigatorState get _navigator => _navigatorKey.currentState;
+  NavigatorState? get _navigator => _navigatorKey.currentState;
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +49,12 @@ class _AppState extends AnonState<App> {
   }
 
   // Listens event type of bloc state and generating valid navigation.
-  BlocListener<AuthBloc, AuthState> blocListener(Widget child) {
+  BlocListener<AuthBloc, AuthState> blocListener(Widget? child) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         switch (state.event) {
           case AuthEvents.authenticated:
-            _navigator.pushAndRemoveUntil(
+            _navigator!.pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) => MainPage(),
               ),
@@ -62,13 +62,13 @@ class _AppState extends AnonState<App> {
             );
             break;
           case AuthEvents.unauthenticated:
-            _navigator.pushAndRemoveUntil(
+            _navigator!.pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => AuthScreen()),
               (route) => false,
             );
             break;
           default:
-            _navigator.pushAndRemoveUntil(
+            _navigator!.pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => AuthScreen()),
               (route) => false,
             );

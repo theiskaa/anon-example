@@ -5,31 +5,31 @@ import '../anon_widgets.dart';
 
 class AnimatedAddButton extends AnonStatefulWidget {
   /// Custom Duration property of animationController.
-  final Duration animationDuration;
+  final Duration? animationDuration;
 
   /// Custom Color of the hover animation.
-  final Color hoverColor;
+  final Color? hoverColor;
 
   /// Custom animated icon color.
-  final Color animatedIconColor;
+  final Color? animatedIconColor;
 
   /// Custom animated border color.
-  final Color animatedBorderColor;
+  final Color? animatedBorderColor;
 
   /// onTap function for call custom body while animation is going.
   final VoidCallback onTap;
 
   /// Custom icon.
-  final IconData icon;
+  final IconData? icon;
 
   AnimatedAddButton({
-    Key key,
+    Key? key,
     this.animationDuration,
     this.hoverColor,
     this.animatedIconColor,
     this.animatedBorderColor,
     this.icon,
-    @required this.onTap,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -40,16 +40,16 @@ class _AnimatedAddButtonState extends AnonState<AnimatedAddButton>
     with SingleTickerProviderStateMixin {
   // animation controller which were controlle all animations.
   // [_hoverAnimation], [_iconHoverAnimation] and [_borderHoverAnimation].
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   // Button background color animation.
-  Animation<Color> _hoverAnimation;
+  late Animation<Color?> _hoverAnimation;
 
   // Icon color animation.
-  Animation<Color> _iconHoverAnimation;
+  late Animation<Color?> _iconHoverAnimation;
 
   // Button's border color animation.
-  Animation<Color> _borderHoverAnimation;
+  late Animation<Color?> _borderHoverAnimation;
 
   @override
   void initState() {
@@ -133,7 +133,7 @@ class _AnimatedAddButtonState extends AnonState<AnimatedAddButton>
         color: _hoverAnimation.value,
         border: Border.all(
           width: 2,
-          color: _borderHoverAnimation.value,
+          color: _borderHoverAnimation.value!,
         ),
         shape: BoxShape.circle,
       );

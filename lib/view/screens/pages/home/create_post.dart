@@ -29,11 +29,11 @@ class _CreatePostState extends AnonState<CreatePost> {
   var random = Random();
 
   String previewString = '';
-  String selectedColor;
+  String? selectedColor;
 
-  UserserviceBloc _userserviceBloc;
+  late UserserviceBloc _userserviceBloc;
 
-  int segmentedValue = 0;
+  int? segmentedValue = 0;
   final views = const <int, Widget>{0: Text('Create'), 1: Text('Preview')};
 
   final postColors = const [
@@ -54,7 +54,7 @@ class _CreatePostState extends AnonState<CreatePost> {
   }
 
   void _createPostAndPublish() {
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState!.validate()) {
       if (segmentedValue == 1 && _titleController.text.length < 3)
         setState(() => segmentedValue = 0);
       else {
@@ -63,7 +63,7 @@ class _CreatePostState extends AnonState<CreatePost> {
           selectedColor = postColors[randomColorIndex];
         }
         var post = PostModel(
-          userID: fireauthInstance.currentUser.uid ?? "Anon",
+          userID: fireauthInstance.currentUser!.uid,
           content: _contentController.text,
           title: _titleController.text,
           color: selectedColor,
@@ -85,7 +85,7 @@ class _CreatePostState extends AnonState<CreatePost> {
           groupValue: segmentedValue,
           children: views,
           backgroundColor: Colors.black,
-          onValueChanged: (i) => setState(() => segmentedValue = i),
+          onValueChanged: (dynamic i) => setState(() => segmentedValue = i),
         ),
         actions: [
           CreateButton(
@@ -123,7 +123,7 @@ class _CreatePostState extends AnonState<CreatePost> {
               child: MarkdownBody(
                 data: previewString,
                 selectable: true,
-                onTapLink: (text, href, title) => launch(href),
+                onTapLink: (text, href, title) => launch(href!),
               ),
             ),
             const SizedBox(height: 50),
@@ -148,7 +148,7 @@ class _CreatePostState extends AnonState<CreatePost> {
               controller: _titleController,
               decoration: _customFieldDecoration('Content title'),
               validator: (val) =>
-                  (val.isEmpty) ? "Title can't be empty!" : null,
+                  (val!.isEmpty) ? "Title can't be empty!" : null,
             ),
             const SizedBox(height: 20),
             divider,

@@ -11,12 +11,11 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService _authService;
-  StreamSubscription<UserModel> _userSubscription;
+  late StreamSubscription<UserModel> _userSubscription;
 
   AuthBloc({
-    @required AuthService authService,
-  })  : assert(authService != null),
-        _authService = authService,
+    required AuthService authService,
+  })  : _authService = authService,
         super(AuthState.unknown()) {
     // Listen stream of user  and set state by type of [AuthEvents].
     _userSubscription = _authService.user.listen(
@@ -74,19 +73,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     try {
-      final authResult = await _authService.signIn();
+      await _authService.signIn();
 
-      if (authResult != null) {
-        authState = state.copyWith(
-          event: AuthEvents.signInSuccess,
-          loading: false,
-        );
-      } else {
-        authState = state.copyWith(
-          event: AuthEvents.signInError,
-          loading: false,
-        );
-      }
+      authState = state.copyWith(
+        event: AuthEvents.signInSuccess,
+        loading: false,
+      );
     } catch (e) {
       authState = state.copyWith(
         event: AuthEvents.signInError,

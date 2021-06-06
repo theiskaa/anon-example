@@ -12,10 +12,10 @@ class ChooseColorCard extends AnonStatefulWidget {
   final Function onUnselected;
 
   ChooseColorCard({
-    Key key,
-    @required this.postColors,
-    @required this.onSelected,
-    @required this.onUnselected,
+    Key? key,
+    required this.postColors,
+    required this.onSelected,
+    required this.onUnselected,
   }) : super(key: key);
 
   @override
@@ -24,7 +24,7 @@ class ChooseColorCard extends AnonStatefulWidget {
 
 class _ChooseColorCardState extends AnonState<ChooseColorCard> {
   List<Color> colors = [];
-  String choosedColor;
+  String? choosedColor;
 
   @override
   void initState() {
@@ -71,7 +71,7 @@ class _ChooseColorCardState extends AnonState<ChooseColorCard> {
         children: [
           const SizedBox(),
           Text(
-            choosedColor.colorToTitle(),
+            choosedColor!.colorToTitle(),
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: Colors.black,

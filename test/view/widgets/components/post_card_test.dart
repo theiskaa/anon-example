@@ -9,10 +9,10 @@ import 'package:anon/view/widgets/components/post_card.dart';
 
 void main() {
   Widget postCardWidget;
-  Widget secondPostCardWidget;
-  Widget mainWidget;
+  Widget? secondPostCardWidget;
+  late Widget mainWidget;
 
-  PostModel postModel;
+  PostModel? postModel;
   PostModel secondPostModel;
 
   setUpAll(() {
@@ -24,7 +24,7 @@ void main() {
       color: "#E8F8F5",
     );
 
-    secondPostModel = postModel.copyWith(
+    secondPostModel = postModel!.copyWith(
       content: 'empty',
       comments: [],
     );
@@ -65,7 +65,7 @@ void main() {
       expect(find.byType(Text), findsNWidgets(2));
       expect(find.byType(Center), findsOneWidget);
       expect(find.byType(SizedBox), findsNWidgets(4));
-      expect(find.text(postModel.comments.length.toString()), findsOneWidget);
+      expect(find.text(postModel!.comments!.length.toString()), findsOneWidget);
       expect(
         find.byIcon(CupertinoIcons.bubble_left_bubble_right_fill),
         findsOneWidget,

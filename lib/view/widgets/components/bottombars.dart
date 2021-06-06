@@ -5,13 +5,10 @@ import 'opacity_button.dart';
 class ViewCommentsBar extends StatelessWidget {
   final int commentsLength;
   final Function onTap;
-  final Color color;
+  final Color? color;
 
   const ViewCommentsBar(
-      {Key key,
-      @required this.commentsLength,
-      @required this.onTap,
-      this.color})
+      {Key? key, required this.commentsLength, required this.onTap, this.color})
       : super(key: key);
 
   @override
@@ -19,7 +16,7 @@ class ViewCommentsBar extends StatelessWidget {
     return OpacityButton(
       key: Key("view.comments.bar"),
       opacityValue: .9,
-      onTap: onTap,
+      onTap: onTap as void Function()?,
       child: Container(
         height: 50,
         color: color ?? Colors.black,

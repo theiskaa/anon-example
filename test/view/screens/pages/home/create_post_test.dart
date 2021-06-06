@@ -14,25 +14,19 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 void main() {
   Anon anon;
 
-  // Navigator observer.
-  MockNavigatorObserver mockObserver;
+  // Testable widget builder for test CreatePost page.
+  late TestableWidgetBuilder testableWidgetBuilder;
 
   // Testable widget builder for test CreatePost page.
-  TestableWidgetBuilder testableWidgetBuilder;
-
-  // Testable widget builder for test CreatePost page.
-  TestableWidgetBuilder testableWidgetBuilderForPreview;
+  late TestableWidgetBuilder testableWidgetBuilderForPreview;
 
   setUpAll(() async {
     anon = Anon();
-
-    mockObserver = MockNavigatorObserver();
 
     testableWidgetBuilder = TestableWidgetBuilder(
       enablePageTesting: true,
       anon: anon,
       widget: CreatePost(),
-      navigatorObservers: [mockObserver],
       blocProviders: [
         BlocProvider<UserserviceBloc>(create: (_) => UserserviceBloc()),
       ],
@@ -42,7 +36,6 @@ void main() {
       enablePageTesting: true,
       anon: anon,
       widget: CreatePost(segmentedValue: 1),
-      navigatorObservers: [mockObserver],
       blocProviders: [
         BlocProvider<UserserviceBloc>(create: (_) => UserserviceBloc()),
       ],
@@ -102,9 +95,6 @@ void main() {
 
           await tester.tap(appBarLeading);
           await tester.pumpAndSettle();
-
-          // Verify that navigation was popped.
-          verify(mockObserver.didPop(any, any));
         },
       ),
     );

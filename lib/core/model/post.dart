@@ -2,12 +2,12 @@ import 'package:anon/core/model/comment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
-  final String userID;
-  final String postID;
-  final String title;
-  final String content;
-  final List<dynamic> comments;
-  final String color;
+  final String? userID;
+  final String? postID;
+  final String? title;
+  final String? content;
+  final List<dynamic>? comments;
+  final String? color;
 
   const PostModel({
     this.userID,
@@ -19,12 +19,12 @@ class PostModel {
   });
 
   PostModel copyWith({
-    String userID,
-    String postID,
-    String title,
-    String content,
-    List<dynamic> comments,
-    String color,
+    String? userID,
+    String? postID,
+    String? title,
+    String? content,
+    List<dynamic>? comments,
+    String? color,
   }) =>
       PostModel(
         userID: userID ?? this.userID,
@@ -43,22 +43,22 @@ class PostModel {
         this.comments = json['comments'],
         this.color = json['color'];
 
-  Map<String, dynamic> toJson({PostModel postModel}) => {
-        'userID': userID ?? postModel.userID,
-        'postID': postID ?? postModel.postID,
-        'title': title ?? postModel.title,
-        'content': content ?? postModel.content,
-        'comments': comments ?? postModel.comments,
-        'color': color ?? postModel.color,
+  Map<String, dynamic> toJson({PostModel? postModel}) => {
+        'userID': userID ?? postModel!.userID,
+        'postID': postID ?? postModel!.postID,
+        'title': title ?? postModel!.title,
+        'content': content ?? postModel!.content,
+        'comments': comments ?? postModel!.comments,
+        'color': color ?? postModel!.color,
       };
 
   PostModel.fromSnapshot(
     DocumentSnapshot element, [
-    List<CommentModel> comments,
-  ])  : this.userID = element.data()['userID'],
-        this.postID = element.data()['postID'],
-        this.title = element.data()['title'],
-        this.content = element.data()['content'],
+    List<CommentModel?>? comments,
+  ])  : this.userID = element.data()!['userID'],
+        this.postID = element.data()!['postID'],
+        this.title = element.data()!['title'],
+        this.content = element.data()!['content'],
         this.comments = comments,
-        this.color = element.data()['color'];
+        this.color = element.data()!['color'];
 }

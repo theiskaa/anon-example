@@ -8,10 +8,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  static SharedPreferences _preferences;
+  static SharedPreferences? _preferences;
 
   /// Method for create/publish post to content list.
-  Future<String> createPost({PostModel postModel}) async {
+  Future<String> createPost({required PostModel postModel}) async {
     final post = postsRef.doc();
 
     try {
@@ -51,22 +51,22 @@ class UserService {
   }
 
   /// Function to save getted posts into local database.
-  Future<List<PostModel>> getCachedPosts(
+  Future<List<PostModel?>?> getCachedPosts(
       String listKey, String listLengthKey) async {
     if (_preferences == null)
       _preferences = await SharedPreferences.getInstance();
 
     // Get cached posts from local database.
-    final _cachedListAsString = _preferences.getStringList(listKey);
-    final _cachedListsLength = _preferences.getInt(listLengthKey);
+    final _cachedListAsString = _preferences!.getStringList(listKey);
+    final _cachedListsLength = _preferences!.getInt(listLengthKey);
 
-    List<PostModel> postModelList = <PostModel>[];
+    List<PostModel?> postModelList = <PostModel?>[];
 
     try {
       if (_cachedListsLength != null)
         for (var i = 0; i < _cachedListsLength; i++) {
           // Take a string item from [_cachedListAsString].
-          var item = _cachedListAsString[i];
+          var item = _cachedListAsString![i];
 
           // Decode itme - (convert string to map).
           // We do that because, we need Map for create a post model from json.
@@ -86,7 +86,7 @@ class UserService {
   }
 
   Future<void> cachePosts(
-    List<PostModel> postList, {
+    List<PostModel?> postList, {
     bool clearPostsFirst = true,
     String listKey = LocalDbKeys.postsList,
     String listLengthKey = LocalDbKeys.postListLength,
@@ -95,20 +95,20 @@ class UserService {
       _preferences = await SharedPreferences.getInstance();
 
     if (clearPostsFirst) {
-      _preferences.remove(listKey);
-      _preferences.remove(listLengthKey);
+      _preferences!.remove(listKey);
+      _preferences!.remove(listLengthKey);
     }
 
     // Convert [postList] to <String> list.
     List<String> encodedPosts =
-        postList.map((post) => jsonEncode(post.toJson())).toList();
-    await _preferences.setStringList(listKey, encodedPosts);
-    await _preferences.setInt(listLengthKey, postList.length);
+        postList.map((post) => jsonEncode(post!.toJson())).toList();
+    await _preferences!.setStringList(listKey, encodedPosts);
+    await _preferences!.setInt(listLengthKey, postList.length);
   }
 
-  Future<List<CommentModel>> getComments(final postID) async {
+  Future<List<CommentModel?>> getComments(final postID) async {
     // Empty list for save converted data.
-    List<CommentModel> commentsList = [];
+    List<CommentModel?> commentsList = [];
 
     final commentsSnapshot = await commentsRef(postID).get();
     if (commentsSnapshot.docs.length != 0) {
@@ -142,7 +142,7 @@ class UserService {
     if (_preferences == null)
       _preferences = await SharedPreferences.getInstance();
 
-    await _preferences.remove(listKey);
-    _preferences.remove(listLengthKey);
+    await _preferences!.remove(listKey);
+    _preferences!.remove(listLengthKey);
   }
 }

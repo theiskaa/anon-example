@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   Widget markdownEditbar;
-  Widget mainWidget;
+  late Widget mainWidget;
 
   TextEditingController textEditingController;
   ScrollController scrollController;

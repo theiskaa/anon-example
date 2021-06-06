@@ -49,7 +49,7 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
     );
 
     try {
-      state.postModelList.clear();
+      state.postModelList!.clear();
 
       final postsFromFirestore = await _userService.getPosts();
 
@@ -58,7 +58,7 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
         clearPostsFirst: true,
       );
 
-      List<PostModel> postsFromLocalDatabase =
+      List<PostModel?>? postsFromLocalDatabase =
           await _userService.getCachedPosts(
         LocalDbKeys.postsList,
         LocalDbKeys.postListLength,
@@ -90,11 +90,11 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
     try {
       final res = await _userService.createPost(postModel: event.postModel);
 
-      List<PostModel> posts = List<PostModel>.from(state.postModelList);
+      List<PostModel>? posts = List<PostModel>.from(state.postModelList!);
 
       posts.insert(
         0,
-        state.postModel.copyWith(
+        state.postModel!.copyWith(
           userID: event.postModel.userID,
           postID: res,
           title: event.postModel.title,
@@ -133,15 +133,15 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
       );
 
       if (res) {
-        List<PostModel> currentPosts =
-            List<PostModel>.from(state.postModelList);
+        List<PostModel>? currentPosts =
+            List<PostModel>.from(state.postModelList!);
 
         final postIndex = currentPosts.indexWhere(
           (post) => post == event.postModel,
         );
 
         var currentPost = currentPosts[postIndex];
-        currentPost.comments.insert(0, event.commentModel.toJson());
+        currentPost.comments!.insert(0, event.commentModel.toJson());
 
         serviceState = state.copyWith(
           event: UserServiceEvents.putCommentSuccess,
@@ -173,7 +173,7 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
     );
 
     try {
-      List<PostModel> savedPosts = await _userService.getCachedPosts(
+      List<PostModel?>? savedPosts = await _userService.getCachedPosts(
         LocalDbKeys.savedPosts,
         LocalDbKeys.savedPostsLength,
       );
@@ -202,12 +202,12 @@ class UserserviceBloc extends Bloc<UserServiceEvent, UserServiceState> {
     );
 
     try {
-      List<PostModel> savedPosts = await _userService.getCachedPosts(
+      List<PostModel?>? savedPosts = await _userService.getCachedPosts(
         LocalDbKeys.savedPosts,
         LocalDbKeys.savedPostsLength,
       );
 
-      savedPosts.insert(0, event.postModel);
+      savedPosts!.insert(0, event.postModel);
 
       await _userService.cachePosts(
         savedPosts,

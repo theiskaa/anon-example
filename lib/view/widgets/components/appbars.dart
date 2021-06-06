@@ -10,15 +10,15 @@ import '../anon_widgets.dart';
 import 'opacity_button.dart';
 
 class SearchBar extends StatefulWidget with PreferredSizeWidget {
-  final List<PostModel> posts;
+  final List<PostModel?>? posts;
   final BoxController boxController;
-  final Widget action;
+  final Widget? action;
 
   SearchBar({
-    Key key,
-    @required this.posts,
+    Key? key,
+    required this.posts,
     this.action,
-    @required this.boxController,
+    required this.boxController,
   }) : super(key: key);
 
   @override
@@ -86,7 +86,7 @@ class SearchBarState extends State<SearchBar>
       boxController: widget.boxController,
       hint: "Search by post title",
       textController: fieldController,
-      suggestionList: widget.posts,
+      suggestionList: widget.posts!,
       wDivider: true,
       onItemSelected: (dynamic post) => Navigator.push(
         context,
@@ -99,10 +99,10 @@ class SearchBarState extends State<SearchBar>
 }
 
 class AppBarWithLogo extends AnonStatelessWidget with PreferredSizeWidget {
-  final List<Widget> actions;
+  final List<Widget>? actions;
 
   AppBarWithLogo({
-    Key key,
+    Key? key,
     this.actions,
   }) : super(key: key);
 
@@ -126,12 +126,12 @@ class AppBarWithLogo extends AnonStatelessWidget with PreferredSizeWidget {
 }
 
 class DefaultAppBar extends AnonStatelessWidget with PreferredSizeWidget {
-  final Function onLeadingTap;
-  final Widget centerWidget;
-  final List<Widget> actions;
+  final Function? onLeadingTap;
+  final Widget? centerWidget;
+  final List<Widget>? actions;
 
   DefaultAppBar({
-    Key key,
+    Key? key,
     this.actions,
     this.centerWidget,
     this.onLeadingTap,
@@ -151,7 +151,7 @@ class DefaultAppBar extends AnonStatelessWidget with PreferredSizeWidget {
           Icons.arrow_back_ios_outlined,
           color: Colors.black,
         ),
-        onTap: onLeadingTap ??
+        onTap: onLeadingTap as void Function()? ??
             () {
               ScaffoldMessenger.of(context).removeCurrentSnackBar();
               Navigator.pop(context);

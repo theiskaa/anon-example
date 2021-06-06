@@ -11,12 +11,10 @@ import 'package:anon/core/utils/test_helpers.dart';
 
 void main() {
   Anon anon;
-  List<PostModel> posts;
-  UserserviceBloc _userServiceBloc;
+  List<PostModel>? posts;
+  late UserserviceBloc _userServiceBloc;
 
-  TestableWidgetBuilder testableWidgetBuilder;
-
-  MockNavigatorObserver mockObserver;
+  late TestableWidgetBuilder testableWidgetBuilder;
 
   setUpAll(() {
     anon = Anon();
@@ -30,14 +28,11 @@ void main() {
       )
     ];
 
-    mockObserver = MockNavigatorObserver();
-
     _userServiceBloc = UserserviceBloc();
 
     testableWidgetBuilder = TestableWidgetBuilder(
       enablePageTesting: true,
       anon: anon,
-      navigatorObservers: [mockObserver],
       blocProviders: [
         BlocProvider<UserserviceBloc>(create: (context) => _userServiceBloc),
       ],

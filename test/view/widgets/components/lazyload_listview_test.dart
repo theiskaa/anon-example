@@ -10,7 +10,7 @@ import 'package:anon/view/widgets/components/lazyload_listview.dart';
 void main() {
   Anon anon;
 
-  TestableWidgetBuilder testableWidgetBuilder;
+  late TestableWidgetBuilder testableWidgetBuilder;
 
   List<PostModel> postsList;
 

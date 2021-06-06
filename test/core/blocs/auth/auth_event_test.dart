@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   AuthEvent authEvent;
-  UserModel userModel;
+  UserModel? userModel;
 
   group('[AuthEvent]', () {
     test('authUserChanged', () {

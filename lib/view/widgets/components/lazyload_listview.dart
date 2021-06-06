@@ -8,9 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LazyLoadListView extends AnonStatefulWidget {
-  final List<PostModel> defaultList;
+  final List<PostModel?>? defaultList;
 
-  LazyLoadListView({@required this.defaultList});
+  LazyLoadListView({required this.defaultList});
   @override
   _LazyLoadListViewState createState() => _LazyLoadListViewState();
 }
@@ -21,12 +21,13 @@ class _LazyLoadListViewState extends AnonState<LazyLoadListView> {
   int currentMaxPostLength = 10;
   int _testMaxLength = 10;
 
-  List<PostModel> udatedPosts;
+  late List<PostModel?> udatedPosts;
 
   @override
   void initState() {
     super.initState();
-    udatedPosts = widget.defaultList.getRange(0, currentMaxPostLength).toList();
+    udatedPosts =
+        widget.defaultList!.getRange(0, currentMaxPostLength).toList();
     _controller.addListener(() {
       if (_controller.position.pixels == _controller.position.maxScrollExtent)
         _updatePosts();
@@ -34,16 +35,17 @@ class _LazyLoadListViewState extends AnonState<LazyLoadListView> {
   }
 
   void _updatePosts() {
-    if (_testMaxLength < widget.defaultList.length)
+    if (_testMaxLength < widget.defaultList!.length)
       setState(() => _testMaxLength = _testMaxLength + 10);
 
-    if (_testMaxLength < widget.defaultList.length) {
+    if (_testMaxLength < widget.defaultList!.length) {
       udatedPosts =
-          widget.defaultList.getRange(0, currentMaxPostLength + 10).toList();
+          widget.defaultList!.getRange(0, currentMaxPostLength + 10).toList();
       setState(() => currentMaxPostLength = currentMaxPostLength + 10);
     } else {
-      udatedPosts = widget.defaultList.take(widget.defaultList.length).toList();
-      setState(() => currentMaxPostLength = widget.defaultList.length);
+      udatedPosts =
+          widget.defaultList!.take(widget.defaultList!.length).toList();
+      setState(() => currentMaxPostLength = widget.defaultList!.length);
     }
   }
 
@@ -82,7 +84,7 @@ class _LazyLoadListViewState extends AnonState<LazyLoadListView> {
 
   loadingAndEmptytitle() => Padding(
         padding: const EdgeInsets.all(8),
-        child: _testMaxLength > widget.defaultList.length
+        child: _testMaxLength > widget.defaultList!.length
             ? buildEmptyTitle()
             : CupertinoActivityIndicator(radius: 15),
       );

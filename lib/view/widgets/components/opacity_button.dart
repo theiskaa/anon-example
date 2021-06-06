@@ -29,7 +29,7 @@ class OpacityButton extends StatefulWidget {
   /// This triggers when the tap gesture wins. If the tap gesture did not win,
   /// [onTapCancel] is called instead.
   /// that's means opacity value will decrease to one, ie zero
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   final bool enableOnLongPress;
   //
@@ -40,7 +40,7 @@ class OpacityButton extends StatefulWidget {
   ///
   /// When this happens, the opacity value will decrease to the value you define
   /// or the to the default value.
-  final VoidCallback onLongPress;
+  final VoidCallback? onLongPress;
 
   /// Whether the semantic information of the children is always included.
   ///
@@ -52,8 +52,8 @@ class OpacityButton extends StatefulWidget {
   final bool alwaysIncludeSemantics;
 
   const OpacityButton({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.opacityValue = .4,
     this.onTap,
     this.enableOnLongPress = false,
@@ -88,7 +88,7 @@ class _OpacityButtonState extends State<OpacityButton> {
       onTapUp: (_) {
         if (widget.onTap != null) {
           _setToFalse();
-          return widget.onTap();
+          return widget.onTap!();
         }
       },
 
@@ -99,10 +99,10 @@ class _OpacityButtonState extends State<OpacityButton> {
       onLongPressEnd: (_) {
         if (widget.enableOnLongPress) {
           _setToFalse();
-          return widget.onLongPress();
+          return widget.onLongPress!();
         } else {
           _setToFalse();
-          return widget.onTap();
+          return widget.onTap!();
         }
       },
 

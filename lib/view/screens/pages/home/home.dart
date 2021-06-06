@@ -16,14 +16,14 @@ import 'package:anon/view/widgets/utils/route_with_transition.dart';
 import 'package:anon/view/widgets/utils/widget_utils.dart';
 
 class Home extends AnonStatefulWidget {
-  Home({Key key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
 
   @override
   HomeState createState() => HomeState();
 }
 
 class HomeState extends AnonState<Home> {
-  UserserviceBloc _userserviceBloc;
+  late UserserviceBloc _userserviceBloc;
 
   final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   final _suggestionBoxController = BoxController();
@@ -45,9 +45,12 @@ class HomeState extends AnonState<Home> {
     return BlocBuilder<UserserviceBloc, UserServiceState>(
       builder: (context, state) {
         return GestureDetector(
-          onTap: () => _suggestionBoxController.close(),
+          onTap: () {
+            if (_suggestionBoxController.close != null)
+              _suggestionBoxController.close!();
+          },
           child: Scaffold(
-            appBar: _appbar(context),
+            appBar: _appbar(context) as PreferredSizeWidget?,
             body: buildRightBody(state),
           ),
         );
@@ -56,8 +59,8 @@ class HomeState extends AnonState<Home> {
   }
 
   Widget buildRightBody(UserServiceState state) {
-    if (state.loading ||
-        state.postModelList.length == 0 &&
+    if (state.loading! ||
+        state.postModelList!.length == 0 &&
             state.event == UserServiceEvents.getAllStart ||
         state.event == UserServiceEvents.getAllStart ||
         state.event == UserServiceEvents.createPostStart) {

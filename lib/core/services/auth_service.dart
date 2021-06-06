@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   AuthService({
-    FirebaseAuth firebaseAuth,
+    FirebaseAuth? firebaseAuth,
   }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
   final FirebaseAuth _firebaseAuth;
@@ -34,7 +34,7 @@ class AuthService {
   // It deletes current anonymous user and log outs.
   Future<void> logOut() async {
     // Delete current anonymous user.
-    await FirebaseAuth.instance.currentUser.delete();
+    await FirebaseAuth.instance.currentUser!.delete();
 
     Future.wait([_firebaseAuth.signOut()]);
   }

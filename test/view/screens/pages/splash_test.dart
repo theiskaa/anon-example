@@ -7,7 +7,7 @@ import 'package:anon/core/utils/test_helpers.dart';
 void main() {
   Anon anon;
 
-  TestableWidgetBuilder testableWidgetBuilder;
+  late TestableWidgetBuilder testableWidgetBuilder;
 
   setUpAll(() {
     anon = Anon();

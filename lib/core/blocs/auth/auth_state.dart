@@ -2,20 +2,20 @@ part of 'auth_bloc.dart';
 
 @immutable
 class AuthState {
-  final AuthEvents event;
-  final bool loading;
-  final UserModel user;
+  final AuthEvents? event;
+  final bool? loading;
+  final UserModel? user;
 
   const AuthState({
-    @required this.event,
+    required this.event,
     this.loading,
     this.user,
   });
 
   AuthState copyWith({
-    AuthEvents event,
-    bool loading,
-    UserModel user,
+    AuthEvents? event,
+    bool? loading,
+    UserModel? user,
   }) =>
       AuthState(
         event: event ?? this.event,

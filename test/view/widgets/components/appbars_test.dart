@@ -16,11 +16,10 @@ void main() {
   Widget appBarWithLogo;
   Widget defaultAppBar;
 
-  TestableWidgetBuilder testableWidgetBuilderForSearchBar;
-  Widget mainWidgetForAppBarWithLogo;
-  Widget mainWidgetForDefaultAppBar;
+  late TestableWidgetBuilder testableWidgetBuilderForSearchBar;
+  late Widget mainWidgetForAppBarWithLogo;
+  late Widget mainWidgetForDefaultAppBar;
 
-  MockNavigatorObserver navigatorObserver;
   BoxController boxController;
 
   const searchablePosts = <PostModel>[
@@ -44,13 +43,10 @@ void main() {
       onLeadingTap: () {},
     );
 
-    navigatorObserver = MockNavigatorObserver();
-
     testableWidgetBuilderForSearchBar = TestableWidgetBuilder(
       enablePageTesting: true,
       anon: anon,
-      widget: Scaffold(appBar: searchBar),
-      navigatorObservers: [navigatorObserver],
+      widget: Scaffold(appBar: searchBar as PreferredSizeWidget?),
       blocProviders: [
         BlocProvider<UserserviceBloc>(create: (context) => UserserviceBloc()),
       ],
@@ -58,12 +54,12 @@ void main() {
 
     mainWidgetForAppBarWithLogo = MaterialApp(
       title: "AppBar With Logo",
-      home: Scaffold(appBar: appBarWithLogo),
+      home: Scaffold(appBar: appBarWithLogo as PreferredSizeWidget?),
     );
 
     mainWidgetForDefaultAppBar = MaterialApp(
       title: "Default AppBar",
-      home: Scaffold(appBar: defaultAppBar),
+      home: Scaffold(appBar: defaultAppBar as PreferredSizeWidget?),
     );
   });
 
@@ -112,9 +108,6 @@ void main() {
 
           await tester.tap(resultPost);
           await tester.pumpAndSettle();
-
-          // Verify that navigation was pushed.
-          verify(navigatorObserver.didPush(any, any));
         },
       ),
     );

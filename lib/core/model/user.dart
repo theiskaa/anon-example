@@ -1,9 +1,7 @@
-import 'package:flutter/widgets.dart';
-
 class UserModel {
-  final String id;
+  final String? id;
 
-  const UserModel({@required this.id});
+  const UserModel({required this.id});
 
   static const empty = UserModel(id: '');
 

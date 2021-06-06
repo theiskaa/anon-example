@@ -11,8 +11,8 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ViewComments extends AnonStatefulWidget {
   final bool postIsSaved;
-  final PostModel post;
-  ViewComments({@required this.post, this.postIsSaved = false});
+  final PostModel? post;
+  ViewComments({required this.post, this.postIsSaved = false});
 
   @override
   _ViewCommentsState createState() => _ViewCommentsState();
@@ -50,7 +50,7 @@ class _ViewCommentsState extends AnonState<ViewComments> {
         }
       },
       child:
-          widget.post.comments.length > 0 ? buildCommentsBody() : emptyList(),
+          widget.post!.comments!.length > 0 ? buildCommentsBody() : emptyList(),
     );
   }
 
@@ -73,7 +73,7 @@ class _ViewCommentsState extends AnonState<ViewComments> {
     return SingleChildScrollView(
       padding: EdgeInsets.all(10),
       child: Column(
-        children: widget.post.comments
+        children: widget.post!.comments!
             .map((comment) => commentCard(comment))
             .toList(),
       ),

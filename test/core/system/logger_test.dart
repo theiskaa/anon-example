@@ -39,7 +39,7 @@ void main() {
   });
 
   group('[ConsoleOutput]', () {
-    ConsoleOutput consoleOutput;
+    ConsoleOutput? consoleOutput;
 
     setUpAll(() => consoleOutput = ConsoleOutput());
 
