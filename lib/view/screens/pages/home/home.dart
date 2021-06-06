@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:field_suggestion/field_suggestion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,7 @@ class HomeState extends AnonState<Home> {
   UserserviceBloc _userserviceBloc;
 
   final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final _suggestionBoxController = BoxController();
 
   @override
   void initState() {
@@ -42,7 +44,13 @@ class HomeState extends AnonState<Home> {
   Widget build(BuildContext context) {
     return BlocBuilder<UserserviceBloc, UserServiceState>(
       builder: (context, state) {
-        return Scaffold(appBar: _appbar(context), body: buildRightBody(state));
+        return GestureDetector(
+          onTap: () => _suggestionBoxController.close(),
+          child: Scaffold(
+            appBar: _appbar(context),
+            body: buildRightBody(state),
+          ),
+        );
       },
     );
   }
@@ -112,6 +120,7 @@ class HomeState extends AnonState<Home> {
 
   Widget _appbar(BuildContext context) {
     return SearchBar(
+      boxController: _suggestionBoxController,
       posts: BlocProvider.of<UserserviceBloc>(context).state.postModelList,
       action: CreateButton(
         key: Key('create.button'),

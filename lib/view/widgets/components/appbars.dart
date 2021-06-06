@@ -11,9 +11,15 @@ import 'opacity_button.dart';
 
 class SearchBar extends StatefulWidget with PreferredSizeWidget {
   final List<PostModel> posts;
+  final BoxController boxController;
   final Widget action;
 
-  SearchBar({Key key, @required this.posts, this.action}) : super(key: key);
+  SearchBar({
+    Key key,
+    @required this.posts,
+    this.action,
+    @required this.boxController,
+  }) : super(key: key);
 
   @override
   SearchBarState createState() => SearchBarState();
@@ -77,6 +83,7 @@ class SearchBarState extends State<SearchBar>
   FieldSuggestion buildSearchField(BuildContext context) {
     return FieldSuggestion(
       key: Key("search.field"),
+      boxController: widget.boxController,
       hint: "Search by post title",
       textController: fieldController,
       suggestionList: widget.posts,

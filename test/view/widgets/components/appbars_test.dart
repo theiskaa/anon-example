@@ -21,6 +21,7 @@ void main() {
   Widget mainWidgetForDefaultAppBar;
 
   MockNavigatorObserver navigatorObserver;
+  BoxController boxController;
 
   const searchablePosts = <PostModel>[
     PostModel(
@@ -35,8 +36,9 @@ void main() {
 
   setUpAll(() {
     anon = Anon();
+    boxController = BoxController();
 
-    searchBar = SearchBar(posts: searchablePosts);
+    searchBar = SearchBar(posts: searchablePosts, boxController: boxController);
     appBarWithLogo = AppBarWithLogo();
     defaultAppBar = DefaultAppBar(
       onLeadingTap: () {},

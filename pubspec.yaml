@@ -35,6 +35,8 @@ dependencies:
   # To save data to local db.
   shared_preferences: ^2.0.5
 
+  # Special copy of https://pub.dev/packages/field_suggestion.
+  # Made to make able search value from custom model class and for different UI.
   field_suggestion:
     git:
       url: git://github.com/theiskaa/field_suggestion.git
