@@ -9,8 +9,8 @@
     <img src="https://img.shields.io/badge/License-MIT-red.svg"
       alt="License: MIT" />
   </a>
-  <a href="https://codecov.io/gh/theiskaa/anon-app">
-    <img src="https://codecov.io/gh/theiskaa/anon-app/branch/develop/graph/badge.svg?token=vT72y57Pcn"
+  <a href="https://codecov.io/gh/theiskaa/anon">
+    <img src="https://codecov.io/gh/theiskaa/anon/branch/develop/graph/badge.svg?token=vT72y57Pcn"
       alt="Coverage" />
   </a>
   <br>
