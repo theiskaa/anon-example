@@ -19,13 +19,13 @@ class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 class MockAuthService extends Mock implements AuthService {}
 
 class TestStatelessWidget extends AnonStatelessWidget {
-  TestStatelessWidget({Key key}) : super(key: key);
+  TestStatelessWidget({Key? key}) : super(key: key);
   @override
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class TestStatefulWidget extends AnonStatefulWidget {
-  TestStatefulWidget({Key key}) : super(key: key);
+  TestStatefulWidget({Key? key}) : super(key: key);
   @override
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
@@ -53,10 +53,10 @@ Future<void> testAnonDependency<T extends StatelessWidget>(
 }
 
 class TestableWidgetBuilder {
-  final Anon anon;
-  Widget widget;
-  final List<NavigatorObserver> navigatorObservers;
-  List<BlocProvider> blocProviders;
+  final Anon? anon;
+  Widget? widget;
+  final List<NavigatorObserver?> navigatorObservers;
+  List<BlocProvider>? blocProviders;
   final bool enablePageTesting;
 
   TestableWidgetBuilder({
@@ -70,18 +70,18 @@ class TestableWidgetBuilder {
   /// [buildTestableWidget] builds a bare minimum
   /// tree structure of widgets (mostly Stateless)
   /// that are necessary for a functioning Anon application.
-  Widget buildTestableWidget({Widget widget}) => MaterialApp(
+  Widget buildTestableWidget({Widget? widget}) => MaterialApp(
         home: enablePageTesting
             ? widget ?? this.widget
             : Scaffold(body: widget ?? this.widget),
-        navigatorObservers: navigatorObservers,
+        navigatorObservers: navigatorObservers as List<NavigatorObserver>,
       );
 
   /// Akin to [buildTestableWidget] but intended
   /// towards Stateful widgets with BLOC providers.
-  Widget buildTestableStateWidget({Widget widget}) => buildTestableWidget(
+  Widget buildTestableStateWidget({Widget? widget}) => buildTestableWidget(
         widget: MultiBlocProvider(
-          providers: blocProviders,
+          providers: blocProviders!,
           child: buildTestableWidget(widget: widget ?? this.widget),
         ),
       );
@@ -97,30 +97,28 @@ typedef TestProcessor = Future<void> Function();
 
 Future<void> asyncTestWidgets(
   WidgetTester tester, {
-  TestableWidgetBuildMethod build,
-  TestProcessor preProcess,
-  List<TestCase> testCases,
-  TestProcessor postProcess,
+  TestableWidgetBuildMethod? build,
+  TestProcessor? preProcess,
+  List<TestCase>? testCases,
+  TestProcessor? postProcess,
   bool containsAnimations = false,
 }) async =>
     await tester.runAsync(() async {
       if (preProcess != null) await preProcess();
-      final widget = build();
+      final widget = build!();
       await tester.pumpWidget(widget);
 
-      if (build != null) {
-        if (containsAnimations) {
-          await tester.pumpAndSettle();
-        } else {
-          await tester.pump(Duration(seconds: 3));
-        }
+      if (containsAnimations) {
+        await tester.pumpAndSettle();
+      } else {
+        await tester.pump(Duration(seconds: 3));
+      }
 
-        if (testCases != null) {
-          await Future.forEach(
-            testCases,
-            (TestCase testCase) async => await testCase(tester),
-          );
-        }
+      if (testCases != null) {
+        await Future.forEach(
+          testCases,
+          (TestCase testCase) async => await testCase(tester),
+        );
       }
 
       if (postProcess != null) await postProcess();

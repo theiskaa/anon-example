@@ -9,7 +9,7 @@ void main() {
   Anon anon;
 
   Widget chooseColorCard;
-  TestableWidgetBuilder testableWidgetBuilder;
+  late TestableWidgetBuilder testableWidgetBuilder;
 
   const colors = ["#F5EEF8", "#E8F8F5", "#EBF5FB", "#FEF9E7", "#FDFEFE"];
 

@@ -24,7 +24,7 @@ class Log {
     ),
   );
 
-  static String level;
+  static String? level;
 
   /// Log a message at level verbose.
   static Function get v => logNoStack.v;

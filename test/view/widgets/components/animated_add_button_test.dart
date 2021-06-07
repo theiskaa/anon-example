@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   Anon anon;
 
-  TestableWidgetBuilder builderOfAnimatedAddButton;
+  late TestableWidgetBuilder builderOfAnimatedAddButton;
 
   setUpAll(() {
     anon = Anon();

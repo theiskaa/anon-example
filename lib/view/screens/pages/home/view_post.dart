@@ -16,8 +16,8 @@ import 'view_comments.dart';
 
 class ViewPost extends AnonStatefulWidget {
   final bool postIsSaved;
-  final PostModel postModel;
-  ViewPost({@required this.postModel, this.postIsSaved = false});
+  final PostModel? postModel;
+  ViewPost({required this.postModel, this.postIsSaved = false});
   @override
   _ViewPostState createState() => _ViewPostState();
 }
@@ -58,7 +58,7 @@ class _ViewPostState extends AnonState<ViewPost> {
 
   ViewCommentsBar viewCommentsBar(BuildContext context) {
     return ViewCommentsBar(
-      commentsLength: widget.postModel.comments.length,
+      commentsLength: widget.postModel!.comments!.length,
       onTap: () => Navigator.push(
         context,
         CupertinoPageRoute(
@@ -87,15 +87,15 @@ class _ViewPostState extends AnonState<ViewPost> {
     return Container(
       alignment: Alignment.topLeft,
       child: MarkdownBody(
-        data: widget.postModel.content,
+        data: widget.postModel!.content!,
         selectable: true,
-        onTapLink: (text, href, title) => launch(href),
+        onTapLink: (text, href, title) => launch(href!),
       ),
     );
   }
 
   titleWidget() => Text(
-        widget.postModel.title,
+        widget.postModel!.title!,
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 23,

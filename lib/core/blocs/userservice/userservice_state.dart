@@ -3,14 +3,14 @@ part of 'userservice_bloc.dart';
 @immutable
 // ignore: must_be_immutable
 class UserServiceState {
-  final UserServiceEvents event;
-  final bool loading;
-  final PostModel postModel;
-  List<PostModel> savedPosts;
-  List<PostModel> postModelList;
+  final UserServiceEvents? event;
+  final bool? loading;
+  final PostModel? postModel;
+  List<PostModel?>? savedPosts;
+  List<PostModel?>? postModelList;
 
   UserServiceState({
-    @required this.event,
+    required this.event,
     this.loading,
     this.postModel,
     this.savedPosts,
@@ -18,11 +18,11 @@ class UserServiceState {
   });
 
   UserServiceState copyWith({
-    UserServiceEvents event,
-    bool loading,
-    PostModel postModel,
-    List<PostModel> savedPosts,
-    List<PostModel> postModelList,
+    UserServiceEvents? event,
+    bool? loading,
+    PostModel? postModel,
+    List<PostModel?>? savedPosts,
+    List<PostModel?>? postModelList,
   }) =>
       UserServiceState(
         event: event ?? this.event,

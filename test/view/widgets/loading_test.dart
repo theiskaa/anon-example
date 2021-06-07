@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   Widget loading;
-  Widget mainWidget;
+  late Widget mainWidget;
 
   setUpAll(() {
     loading = Loading();

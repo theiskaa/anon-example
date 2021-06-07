@@ -4,11 +4,11 @@ import 'package:anon/core/utils/test_helpers.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  AnonStatelessWidget testStatelessAnon;
-  AnonStatefulWidget testStatefullAnon;
-  AnonStatefulWidget testAnon;
+  late AnonStatelessWidget testStatelessAnon;
+  late AnonStatefulWidget testStatefullAnon;
+  late AnonStatefulWidget testAnon;
 
-  Anon anonTest;
+  Anon? anonTest;
 
   setUpAll(() {
     testStatelessAnon = TestStatelessWidget();

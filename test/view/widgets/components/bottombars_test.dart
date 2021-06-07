@@ -7,7 +7,7 @@ import 'package:anon/view/widgets/components/opacity_button.dart';
 void main() {
   Widget viewCommentsBar;
 
-  Widget mainWidget;
+  late Widget mainWidget;
 
   setUpAll(() {
     viewCommentsBar = ViewCommentsBar(

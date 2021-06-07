@@ -23,11 +23,11 @@ enum UserServiceEvents {
 }
 
 class UserServiceEvent {
-  UserServiceEvents type;
-  PostModel postModel;
-  CommentModel commentModel;
+  UserServiceEvents? type;
+  PostModel? postModel;
+  CommentModel? commentModel;
 
-  UserServiceEvent.createPostStart(PostModel postModel) {
+  UserServiceEvent.createPostStart(PostModel? postModel) {
     this.type = UserServiceEvents.createPostStart;
     this.postModel = postModel;
   }
@@ -53,8 +53,8 @@ class UserServiceEvent {
   }
 
   UserServiceEvent.putCommentStart(
-    PostModel postModel,
-    CommentModel commentModel,
+    PostModel? postModel,
+    CommentModel? commentModel,
   ) {
     this.type = UserServiceEvents.putCommentStart;
     this.commentModel = commentModel;
@@ -69,7 +69,7 @@ class UserServiceEvent {
     this.type = UserServiceEvents.putCommentError;
   }
 
-  UserServiceEvent.savePostStart(PostModel post) {
+  UserServiceEvent.savePostStart(PostModel? post) {
     this.type = UserServiceEvents.savePostStart;
     this.postModel = post;
   }

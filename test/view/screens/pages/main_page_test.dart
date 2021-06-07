@@ -11,7 +11,7 @@ import 'package:anon/view/screens/pages/main_page.dart';
 void main() {
   Anon anon;
 
-  TestableWidgetBuilder testableWidgetBuilder;
+  late TestableWidgetBuilder testableWidgetBuilder;
 
   setUpAll(() {
     anon = Anon();

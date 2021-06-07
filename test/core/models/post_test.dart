@@ -3,11 +3,11 @@ import 'package:anon/core/model/post.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 main() {
-  PostModel postModel;
+  late PostModel postModel;
   CommentModel commentModel;
   List<CommentModel> commentModelList;
 
-  Map<String, dynamic> postModelJson;
+  Map<String, dynamic>? postModelJson;
 
   setUpAll(() {
     commentModel = CommentModel(

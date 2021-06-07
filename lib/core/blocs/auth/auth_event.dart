@@ -16,15 +16,15 @@ enum AuthEvents {
 }
 
 class AuthEvent {
-  AuthEvents type;
-  UserModel user;
+  AuthEvents? type;
+  UserModel? user;
 
-  AuthEvent.authUserChanged(UserModel userModel) {
+  AuthEvent.authUserChanged(UserModel? userModel) {
     this.type = AuthEvents.authUserChanged;
     this.user = userModel;
   }
 
-  AuthEvent.authenticated(UserModel userModel) {
+  AuthEvent.authenticated(UserModel? userModel) {
     this.type = AuthEvents.authenticated;
     this.user = userModel;
   }

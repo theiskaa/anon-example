@@ -5,7 +5,7 @@ import 'package:anon/view/widgets/components/opacity_button.dart';
 
 void main() {
   Widget opacityButton;
-  Widget mainWidget;
+  late Widget mainWidget;
 
   setUpAll(() {
     // Initilaze opacityButton.

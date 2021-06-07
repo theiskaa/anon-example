@@ -16,10 +16,8 @@ void main() {
   PostModel postModel;
   PostModel postModelWithNoComments;
 
-  TestableWidgetBuilder testableWidgetBuilder;
-  TestableWidgetBuilder secondTestableWidgetBuilder;
-
-  MockNavigatorObserver mockObserver;
+  late TestableWidgetBuilder testableWidgetBuilder;
+  late TestableWidgetBuilder secondTestableWidgetBuilder;
 
   setUpAll(() {
     anon = Anon();
@@ -33,12 +31,9 @@ void main() {
 
     postModelWithNoComments = postModel.copyWith(comments: []);
 
-    mockObserver = MockNavigatorObserver();
-
     testableWidgetBuilder = TestableWidgetBuilder(
       enablePageTesting: true,
       anon: anon,
-      navigatorObservers: [mockObserver],
       blocProviders: [
         BlocProvider<UserserviceBloc>(create: (context) => UserserviceBloc()),
       ],
@@ -48,7 +43,6 @@ void main() {
     secondTestableWidgetBuilder = TestableWidgetBuilder(
       enablePageTesting: true,
       anon: anon,
-      navigatorObservers: [mockObserver],
       blocProviders: [
         BlocProvider<UserserviceBloc>(create: (context) => UserserviceBloc()),
       ],

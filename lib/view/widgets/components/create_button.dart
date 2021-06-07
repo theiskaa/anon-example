@@ -9,8 +9,8 @@ class CreateButton extends AnonStatelessWidget {
   final Color titleColor;
 
   CreateButton({
-    Key key,
-    @required this.onTap,
+    Key? key,
+    required this.onTap,
     this.backgroundColor = Colors.black,
     this.title = "Create",
     this.titleColor = Colors.white,
@@ -19,7 +19,7 @@ class CreateButton extends AnonStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OpacityButton(
-      onTap: onTap,
+      onTap: onTap as void Function()?,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         height: 15,

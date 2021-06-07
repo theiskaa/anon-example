@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Splash extends AnonStatelessWidget {
-  Splash({Key key}) : super(key: key);
+  Splash({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

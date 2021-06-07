@@ -9,7 +9,7 @@ void main() {
     content: 'content',
   );
 
-  UserServiceState userServiceState;
+  late UserServiceState userServiceState;
 
   setUpAll(() {
     // Initial version of UserServiceState.

@@ -11,9 +11,9 @@ class AuthButton extends AnonStatelessWidget {
   final FontWeight titleWeight;
 
   AuthButton({
-    Key key,
-    @required this.title,
-    @required this.onTap,
+    Key? key,
+    required this.title,
+    required this.onTap,
     this.height = 120,
     this.backgroundColor = Colors.black,
     this.titleColor = Colors.white,
@@ -24,7 +24,7 @@ class AuthButton extends AnonStatelessWidget {
   Widget build(BuildContext context) {
     return OpacityButton(
       opacityValue: .8,
-      onTap: onTap,
+      onTap: onTap as void Function()?,
       child: buttonBody(),
     );
   }

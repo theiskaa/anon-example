@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   Widget authButton;
-  Widget mainWidget;
+  late Widget mainWidget;
 
   setUpAll(() {
     authButton = AuthButton(

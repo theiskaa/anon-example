@@ -13,9 +13,7 @@ void main() {
   Anon anon;
   PostModel postModel;
 
-  TestableWidgetBuilder testableWidgetBuilder;
-
-  MockNavigatorObserver mockObserver;
+  late TestableWidgetBuilder testableWidgetBuilder;
 
   setUpAll(() {
     anon = Anon();
@@ -27,12 +25,9 @@ void main() {
       comments: [CommentModel(title: "test title").toJson()],
     );
 
-    mockObserver = MockNavigatorObserver();
-
     testableWidgetBuilder = TestableWidgetBuilder(
       enablePageTesting: true,
       anon: anon,
-      navigatorObservers: [mockObserver],
       blocProviders: [
         BlocProvider<UserserviceBloc>(create: (context) => UserserviceBloc()),
       ],
@@ -60,9 +55,6 @@ void main() {
 
           await tester.tap(bottomBar);
           await tester.pumpAndSettle();
-
-          // Verify that navigation was pushed.
-          verify(mockObserver.didPush(any, any));
         },
       ),
     );

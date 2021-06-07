@@ -3,13 +3,13 @@ import 'package:flutter/widgets.dart';
 
 /// Custom [StatelessWidget] implemented [Anon] singleton
 abstract class AnonStatelessWidget extends StatelessWidget {
-  AnonStatelessWidget({Key key}) : super(key: key);
+  AnonStatelessWidget({Key? key}) : super(key: key);
   final Anon anon = Anon();
 }
 
 /// Custom [StatefulWidget] implemented [Anon] singleton
 abstract class AnonStatefulWidget extends StatefulWidget {
-  AnonStatefulWidget({Key key}) : super(key: key);
+  AnonStatefulWidget({Key? key}) : super(key: key);
   final Anon anon = Anon();
 }
 

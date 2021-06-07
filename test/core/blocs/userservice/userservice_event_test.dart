@@ -5,8 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   UserServiceEvent userServiceEvent;
-  PostModel postModel;
-  CommentModel commentModel;
+  PostModel? postModel;
+  CommentModel? commentModel;
 
   group('[UserServiceEvent]', () {
     test('createPostStart', () {

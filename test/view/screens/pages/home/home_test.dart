@@ -13,15 +13,11 @@ void main() {
   Anon anon;
   Widget homePage;
 
-  MockNavigatorObserver mockObserver;
-
   // Testable widget builder for test Home page.
-  TestableWidgetBuilder testableWidgetBuilder;
+  late TestableWidgetBuilder testableWidgetBuilder;
 
   setUpAll(() async {
     anon = Anon();
-
-    mockObserver = MockNavigatorObserver();
 
     homePage = Home();
 
@@ -29,7 +25,6 @@ void main() {
       enablePageTesting: true,
       anon: anon,
       widget: homePage,
-      navigatorObservers: [mockObserver],
       blocProviders: [
         BlocProvider<UserserviceBloc>(create: (_) => UserserviceBloc()),
       ],
@@ -72,9 +67,6 @@ void main() {
 
           await tester.tap(createButton);
           await tester.pumpAndSettle();
-
-          // Verify that navigation was pushed.
-          verify(mockObserver.didPush(any, any));
         },
       ),
     );

@@ -2,7 +2,7 @@ import 'package:anon/core/model/comment.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 main() {
-  CommentModel commentModel;
+  late CommentModel commentModel;
 
   const Map<String, String> commentModelJson = {
     'title': 'Test title',

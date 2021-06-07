@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 @immutable
 class AnonBlocObserver extends BlocObserver {
   @override
-  void onEvent(Bloc bloc, Object event) {
+  void onEvent(Bloc bloc, Object? event) {
     Log.d("[ onEvent $event ]");
     super.onEvent(bloc, event);
   }

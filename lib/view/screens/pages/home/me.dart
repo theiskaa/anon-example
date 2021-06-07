@@ -15,7 +15,7 @@ import 'view_comments.dart';
 import 'view_post.dart';
 
 class Me extends AnonStatefulWidget {
-  Me({Key key}) : super(key: key);
+  Me({Key? key}) : super(key: key);
 
   @override
   _MeState createState() => _MeState();
@@ -41,7 +41,7 @@ class _MeState extends AnonState<Me> {
       ),
       body: BlocBuilder<UserserviceBloc, UserServiceState>(
         builder: (context, state) {
-          if (state.savedPosts.isEmpty) return emptyList();
+          if (state.savedPosts!.isEmpty) return emptyList();
           return buildBody(state);
         },
       ),
@@ -92,7 +92,7 @@ class _MeState extends AnonState<Me> {
 
   Column posts(UserServiceState state) {
     return Column(
-      children: state.savedPosts
+      children: state.savedPosts!
           .map(
             (post) => PostCardWidget(
               postModel: post,
