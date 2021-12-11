@@ -23,8 +23,8 @@
       alt="Stars" />
   </a>
   <br>
-  <a href="https://discord.gg/uMp9ee5HV4">
-    <img src="https://img.shields.io/discord/830139463673053240?color=blue&label=anoncord&logo=discord"
+  <a href="https://discord.gg/CtStkzrHV3">
+    <img src="https://img.shields.io/discord/914899238415130714?color=blue&label=Anon Community&logo=discord"
       alt="Anoncord" />
   </a>   
 </div><br>
